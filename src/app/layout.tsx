@@ -4,7 +4,6 @@ import "./globals.css";
 import Navbar from "@/components/nav-bar/Navbar";
 import Footer from "@/components/footer/Footer";
 import { AuthProvider } from "@/context/AuthContext";
-import AuthComponent from "@/components/auth/AuthComponent";
 import { StoreProvider } from "@/context/StoreContext";
 import { LoaderProvider } from "@/context/AppLoaderContext";
 import { Suspense } from "react";
@@ -73,20 +72,19 @@ export default function RootLayout({
       <body className="flex flex-col min-h-screen font-sans">
         <SpeedInsights />
         <Analytics />
-        <LoaderProvider>
-          <AuthProvider>
-            <StoreProvider>
-              <AlertProvider>
-                <Suspense fallback={<AppLoader />}>
-                  <Navbar />
-                  <AuthComponent />
-                  <main className="flex-1 bg-gray-100">{children}</main>
-                  <Footer />
-                </Suspense>
-              </AlertProvider>
-            </StoreProvider>
-          </AuthProvider>
-        </LoaderProvider>
+        {/* <LoaderProvider> */}
+        <AuthProvider>
+          <StoreProvider>
+            <AlertProvider>
+              <Suspense fallback={<AppLoader />}>
+                <Navbar />
+                <main className="flex-1 bg-gray-100">{children}</main>
+                <Footer />
+              </Suspense>
+            </AlertProvider>
+          </StoreProvider>
+        </AuthProvider>
+        {/* </LoaderProvider> */}
         <script
           src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4Wo_pnncMwI6IgtyzasYLP-H6SbW8OpA&loading=async&libraries=places"
           async

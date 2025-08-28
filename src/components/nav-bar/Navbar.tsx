@@ -65,7 +65,7 @@ const Navbar = observer(() => {
   const [isNavbarHovered, setIsNavbarHovered] = useState(false);
   const [lang, setLang] = useState<'EN' | 'HE'>('EN');
 
-  const { isAuthenticated, logout, user, setShowModal } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth();
   const { cartStore, profileStore } = useStores();
 
   const profileRef = useRef<HTMLDivElement | null>(null);
@@ -104,24 +104,20 @@ const Navbar = observer(() => {
   }, [isAuthenticated, cartStore]);
 
   const handleLogout = async () => {
-      setIsLoading(true);
-      await logout();
-      setIsLoading(false);
-      setMenuOpen(false);
-      setProfileOpen(false);
-      router.push('/');
+    setIsLoading(true);
+    await logout();
+    setIsLoading(false);
+    setMenuOpen(false);
+    setProfileOpen(false);
+    router.push('/');
   };
 
   const handleProfileClick = () => {
     if (!isAuthenticated) {
-      if (typeof setShowModal === 'function') {
-        setShowModal(true);
-      } else {
-        router.push('/login');
-      }
-      return;
+      router.push('/login')
+    } else {
+      setProfileOpen((p) => !p);
     }
-    setProfileOpen((p) => !p);
   };
 
   const toggleMenu = () => setMenuOpen((m) => !m);
@@ -167,9 +163,9 @@ const Navbar = observer(() => {
           </Link>
 
           <div className={styles.jewelryWrap} ref={dropdownRef}>
-            <button 
-              className={styles.jewelryTitle} 
-              onClick={toggleDropdown} 
+            <button
+              className={styles.jewelryTitle}
+              onClick={toggleDropdown}
               aria-expanded={dropdownOpen}
             >
               Jewelry
@@ -224,11 +220,11 @@ const Navbar = observer(() => {
           <Link href="/collections" className={styles.navLink}>
             Collections
           </Link>
-          
+
           <Link href="/customize" className={styles.navLink}>
             Customize
           </Link>
-          
+
           <Link href="/about-us" className={styles.navLink}>
             About us
           </Link>
@@ -259,9 +255,9 @@ const Navbar = observer(() => {
 
       {/* RIGHT SIDE */}
       <div className={styles.navbarRight}>
-        <button 
-          className={`${styles.langBtn} ${styles.langBtnEnhanced}`} 
-          onClick={toggleLang} 
+        <button
+          className={`${styles.langBtn} ${styles.langBtnEnhanced}`}
+          onClick={toggleLang}
           aria-label="Toggle language"
         >
           <FontAwesomeIcon icon={faGlobe} className={styles.globeIcon} />
@@ -325,9 +321,9 @@ const Navbar = observer(() => {
         </button>
 
         {/* Fixed cart button - now uses onClick to navigate */}
-        <button 
-          className={styles.iconBtn} 
-          aria-label="Cart" 
+        <button
+          className={styles.iconBtn}
+          aria-label="Cart"
           onClick={handleCartClick}
           style={{ display: 'inline-flex', alignItems: 'center' }}
         >
@@ -379,7 +375,7 @@ const Navbar = observer(() => {
               </button>
             )}
 
-            {!isAuthenticated && (
+            {/* {!isAuthenticated && (
               <button
                 className={styles.signInBtn}
                 onClick={() => {
@@ -390,7 +386,7 @@ const Navbar = observer(() => {
               >
                 Login
               </button>
-            )}
+            )} */}
           </div>
         </motion.div>
       )}
