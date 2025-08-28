@@ -1,43 +1,56 @@
-import { UploadedImagesResponse } from "@/app/api/uploads/images/manager";
+import { supabase } from "@/lib/supabaseClient";
+
+export interface UploadedImagesResponse {
+  imgUrl: string;
+  fileName: string;
+}
 
 class UploadsManager {
+  private static bucket = "assets";
+
   static async uploadImages(files: File[]): Promise<UploadedImagesResponse[]> {
-    const formData = new FormData();
-    files?.forEach((image) => {
-      if (image) formData.append("images", image);
-    });
-
     try {
-      const response = await fetch("/api/uploads/images", {
-        method: "POST",
-        body: formData,
-        credentials: "include",
-      });
+      const uploads = await Promise.all(
+        files.map(async (file) => {
+          const fileName = `${Date.now()}-${file.name}`;
+          const { data, error } = await supabase.storage
+            .from(this.bucket)
+            .upload(fileName, file, {
+              cacheControl: "3600",
+              upsert: false,
+            });
 
-      if (!response.ok) {
-        throw new Error("@@Failed to upload image");
-      }
+          if (error) throw error;
 
-      const { data } = await response.json();
-      return data;
+          const { data: publicUrlData } = supabase.storage
+            .from(this.bucket)
+            .getPublicUrl(fileName);
+
+          return {
+            fileName: data?.path || fileName,
+            imgUrl: publicUrlData.publicUrl,
+          };
+        })
+      );
+
+      return uploads;
     } catch (error: any) {
-      throw new Error("@@Error uploading image:", error.message || error);
+      console.error("@@Error uploading image:", error.message || error);
+      throw new Error(error.message || "Failed to upload images");
     }
   }
 
-  static async deleteImages(images: string[]): Promise<boolean> {
+  static async deleteImages(imagePaths: string[]): Promise<boolean> {
     try {
-      const response = await fetch("/api/uploads/images", {
-        method: "DELETE",
-        body: JSON.stringify(images),
-        credentials: "include",
-      });
-      if (!response.ok) {
-        throw new Error("Failed to delete image");
-      }
+      const { error } = await supabase.storage
+        .from(this.bucket)
+        .remove(imagePaths);
+
+      if (error) throw error;
+
       return true;
-    } catch (error) {
-      console.error("Error deleting image:", error);
+    } catch (error: any) {
+      console.error("@@Error deleting image:", error.message || error);
       return false;
     }
   }
