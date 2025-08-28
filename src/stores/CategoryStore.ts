@@ -27,6 +27,32 @@ export class CategoryStore {
     makeAutoObservable(this);
   }
 
+  async updateCategoryNumberOfProducts(categoryName: string, quantity: number) {
+    try {
+      if (!this.categories) await this.fetchCategories();
+
+      const category = this.categories?.find(
+        (cat) => cat.name.toLowerCase() === categoryName.toLowerCase()
+      );
+      if (!category) return;
+
+      const newCount = (category.numOfProducts || 0) + quantity;
+
+      // Update locally
+      category.numOfProducts = newCount;
+
+      // Persist in Supabase
+      const { error } = await supabaseClient
+        .from("categories")
+        .update({ numOfProducts: newCount })
+        .eq("name", categoryName);
+
+      if (error)
+        console.error("Failed to update category count:", error.message);
+    } catch (err) {
+      console.error("Error updating category count:", err);
+    }
+  }
   // -----------------------------
   // FETCH CATEGORIES
   // -----------------------------
