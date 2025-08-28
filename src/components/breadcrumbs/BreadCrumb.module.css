@@ -1,0 +1,27 @@
+.breadcrumb {
+  list-style: none;
+  display: flex;
+  margin-top: 10px;
+}
+
+.breadcrumb li a {
+  text-decoration: none;
+  color: gray;
+}
+
+.breadcrumb li a:hover {
+  color: gray;
+
+  box-shadow: 0 4px 8px rgba(199, 222, 249, 0.4); /* Shadow effect */
+  transform: translateY(-2px); /* Slight lift effect */
+}
+
+.breadcrumb li::after {
+  content: "/";
+  margin: 0.5rem;
+  color: black;
+}
+
+.breadcrumb li:last-child::after {
+  content: "";
+}
