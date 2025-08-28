@@ -7,7 +7,7 @@ const awards = [
   { href: "https://www.bestdesigners.org/227701", src: "/image/best.png", width: 80, height: 40 },
   { href: "https://designclassifications.com/", src: "/image/dac.png", width: 80, height: 40 },
   { href: "https://www.designassociation.net/member-details.php?u=227701", src: "/image/Design Club.png", width: 80, height: 40 },
-  { href: "https://www.icci.com", src: "/image/icci.png", width: 80, height: 40 },
+  
   { href: "", src: "/image/ISPM.png", width: 80, height: 40 },
   { href: "https://www.worlddesignrankings.com/country-level-rankings.php?COUNTRY=83&NAME=Israel#home", src: "/image/R.png", width: 80, height: 40 },
   { href: "https://www.worlddesignconsortium.com/partner.php?portfolio=18577100", src: "/image/W.png", width: 80, height: 40 },
