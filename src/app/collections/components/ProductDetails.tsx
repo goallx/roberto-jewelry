@@ -2,9 +2,8 @@
 
 import { IProduct } from "@/stores/ProductStore";
 import { CustomizedButton } from "@/components/ui/customized-button/CustomizedButton";
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useStores } from "@/context/StoreContext";
-import { toJS } from "mobx";
 import { useRouter } from "next/navigation";
 import { useAlert } from "@/context/AlertsContext";
 import { Badge } from "antd";
@@ -19,18 +18,13 @@ const SizeChart = dynamic(() => import("@/components/size-chart/sizeChart.compon
 });
 
 const ProductDetails: React.FC<{ product: IProduct }> = ({ product }) => {
-    const productData = useMemo(() => toJS(product), [product]);
     const { cartStore } = useStores();
-    // const { isAuthenticated, setShowModal } = useAuth();
     const router = useRouter();
     const { showAlert } = useAlert();
-
     const [mainImage, setMainImage] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        setMainImage(productData.images?.[0]?.imgUrl ?? "");
-    }, [product]);
+
 
     const handleAddToCart = useCallback(async () => {
         // if (!isAuthenticated) {
@@ -46,7 +40,7 @@ const ProductDetails: React.FC<{ product: IProduct }> = ({ product }) => {
         // } finally {
         //     setLoading(false);
         // }
-    }, [cartStore, productData, showAlert]);
+    }, [cartStore, showAlert]);
 
     const handleBuyProduct = useCallback(async () => {
         try {
@@ -55,7 +49,7 @@ const ProductDetails: React.FC<{ product: IProduct }> = ({ product }) => {
         } catch (error) {
             showAlert('Failed to proceed to payment', 'error');
         }
-    }, [handleAddToCart, router, showAlert, productData]);
+    }, [handleAddToCart, router, showAlert]);
 
     const handleImageClick = useCallback((img: string) => {
         if (mainImage !== img) {
@@ -69,7 +63,7 @@ const ProductDetails: React.FC<{ product: IProduct }> = ({ product }) => {
                 <div className="h-[63vh] md:col-span-2 flex flex-col gap-4 md:flex-row justify-start">
                     <div
                         className="w-full flex flex-row gap-3 items-center justify-start overflow-x-auto md:w-1/4 md:flex-col md:overflow-y-auto md:h-full order-2 md:order-1 z-20 scroll-smooth overflow-y-hidden">
-                        {productData.images?.map((img, index) => (
+                        {product.images?.map((img, index) => (
                             <BlurImage
                                 key={index}
                                 src={img.imgUrl}
@@ -102,24 +96,24 @@ const ProductDetails: React.FC<{ product: IProduct }> = ({ product }) => {
                 <Badge.Ribbon color={"gray"} text={"Lifetime Warranty"}>
                     <div className="md:col-span-1 flex flex-col shadow-sm p-4">
 
-                        <div className={`${productData.stock <= 5 ? "text-red-500" : ""} text-sm font-bold`}>
-                            {productData.stock === 0
+                        <div className={`${product.stock <= 5 ? "text-red-500" : ""} text-sm font-bold`}>
+                            {product.stock === 0
                                 ? `Out of stock`
-                                : productData.stock <= 5
-                                    ? `Only ${productData.stock} left!`
-                                    : `${productData.stock} in stock`}
+                                : product.stock <= 5
+                                    ? `Only ${product.stock} left!`
+                                    : `${product.stock} in stock`}
                         </div>
 
-                        <h1 className="text-3xl font-semibold mt-2">{productData.name || "Product Name"}</h1>
-                        <div className="text-2xl font-bold mt-4">${productData.price?.toLocaleString('en-US') || "1,000"}</div>
+                        <h1 className="text-3xl font-semibold mt-2">{product.name || "Product Name"}</h1>
+                        <div className="text-2xl font-bold mt-4">${product.price?.toLocaleString('en-US') || "1,000"}</div>
 
                         <div className="mt-4 flex items-center gap-2">
                             <label className="text-base font-light">Gender:</label>
-                            <p className="text-lg font-medium capitalize">{productData.gender}</p>
+                            <p className="text-lg font-medium capitalize">{product.gender}</p>
                         </div>
                         <div className="mt-4 flex items-center gap-2">
                             <label className="text-base font-light">Material:</label>
-                            <p className="text-lg font-medium capitalize">{productData.material}</p>
+                            <p className="text-lg font-medium capitalize">{product.material}</p>
                         </div>
 
                         {/* Buttons */}
@@ -129,13 +123,13 @@ const ProductDetails: React.FC<{ product: IProduct }> = ({ product }) => {
                                 backgroundColor={`${product.stock <= 0 ? '#EBEBE4' : 'white'}`}
                                 color={`${product.stock <= 0 ? 'grey' : ""}`}
                                 title="Add To Cart"
-                                disabled={!productData.stock || loading}
+                                disabled={!product.stock || loading}
                                 aria-label="Add to Cart"
                             />
                             <CustomizedButton
                                 onClick={handleBuyProduct}
                                 title="Buy Now"
-                                disabled={!productData.stock || loading}
+                                disabled={!product.stock || loading}
                                 backgroundColor={`${product.stock <= 0 ? '#EBEBE4' : 'black'}`}
                                 color={`${product.stock <= 0 ? 'grey' : "white"}`}
                                 aria-label="Buy Now"
@@ -145,7 +139,7 @@ const ProductDetails: React.FC<{ product: IProduct }> = ({ product }) => {
                         <div className="mt-6">
                             <label className="text-base font-medium">About the product:</label>
                             <p className="text-gray-600 text-sm leading-relaxed">
-                                {productData.description || "No description available."}
+                                {product.description || "No description available."}
                             </p>
                         </div>
 

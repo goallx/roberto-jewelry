@@ -11,6 +11,25 @@ type ProductFilters = {
   gender?: string;
 };
 
+export async function getMostSellingProducts(
+  limit: number = 4
+): Promise<IProduct[]> {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("products")
+      .select("*")
+      .order("sold_units", { ascending: false })
+      .limit(limit);
+
+    if (error) throw error;
+
+    return data ?? [];
+  } catch (err: any) {
+    console.error("Error fetching most selling products:", err.message || err);
+    return [];
+  }
+}
+
 export async function getProductsByCategory(
   catId: string
 ): Promise<IProduct[] | null> {
@@ -19,9 +38,8 @@ export async function getProductsByCategory(
 
     const { data, error } = await supabaseAdmin
       .from("products")
-      .select("*") 
-      .eq("category", catId)
-      // .single();
+      .select("*")
+      .eq("category", catId);
 
     if (error) throw error;
 
@@ -31,6 +49,7 @@ export async function getProductsByCategory(
     return null;
   }
 }
+
 export async function getProductById(id: string): Promise<IProduct | null> {
   try {
     if (!id) throw new Error("Product ID is required");

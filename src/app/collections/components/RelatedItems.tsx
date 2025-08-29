@@ -1,10 +1,7 @@
-'use server'
-
-import { ProductCard } from "@/components/product-card/ProductCard"
 import { IProduct } from "@/stores/ProductStore"
-import { getProductsByCategory } from "../../action"
-import Loading from "./loading"
 import { Loader } from "@/components/loader/Loader"
+import { getProductsByCategory } from "@/app/products/action"
+import { ProductCard } from "./ProductCard"
 
 interface RelatedItemsProps {
     categoryId: string
@@ -19,7 +16,9 @@ export default async function RelatedItems({ categoryId }: RelatedItemsProps) {
             </div>
         )
     }
+
     const products = await getProductsByCategory(categoryId)
+    console.log('@@related', products)
 
     if (!products) {
         return (

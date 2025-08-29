@@ -1,5 +1,5 @@
 import { getProducts } from "../products/action";
-import CollectionsDisplay from "./CollectionsDisplay";
+import CollectionsDisplay from "./components/CollectionsDisplay";
 
 
 type CollectionsPageProps = {
