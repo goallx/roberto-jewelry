@@ -3,28 +3,55 @@
 import { IProduct } from "@/stores/ProductStore";
 import Image from 'next/image'
 import { useRouter } from "next/navigation";
-
+import { useStores } from "@/context/StoreContext";
+import { useState } from "react";
+import { observer } from "mobx-react-lite";
 
 interface ProductCardProps {
     product: IProduct;
 }
 const DEFAULT_IMAGE = "/products/rings/ring1"
 
+export const ProductCard: React.FC<ProductCardProps> = observer(({ product }) => {
+    if (!product) return <div>SOMETHING WENT WRONG!</div>;
 
-export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+    const router = useRouter();
+    const { wishlistStore } = useStores();
+    const [loading, setLoading] = useState(false);
 
-    if (!product) {
-        return <div>SOMETHING WENT WRONG!</div>;
-    }
 
-    const router = useRouter()
+    const isInWishlist = wishlistStore?.isInWishlist(product.id);
+
+    const handleWishlistClick = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (!wishlistStore) return;
+        setLoading(true);
+        try {
+            if (!isInWishlist)
+                await wishlistStore.addToWishlist(product.id);
+            else
+                await wishlistStore.removeFromWishlist(product.id)
+        } catch (err) {
+            console.error("Wishlist error:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
 
     return (
-        <div onClick={() => router.push(`/collections/${product.id}`)} className="h-[330px] flex flex-col cursor-pointer shadow-md">
-            <div className="absolute top-3 right-3 z-10 w-8 h-8 bg-white border border-gray-300 flex items-center justify-center cursor-pointer group-hover:bg-gray-100 transition-colors" >
+        <div
+            onClick={() => router.push(`/collections/${product.id}`)}
+            className="h-[330px] flex flex-col cursor-pointer shadow-md relative"
+        >
+            {/* Wishlist button */}
+            <div
+                onClick={handleWishlistClick}
+                className="absolute top-3 right-3 z-50 w-8 h-8 bg-white border border-gray-300 flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors"
+            >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
+                    fill={isInWishlist ? "red" : "none"}
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
@@ -37,7 +64,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                     />
                 </svg>
             </div>
-            <div className="relative w-full h-full" >
+
+            <div className="relative w-full h-full">
                 <Image
                     src={product.images?.[0].imgUrl || DEFAULT_IMAGE}
                     alt={DEFAULT_IMAGE}
@@ -46,10 +74,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                     className="object-cover"
                 />
             </div>
-            <div className="h-[88px] mt-3 px-1 text-left" >
+
+            <div className="h-[88px] mt-3 px-1 text-left">
                 <p className="text-base font-medium text-gray-900">{product.description}</p>
                 <p className="text-orange-600 text-xl font-semibold mt-0.5">{product.price}</p>
-            </div >
+            </div>
         </div>
     );
-};
+})
