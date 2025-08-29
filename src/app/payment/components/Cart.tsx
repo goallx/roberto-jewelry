@@ -15,8 +15,7 @@ export interface ICartProduct extends IProduct {
 
 const Cart: React.FC = observer(() => {
     const { cartStore, profileStore } = useStores();
-
-    // Load cart & profile on mount
+    
     useEffect(() => {
         cartStore?.fetchUserCart();
         profileStore?.fetchProfile();

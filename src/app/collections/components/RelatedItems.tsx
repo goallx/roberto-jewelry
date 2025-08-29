@@ -18,7 +18,6 @@ export default async function RelatedItems({ categoryId }: RelatedItemsProps) {
     }
 
     const products = await getProductsByCategory(categoryId)
-    console.log('@@related', products)
 
     if (!products) {
         return (

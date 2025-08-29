@@ -2,7 +2,7 @@
 
 import { IProduct } from "@/stores/ProductStore";
 import { CustomizedButton } from "@/components/ui/customized-button/CustomizedButton";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useStores } from "@/context/StoreContext";
 import { useRouter } from "next/navigation";
 import { useAlert } from "@/context/AlertsContext";
@@ -10,6 +10,7 @@ import { Badge } from "antd";
 import { Loader } from "@/components/loader/Loader";
 import { BlurImage } from "@/components/blur-image/BlurImage.component";
 import dynamic from "next/dynamic";
+import { CartStore } from "@/stores/CartStore";
 
 
 const SizeChart = dynamic(() => import("@/components/size-chart/sizeChart.component"), {
@@ -18,29 +19,27 @@ const SizeChart = dynamic(() => import("@/components/size-chart/sizeChart.compon
 });
 
 const ProductDetails: React.FC<{ product: IProduct }> = ({ product }) => {
-    const { cartStore } = useStores();
+    let { cartStore } = useStores();
     const router = useRouter();
     const { showAlert } = useAlert();
     const [mainImage, setMainImage] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
+    useEffect(() => {
+        if (!cartStore) cartStore = new CartStore()
+    }, [cartStore])
 
-
-    const handleAddToCart = useCallback(async () => {
-        // if (!isAuthenticated) {
-        //     return setShowModal(true);
-        // }
-
-        // setLoading(true);
-        // try {
-        //     await cartStore?.addToCart(productData._id);
-        //     showAlert(`'${productData.name}' has been added to cart`, 'success');
-        // } catch (error) {
-        //     showAlert('Failed to add product to cart', 'error');
-        // } finally {
-        //     setLoading(false);
-        // }
-    }, [cartStore, showAlert]);
+    const handleAddToCart = async () => {
+        setLoading(true);
+        try {
+            await cartStore?.addToCart(product.id);
+            showAlert(`'${product.name}' has been added to cart`, 'success');
+        } catch (error) {
+            showAlert('Failed to add product to cart', 'error');
+        } finally {
+            setLoading(false);
+        }
+    }
 
     const handleBuyProduct = useCallback(async () => {
         try {

@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { supabase } from "@/lib/supabaseClient"; // your client-side supabase instance
+import { supabase } from "@/lib/supabaseClient";
 import { IProduct } from "./ProductStore";
 
 export interface ICartItem {
@@ -88,6 +88,7 @@ export class CartStore {
             product: ci.products,
           })),
         };
+        console.log("@@cart", cart);
         this.numOfCartItems = this.cart.items.reduce(
           (acc, i) => acc + i.quantity,
           0
@@ -111,61 +112,80 @@ export class CartStore {
    */
   async addToCart(productId: string) {
     try {
+      // Get current user
       const {
         data: { user },
+        error: userError,
       } = await supabase.auth.getUser();
-      if (!user) throw new Error("User not authenticated");
+      if (userError || !user) throw new Error("User not authenticated");
 
-      // Ensure user has an active cart
-      let { data: cart } = await supabase
+      console.log("@@user", user);
+
+      // Fetch user's active cart (take first one if multiple)
+      let { data: carts, error: cartError } = await supabase
         .from("carts")
         .select("id")
         .eq("user_id", user.id)
         .eq("status", "active")
-        .single();
+        .limit(1); // safe: only 1 cart
 
+      if (cartError) throw cartError;
+      console.log("@@cat", carts);
+      let cart = carts?.[0];
+      console.log("@@cart", cart);
+      // If no active cart, create one
       if (!cart) {
         const { data: newCart, error: createError } = await supabase
           .from("carts")
-          .insert({ user_id: user.id })
-          .select()
+          .insert({ user_id: user.id, status: "active" })
+          .select("id")
+          .limit(1)
           .single();
         if (createError) throw createError;
         cart = newCart;
       }
 
-      // Check if product already in cart
-      const { data: existingItem } = await supabase
+      // Check if product already exists in cart
+      const { data: existingItem, error: existingError } = await supabase
         .from("cart_items")
         .select("id, quantity")
-        .eq("cart_id", cart?.id)
+        .eq("cart_id", cart.id)
         .eq("product_id", productId)
-        .maybeSingle();
-
+        .maybeSingle(); // returns null if not exists
+      if (existingError) throw existingError;
+      console.log("@@existingItem", existingItem);
       if (existingItem) {
-        await supabase
+        // Increase quantity
+        const { error: updateError } = await supabase
           .from("cart_items")
           .update({ quantity: existingItem.quantity + 1 })
           .eq("id", existingItem.id);
+        if (updateError) throw updateError;
       } else {
-        // Fetch product price snapshot
-        const { data: product } = await supabase
+        // Fetch product price
+        const { data: product, error: productError } = await supabase
           .from("products")
           .select("price")
           .eq("id", productId)
           .single();
+        if (productError) throw productError;
 
-        await supabase.from("cart_items").insert({
-          cart_id: cart?.id,
-          product_id: productId,
-          quantity: 1,
-          price: product?.price ?? 0,
-        });
+        // Insert new cart item
+        const { error: insertError } = await supabase
+          .from("cart_items")
+          .insert({
+            cart_id: cart.id,
+            product_id: productId,
+            quantity: 1,
+            price: product?.price ?? 0,
+          });
+        if (insertError) throw insertError;
       }
 
+      // Refresh local cart state
       await this.fetchUserCart();
     } catch (err) {
-      console.error(err);
+      console.error("Error in addToCart:", err);
     }
   }
 

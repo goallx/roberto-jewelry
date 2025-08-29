@@ -16,6 +16,7 @@ export class RootStore {
   constructor() {
     this.categoryStore = new CategoryStore();
     this.productStore = new ProductStore();
+    this.initStores();
   }
 
   initStores() {
