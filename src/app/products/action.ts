@@ -11,6 +11,44 @@ type ProductFilters = {
   gender?: string;
 };
 
+export async function getProductsByCategory(
+  catId: string
+): Promise<IProduct[] | null> {
+  try {
+    if (!catId) throw new Error("Category id is required");
+
+    const { data, error } = await supabaseAdmin
+      .from("products")
+      .select("*") 
+      .eq("category", catId)
+      // .single();
+
+    if (error) throw error;
+
+    return data ?? null;
+  } catch (err: any) {
+    console.error("Error fetching product by ID:", err.message || err);
+    return null;
+  }
+}
+export async function getProductById(id: string): Promise<IProduct | null> {
+  try {
+    if (!id) throw new Error("Product ID is required");
+    const { data, error } = await supabaseAdmin
+      .from("products")
+      .select("*, categories!inner(name)") // include category and images
+      .eq("id", id)
+      .single();
+
+    if (error) throw error;
+
+    return data ?? null;
+  } catch (err: any) {
+    console.error("Error fetching product by ID:", err.message || err);
+    return null;
+  }
+}
+
 export async function getProducts(
   filters?: ProductFilters
 ): Promise<IProduct[]> {

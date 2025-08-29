@@ -30,7 +30,7 @@ export default async function RingsCollection() {
         {rings.map((ring, index) => (
           <Link
             key={index}
-            href={'/products'}
+            href={`/collections/${ring.id}`}
             className="relative block aspect-square shadow-lg group"
           >
             {/* Wishlist Heart Icon */}

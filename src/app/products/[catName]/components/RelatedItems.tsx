@@ -1,28 +1,16 @@
+'use server'
 
-import { Loader } from "@/components/loader/Loader"
 import { ProductCard } from "@/components/product-card/ProductCard"
-import { useStores } from "@/context/StoreContext"
-import { IProduct, ProductStore } from "@/stores/ProductStore"
-import { useEffect, useState } from "react"
+import { IProduct } from "@/stores/ProductStore"
+import { getProductsByCategory } from "../../action"
+import Loading from "./loading"
+import { Loader } from "@/components/loader/Loader"
 
 interface RelatedItemsProps {
     categoryId: string
 }
 
-const RelatedItems: React.FC<RelatedItemsProps> = ({ categoryId }) => {
-    let { productStore } = useStores()
-    const [relatedProducts, setRelatedProducts] = useState<Array<IProduct>>([])
-
-    useEffect(() => {
-        const fetchRelatedProducts = async () => {
-            if (!productStore) productStore = new ProductStore()
-            const products = await productStore.fetchProductsByCategory(categoryId)
-            setRelatedProducts(products ?? [])
-        }
-        if (categoryId) fetchRelatedProducts()
-    }, [categoryId])
-
-    if (!productStore) return null
+export default async function RelatedItems({ categoryId }: RelatedItemsProps) {
 
     if (!categoryId) {
         return (
@@ -31,21 +19,24 @@ const RelatedItems: React.FC<RelatedItemsProps> = ({ categoryId }) => {
             </div>
         )
     }
+    const products = await getProductsByCategory(categoryId)
 
-
+    if (!products) {
+        return (
+            <div>
+                <Loader />
+            </div>
+        )
+    }
     return (
         <div className="flex overflow-x-auto gap-8 px-1 shadow-scroll-indicator">
-            {productStore.isLoading ? (
-                <Loader />
-            ) : (
-                relatedProducts.map((product: IProduct) => (
-                    <div key={product._id} className="flex-shrink-0 py-4 px-2 md:py-6 md:w-1/4 flex justify-center">
+            {
+                products.map((product: IProduct) => (
+                    <div key={product.id} className="flex-shrink-0 py-4 px-2 md:py-6 md:w-1/4 flex justify-center">
                         <ProductCard product={product} />
                     </div>
                 ))
-            )}
+            }
         </div>
     )
 }
-
-export default RelatedItems

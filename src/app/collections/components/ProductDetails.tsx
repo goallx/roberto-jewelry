@@ -4,14 +4,12 @@ import { IProduct } from "@/stores/ProductStore";
 import { CustomizedButton } from "@/components/ui/customized-button/CustomizedButton";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { useStores } from "@/context/StoreContext";
-import { useAuth } from "@/context/AuthContext";
 import { toJS } from "mobx";
 import { useRouter } from "next/navigation";
 import { useAlert } from "@/context/AlertsContext";
 import { Badge } from "antd";
 import { Loader } from "@/components/loader/Loader";
 import { BlurImage } from "@/components/blur-image/BlurImage.component";
-import Head from "next/head";
 import dynamic from "next/dynamic";
 
 
@@ -23,7 +21,7 @@ const SizeChart = dynamic(() => import("@/components/size-chart/sizeChart.compon
 const ProductDetails: React.FC<{ product: IProduct }> = ({ product }) => {
     const productData = useMemo(() => toJS(product), [product]);
     const { cartStore } = useStores();
-    const { isAuthenticated, setShowModal } = useAuth();
+    // const { isAuthenticated, setShowModal } = useAuth();
     const router = useRouter();
     const { showAlert } = useAlert();
 
@@ -31,24 +29,24 @@ const ProductDetails: React.FC<{ product: IProduct }> = ({ product }) => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setMainImage(productData.images[0]?.imgUrl ?? "");
+        setMainImage(productData.images?.[0]?.imgUrl ?? "");
     }, [product]);
 
     const handleAddToCart = useCallback(async () => {
-        if (!isAuthenticated) {
-            return setShowModal(true);
-        }
+        // if (!isAuthenticated) {
+        //     return setShowModal(true);
+        // }
 
-        setLoading(true);
-        try {
-            await cartStore?.addToCart(productData._id);
-            showAlert(`'${productData.name}' has been added to cart`, 'success');
-        } catch (error) {
-            showAlert('Failed to add product to cart', 'error');
-        } finally {
-            setLoading(false);
-        }
-    }, [isAuthenticated, cartStore, productData, setShowModal, showAlert]);
+        // setLoading(true);
+        // try {
+        //     await cartStore?.addToCart(productData._id);
+        //     showAlert(`'${productData.name}' has been added to cart`, 'success');
+        // } catch (error) {
+        //     showAlert('Failed to add product to cart', 'error');
+        // } finally {
+        //     setLoading(false);
+        // }
+    }, [cartStore, productData, showAlert]);
 
     const handleBuyProduct = useCallback(async () => {
         try {
@@ -67,26 +65,6 @@ const ProductDetails: React.FC<{ product: IProduct }> = ({ product }) => {
 
     return (
         <>
-            <Head>
-                {productData.images?.map((img, index) => (
-                    <link
-                        key={index}
-                        rel="preload"
-                        href={img.imgUrl}
-                        as="image"
-                    />
-                ))}
-                {mainImage && (
-                    <link
-                        rel="preload"
-                        href={mainImage}
-                        as="image"
-                    />
-                )}
-            </Head>
-
-
-
             <div className="max-w-7xl h-full mt-10 md:mt-20 mx-auto p-6 grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="h-[63vh] md:col-span-2 flex flex-col gap-4 md:flex-row justify-start">
                     <div
