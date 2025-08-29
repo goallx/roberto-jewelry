@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, toJS } from "mobx";
 import { supabase } from "@/lib/supabaseClient";
 import { IProduct } from "./ProductStore";
 
@@ -37,18 +37,19 @@ export class CartStore {
     this.totalPrice = 0;
   }
 
-  calculateTotalPrice(): void {
+  calculateTotalPrice() {
     if (this.cart) {
       const totalPrice =
         this.cart?.items?.reduce(
-          (sum, item) => sum + item.price * item.quantity,
+          (sum, item) => sum + item.product.price * item.quantity,
           0
         ) || 0;
       this.totalPrice = totalPrice;
+      return totalPrice;
     } else {
       this.totalPrice = 0;
+      return 0;
     }
-    return;
   }
 
   /**
@@ -67,13 +68,13 @@ export class CartStore {
       const { data: cart, error: cartError } = await supabase
         .from("carts")
         .select(
-          "id, user_id, status, cart_items(id, product_id, quantity, price, products(*))"
+          "id, user_id, status, cart_items(id, product_id, quantity, products(*))"
         )
         .eq("user_id", user.id)
         .eq("status", "active")
         .single();
 
-      if (cartError && cartError.code !== "PGRST116") throw cartError; // ignore "no rows found"
+      if (cartError && cartError.code !== "PGRST116") throw cartError;
 
       if (cart) {
         this.cart = {
@@ -88,7 +89,6 @@ export class CartStore {
             product: ci.products,
           })),
         };
-        console.log("@@cart", cart);
         this.numOfCartItems = this.cart.items.reduce(
           (acc, i) => acc + i.quantity,
           0
@@ -112,7 +112,6 @@ export class CartStore {
    */
   async addToCart(productId: string) {
     try {
-      // Get current user
       const {
         data: { user },
         error: userError,
@@ -127,13 +126,11 @@ export class CartStore {
         .select("id")
         .eq("user_id", user.id)
         .eq("status", "active")
-        .limit(1); // safe: only 1 cart
+        .limit(1);
 
       if (cartError) throw cartError;
-      console.log("@@cat", carts);
       let cart = carts?.[0];
-      console.log("@@cart", cart);
-      // If no active cart, create one
+
       if (!cart) {
         const { data: newCart, error: createError } = await supabase
           .from("carts")
@@ -153,7 +150,6 @@ export class CartStore {
         .eq("product_id", productId)
         .maybeSingle(); // returns null if not exists
       if (existingError) throw existingError;
-      console.log("@@existingItem", existingItem);
       if (existingItem) {
         // Increase quantity
         const { error: updateError } = await supabase
@@ -162,14 +158,6 @@ export class CartStore {
           .eq("id", existingItem.id);
         if (updateError) throw updateError;
       } else {
-        // Fetch product price
-        const { data: product, error: productError } = await supabase
-          .from("products")
-          .select("price")
-          .eq("id", productId)
-          .single();
-        if (productError) throw productError;
-
         // Insert new cart item
         const { error: insertError } = await supabase
           .from("cart_items")
@@ -177,12 +165,10 @@ export class CartStore {
             cart_id: cart.id,
             product_id: productId,
             quantity: 1,
-            price: product?.price ?? 0,
           });
         if (insertError) throw insertError;
       }
 
-      // Refresh local cart state
       await this.fetchUserCart();
     } catch (err) {
       console.error("Error in addToCart:", err);

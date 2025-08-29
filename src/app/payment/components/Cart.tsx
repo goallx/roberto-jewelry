@@ -1,6 +1,4 @@
 'use client';
-
-import { Loader } from '@/components/loader/Loader';
 import { useStores } from '@/context/StoreContext';
 import { IProduct } from '@/stores/ProductStore';
 import React, { useEffect } from 'react';
@@ -8,26 +6,22 @@ import { CartStore } from '@/stores/CartStore';
 import { observer } from 'mobx-react-lite';
 import { CloseCircleOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
+import { ProfileStore } from '@/stores/ProfileStore';
 
 export interface ICartProduct extends IProduct {
     quantity: number;
 }
 
 const Cart: React.FC = observer(() => {
-    const { cartStore, profileStore } = useStores();
-    
+    let { cartStore, profileStore } = useStores();
+
     useEffect(() => {
+        if (!cartStore) cartStore = new CartStore()
+        if (!profileStore) profileStore = new ProfileStore()
         cartStore?.fetchUserCart();
         profileStore?.fetchProfile();
     }, [cartStore, profileStore]);
 
-    if (cartStore?.isLoading) {
-        return (
-            <div className="flex-1 flex justify-center items-center min-h-full">
-                <Loader />
-            </div>
-        );
-    }
 
     const hasMembership = !!profileStore?.profile?.membership;
     const discountPercentage = 0.1;
@@ -35,6 +29,7 @@ const Cart: React.FC = observer(() => {
     const discountedTotal = hasMembership
         ? originalTotal * (1 - discountPercentage)
         : originalTotal;
+
 
     return (
         <div className="w-full bg-[#F2EFED] rounded-lg p-6 shadow-md">
@@ -49,7 +44,7 @@ const Cart: React.FC = observer(() => {
                         <CartProductCard
                             key={item.product.id}
                             product={{ ...item.product, quantity: item.quantity }}
-                            cartStore={cartStore}
+                            cartStore={cartStore ?? new CartStore()}
                         />
                     ))
                 )}
