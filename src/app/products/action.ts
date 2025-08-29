@@ -7,6 +7,8 @@ type ProductFilters = {
   minPrice?: number;
   maxPrice?: number;
   search?: string;
+  material?: string;
+  gender?: string;
 };
 
 export async function getProducts(
@@ -22,6 +24,14 @@ export async function getProducts(
 
   if (filters?.category_name) {
     query = query.eq("categories.name", filters.category_name);
+  }
+
+  if (filters?.material) {
+    query = query.eq("material", filters.category_name);
+  }
+
+  if (filters?.gender) {
+    query = query.eq("gender", filters.gender);
   }
 
   if (filters?.minPrice) {

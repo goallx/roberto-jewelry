@@ -71,9 +71,11 @@ export default async function RingsCollection() {
         ))}
       </div>
 
-      <button className="mt-10 mx-auto px-8 py-3 bg-black text-white font-semibold max-w-xs hover:bg-gray-900 transition-colors">
-        View All Collections &rarr;
-      </button>
+      <Link href={'/collections'}>
+        <button className="mt-10 mx-auto px-8 py-3 bg-black text-white font-semibold max-w-xs hover:bg-gray-900 transition-colors">
+          View All Collections &rarr;
+        </button>
+      </Link>
     </section>
   )
 }
