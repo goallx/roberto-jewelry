@@ -14,7 +14,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ product }: ProductPageProps) 
     return (
         <div className="h-full">
             <div className="mt-24 px-8">
-                <Breadcrumb />
+                {/* <Breadcrumb /> */}
             </div>
             <ProductDetails product={product} />
             <section className="py-16 md:px-8 px-2 text-center flex flex-col gap-8">
