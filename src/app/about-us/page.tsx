@@ -12,13 +12,13 @@ const AboutUs = () => {
         <h1 className="font-amandine text-3xl font-bold">About us</h1>
         <div className="flex flex-col lg:flex-row items-center justify-evenly gap-5 w-3/4">
           <div className="lg:w-1/2 w-full flex justify-center">
-            <Image
+            {/* <Image
               width={400}
               height={400}
               src={img}
               alt="about-us-img"
               priority
-            />
+            /> */}
           </div>
 
           <div className="lg:w-1/2 w-full text-left h-full self-start">
