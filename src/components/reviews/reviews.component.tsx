@@ -1,3 +1,5 @@
+'use client'
+
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import ReviewCard, { IReview } from "./ReviewCard";
@@ -5,7 +7,7 @@ import ReviewCard, { IReview } from "./ReviewCard";
 const ReviewsComponent = () => {
   const { t, i18n } = useTranslation();
   const [isRTL, setIsRTL] = useState(false);
-  
+
   // Detect if current language is RTL
   useEffect(() => {
     setIsRTL(i18n.language === 'he');
@@ -30,7 +32,7 @@ const ReviewsComponent = () => {
   ];
 
   return (
-    <div 
+    <div
       className="pt-6 pb-3 px-6 text-center"
       style={{ backgroundColor: "#F5F3EFCC" }}
       dir={isRTL ? 'rtl' : 'ltr'}

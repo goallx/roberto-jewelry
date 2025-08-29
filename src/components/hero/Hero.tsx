@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
@@ -6,14 +8,14 @@ import { useEffect, useState } from 'react';
 const Hero = () => {
   const { t, i18n } = useTranslation();
   const [isRTL, setIsRTL] = useState(false);
-  
+
   // Detect if current language is RTL
   useEffect(() => {
     setIsRTL(i18n.language === 'he');
   }, [i18n.language]);
-  
+
   return (
-    <header 
+    <header
       className={`relative w-full h-[600px] md:h-[650px] pt-16 md:pt-20 ${isRTL ? 'rtl' : ''}`}
       dir={isRTL ? 'rtl' : 'ltr'}
     >
@@ -27,21 +29,19 @@ const Hero = () => {
       />
 
       {/* Gradient Overlay - Adjust direction based on language */}
-      <div 
-        className={`absolute inset-0 z-10 ${
-          isRTL 
-            ? 'bg-gradient-to-l from-[#F8F8F6] via-[#F8F8F6]/50 to-transparent' 
+      <div
+        className={`absolute inset-0 z-10 ${isRTL
+            ? 'bg-gradient-to-l from-[#F8F8F6] via-[#F8F8F6]/50 to-transparent'
             : 'bg-gradient-to-r from-[#F8F8F6] via-[#F8F8F6]/50 to-transparent'
-        }`} 
+          }`}
       />
 
       {/* Content - Adjust positioning based on language */}
-      <div 
-        className={`relative z-20 flex flex-col justify-center h-full px-6 md:px-16 max-w-4xl ${
-          isRTL 
-            ? 'mr-auto md:mr-[15%] text-right' 
+      <div
+        className={`relative z-20 flex flex-col justify-center h-full px-6 md:px-16 max-w-4xl ${isRTL
+            ? 'mr-auto md:mr-[15%] text-right'
             : 'ml-auto md:ml-[15%] text-left'
-        }`}
+          }`}
       >
         <h1 className="text-5xl md:text-6xl leading-tight text-black">
           <span className="block font-geist font-semibold">
@@ -61,12 +61,12 @@ const Hero = () => {
           <Link href="/collections">
             <button className="bg-[#b16339] text-white text-sm px-10 py-1 rounded-none shadow flex items-center gap-2 font-geist font-semibold tracking-wide hover:bg-[#5a2f1a] transition-colors">
               {t('hero.button1')}
-              <Image 
-                src="/icons/arrow.png" 
-                alt={t('common.ariaLabels.arrowIcon')} 
-                width={16} 
-                height={16} 
-                className="w-4 h-4" 
+              <Image
+                src="/icons/arrow.png"
+                alt={t('common.ariaLabels.arrowIcon')}
+                width={16}
+                height={16}
+                className="w-4 h-4"
               />
             </button>
           </Link>
