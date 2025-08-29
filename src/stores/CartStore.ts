@@ -1,17 +1,19 @@
 import { makeAutoObservable } from "mobx";
-import { calculateCartItems } from "./helpers";
+import { supabase } from "@/lib/supabaseClient"; // your client-side supabase instance
 import { IProduct } from "./ProductStore";
 
 export interface ICartItem {
+  id: string;
   product: IProduct;
-  productId?: string;
+  product_id: string;
   quantity: number;
-  _id: string;
+  price: number;
 }
 
 export interface ICart {
-  _id: string;
-  userId: string;
+  id: string;
+  user_id: string;
+  status: string;
   items: Array<ICartItem>;
 }
 
@@ -39,7 +41,7 @@ export class CartStore {
     if (this.cart) {
       const totalPrice =
         this.cart?.items?.reduce(
-          (sum, item) => sum + item.product.price * item.quantity,
+          (sum, item) => sum + item.price * item.quantity,
           0
         ) || 0;
       this.totalPrice = totalPrice;
@@ -49,92 +51,163 @@ export class CartStore {
     return;
   }
 
+  /**
+   * Fetch the current user's active cart with items
+   */
   async fetchUserCart(): Promise<ICart | null> {
     this.isLoading = true;
     try {
-      const response = await fetch("/api/cart", {
-        method: "GET",
-        credentials: "include",
-      });
-      const data = await response.json();
-      if (response.ok) {
-        if (Object.entries(data.cart).length) {
-          this.cart = data.cart;
-          this.numOfCartItems = calculateCartItems(data.cart);
-          this.calculateTotalPrice();
-        } else {
-          this.cart = null;
-        }
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) throw new Error("User not authenticated");
+
+      const { data: cart, error: cartError } = await supabase
+        .from("carts")
+        .select(
+          "id, user_id, status, cart_items(id, product_id, quantity, price, products(*))"
+        )
+        .eq("user_id", user.id)
+        .eq("status", "active")
+        .single();
+
+      if (cartError && cartError.code !== "PGRST116") throw cartError; // ignore "no rows found"
+
+      if (cart) {
+        this.cart = {
+          id: cart.id,
+          user_id: cart.user_id,
+          status: cart.status,
+          items: cart.cart_items.map((ci: any) => ({
+            id: ci.id,
+            product_id: ci.product_id,
+            quantity: ci.quantity,
+            price: ci.price,
+            product: ci.products,
+          })),
+        };
+        this.numOfCartItems = this.cart.items.reduce(
+          (acc, i) => acc + i.quantity,
+          0
+        );
+        this.calculateTotalPrice();
+      } else {
+        this.clearCart();
       }
+
       return this.cart;
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return null;
     } finally {
       this.isLoading = false;
     }
   }
 
+  /**
+   * Add product to cart (or increase quantity if exists)
+   */
   async addToCart(productId: string) {
     try {
-      const response = await fetch("/api/cart", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ productId }),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        this.cart = data.cart;
-        this.updateNumOfCartItems(1);
-        this.calculateTotalPrice();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) throw new Error("User not authenticated");
+
+      // Ensure user has an active cart
+      let { data: cart } = await supabase
+        .from("carts")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("status", "active")
+        .single();
+
+      if (!cart) {
+        const { data: newCart, error: createError } = await supabase
+          .from("carts")
+          .insert({ user_id: user.id })
+          .select()
+          .single();
+        if (createError) throw createError;
+        cart = newCart;
       }
+
+      // Check if product already in cart
+      const { data: existingItem } = await supabase
+        .from("cart_items")
+        .select("id, quantity")
+        .eq("cart_id", cart?.id)
+        .eq("product_id", productId)
+        .maybeSingle();
+
+      if (existingItem) {
+        await supabase
+          .from("cart_items")
+          .update({ quantity: existingItem.quantity + 1 })
+          .eq("id", existingItem.id);
+      } else {
+        // Fetch product price snapshot
+        const { data: product } = await supabase
+          .from("products")
+          .select("price")
+          .eq("id", productId)
+          .single();
+
+        await supabase.from("cart_items").insert({
+          cart_id: cart?.id,
+          product_id: productId,
+          quantity: 1,
+          price: product?.price ?? 0,
+        });
+      }
+
+      await this.fetchUserCart();
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 
+  /**
+   * Decrease quantity of a product (or remove if quantity=1)
+   */
   async deleteProductQuantity(productId: string) {
     try {
-      const response = await fetch("/api/cart", {
-        method: "DELETE",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ productId }),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        this.cart = data.cart;
-        this.updateNumOfCartItems(-1);
-        this.calculateTotalPrice();
+      if (!this.cart) return;
+
+      const item = this.cart.items.find((i) => i.product_id === productId);
+      if (!item) return;
+
+      if (item.quantity > 1) {
+        await supabase
+          .from("cart_items")
+          .update({ quantity: item.quantity - 1 })
+          .eq("id", item.id);
+      } else {
+        await supabase.from("cart_items").delete().eq("id", item.id);
       }
+
+      await this.fetchUserCart();
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 
+  /**
+   * Remove product entirely from cart
+   */
   async deleteProductFromCart(productId: string) {
     try {
-      const response = await fetch("/api/cart/delete", {
-        method: "DELETE",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ productId }),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        this.cart = data.cart;
-        this.numOfCartItems = calculateCartItems(data.cart);
-        this.calculateTotalPrice();
-      }
+      if (!this.cart) return;
+      const item = this.cart.items.find((i) => i.product_id === productId);
+      if (!item) return;
+
+      await supabase.from("cart_items").delete().eq("id", item.id);
+
+      await this.fetchUserCart();
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 }
