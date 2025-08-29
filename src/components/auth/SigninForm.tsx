@@ -4,6 +4,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useEffect, useRef, useState } from 'react';
 import { Loader } from '../loader/Loader';
 import { useAlert } from '@/context/AlertsContext';
+import { useTranslation } from 'react-i18next';
 
 export interface ILoginUser {
     email: string,
@@ -11,6 +12,7 @@ export interface ILoginUser {
 }
 
 const SigninForm = () => {
+    const { t } = useTranslation();
     const { setShowSignin, login } = useAuth()
     const [formData, setFormData] = useState<ILoginUser>({ email: "", password: "" })
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -41,13 +43,13 @@ const SigninForm = () => {
             });
 
             if (response.ok) {
-                showAlert('Verification code resent successfully.', 'success');
+                showAlert(t('signinForm.errors.codeResent'), 'success');
             } else {
                 const errorData = await response.json();
-                setErrors(errorData.message || 'Failed to resend verification code.');
+                setErrors(errorData.message || t('signinForm.errors.failedToResend'));
             }
         } catch (error) {
-            setErrors('Failed to resend verification code.');
+            setErrors(t('signinForm.errors.failedToResend'));
         } finally {
             setIsLoading(false);
         }
@@ -67,10 +69,10 @@ const SigninForm = () => {
                 setShowVerifyPage(false)
             } else {
                 const errorData = await response.json();
-                setErrors(errorData.message || 'Invalid verification code.');
+                setErrors(errorData.message || t('signinForm.errors.invalidCode'));
             }
         } catch (error) {
-            setErrors('Failed to verify code.');
+            setErrors(t('signinForm.errors.failedToVerify'));
         } finally {
             setIsLoading(false);
         }
@@ -93,15 +95,15 @@ const SigninForm = () => {
     if (showVerifyPage) {
         return (
             <div className="flex flex-col items-center justify-evenly gap-2 h-[300px]">
-                <h2 className="font-amandine text-2xl mb-4">Verification Code</h2>
-                <p className='font-light'>Your email isn't verified yet!</p>
-                <p className='font-light text-center'>A verification code has been sent to your email {formData.email}</p>
+                <h2 className="font-amandine text-2xl mb-4">{t('signinForm.verificationCode')}</h2>
+                <p className='font-light'>{t('signinForm.emailNotVerified')}</p>
+                <p className='font-light text-center'>{t('signinForm.codeSent', { email: formData.email })}</p>
                 <input
                     type="text"
                     value={verificationCode}
                     onChange={(e) => setVerificationCode(e.target.value)}
                     className="w-full p-2 mb-4 border"
-                    placeholder="Enter verification code"
+                    placeholder={t('signinForm.enterVerificationCode')}
                     required
                 />
                 <button
@@ -110,7 +112,7 @@ const SigninForm = () => {
                     className="w-full p-2 bg-black text-white flex justify-center items-center"
                     disabled={isLoading}
                 >
-                    {isLoading ? <Loader /> : "Verify Code"}
+                    {isLoading ? <Loader /> : t('signinForm.verifyCode')}
                 </button>
                 <button
                     type="button"
@@ -118,7 +120,7 @@ const SigninForm = () => {
                     className="text-gray-500 flex justify-center items-center"
                     disabled={isLoading}
                 >
-                    {isLoading ? <Loader /> : "Resend Code"}
+                    {isLoading ? <Loader /> : t('signinForm.resendCode')}
                 </button>
             </div>
         )
@@ -126,10 +128,10 @@ const SigninForm = () => {
 
     return (
         <form className="flex flex-col gap-3 text-center py-2" onSubmit={handleSubmit}>
-            <h2 className="font-amandine text-2xl mb-4">Sign In</h2>
+            <h2 className="font-amandine text-2xl mb-4">{t('signinForm.signIn')}</h2>
             {errors && <p className="text-sm text-red-500">{errors}</p>}
             <div className="flex flex-col items-start gap-2">
-                <label>Email</label>
+                <label>{t('signinForm.email')}</label>
                 <input
                     ref={inputRef}
                     type="email"
@@ -141,7 +143,7 @@ const SigninForm = () => {
                 />
             </div>
             <div className="flex flex-col items-start gap-2 text-base">
-                <label>Password</label>
+                <label>{t('signinForm.password')}</label>
                 <input
                     type="password"
                     value={formData.password}
@@ -151,17 +153,18 @@ const SigninForm = () => {
                     required
                 />
             </div>
-            <a onClick={() => setShowSignin(false)} className="font-light text-sm m-1 cursor-pointer hover:text-blue-800">Don't have an account? Sign up</a>
+            <a onClick={() => setShowSignin(false)} className="font-light text-sm m-1 cursor-pointer hover:text-blue-800">
+                {t('signinForm.dontHaveAccount')}
+            </a>
             <button type="submit" className="w-full p-2 bg-black text-white flex justify-center" >
                 {
                     isLoading ?
                         <Loader />
                         :
-                        "Sign In"
+                        t('signinForm.signIn')
                 }
             </button>
         </form>
-
     );
 };
 

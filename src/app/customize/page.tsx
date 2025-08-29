@@ -13,6 +13,8 @@ import type { UploadFile, UploadProps } from 'antd';
 import UploadsManager from '@/utils/UploadsManager';
 import type { UploadedImagesResponse } from '../api/uploads/images/manager';
 import type { Customise } from '@/models/customise';
+import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
 
 const COLORS = {
   text: '#141414',
@@ -24,13 +26,15 @@ const COLORS = {
 };
 
 const BUDGETS = [
-  { key: 'u500', label: 'Under $500', min: 0, max: 500 },
-  { key: '500-2000', label: '$500 – $2,000', min: 500, max: 2000 },
-  { key: '2k-5k', label: '$2,000 – $5,000', min: 2000, max: 5000 },
-  { key: '5k+', label: '$5,000+', min: 5000, max: 999999 },
+  { key: 'u500', labelKey: 'customizePage.budgetOptions.u500', min: 0, max: 500 },
+  { key: '500-2000', labelKey: 'customizePage.budgetOptions.500-2000', min: 500, max: 2000 },
+  { key: '2k-5k', labelKey: 'customizePage.budgetOptions.2k-5k', min: 2000, max: 5000 },
+  { key: '5k+', labelKey: 'customizePage.budgetOptions.5k+', min: 5000, max: 999999 },
 ];
 
-function StepItem({ step, title, desc }: { step: number; title: string; desc: string }) {
+function StepItem({ step, titleKey, descKey }: { step: number; titleKey: string; descKey: string }) {
+  const { t } = useTranslation();
+  
   return (
     <li className="flex gap-4 items-start">
       <span
@@ -41,17 +45,19 @@ function StepItem({ step, title, desc }: { step: number; title: string; desc: st
       </span>
       <div>
         <p className="font-semibold text-base font-[Amandine]" style={{ color: COLORS.text }}>
-          {title}
+          {t(titleKey)}
         </p>
         <p className="text-sm" style={{ color: COLORS.muted }}>
-          {desc}
+          {t(descKey)}
         </p>
       </div>
     </li>
   );
 }
 
-function WhyItem({ title, desc }: { title: string; desc: string }) {
+function WhyItem({ titleKey, descKey }: { titleKey: string; descKey: string }) {
+  const { t } = useTranslation();
+  
   return (
     <li className="flex gap-3 items-start">
       <span
@@ -62,10 +68,10 @@ function WhyItem({ title, desc }: { title: string; desc: string }) {
       </span>
       <div>
         <p className="font-semibold text-base font-[Amandine]" style={{ color: COLORS.text }}>
-          {title}
+          {t(titleKey)}
         </p>
         <p className="text-sm" style={{ color: COLORS.muted }}>
-          {desc}
+          {t(descKey)}
         </p>
       </div>
     </li>
@@ -73,6 +79,7 @@ function WhyItem({ title, desc }: { title: string; desc: string }) {
 }
 
 export default function CustomizePage() {
+  const { t, i18n } = useTranslation();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -83,6 +90,11 @@ export default function CustomizePage() {
   const [uploadedImages, setUploadedImages] = useState<UploadedImagesResponse[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Set document direction based on language
+  useEffect(() => {
+    document.documentElement.dir = i18n.language === 'he' ? 'rtl' : 'ltr';
+  }, [i18n.language]);
 
   const uploadProps = useMemo<UploadProps>(
     () => ({
@@ -124,12 +136,12 @@ export default function CustomizePage() {
     setLoading(true);
 
     const extra = [
-      fullName ? `Full Name: ${fullName}` : '',
-      email ? `Email: ${email}` : '',
-      phone ? `Phone: ${phone}` : '',
-      designDesc ? `Design Description: ${designDesc}` : '',
-      additionalNotes ? `Additional Notes: ${additionalNotes}` : '',
-      budgetKey ? `Budget: ${BUDGETS.find((b) => b.key === budgetKey)?.label}` : '',
+      fullName ? `${t('customizePage.fullName')}: ${fullName}` : '',
+      email ? `${t('email')}: ${email}` : '',
+      phone ? `${t('customizePage.phone')}: ${phone}` : '',
+      designDesc ? `${t('customizePage.designDescription')}: ${designDesc}` : '',
+      additionalNotes ? `${t('customizePage.additionalNotes')}: ${additionalNotes}` : '',
+      budgetKey ? `${t('customizePage.budget')}: ${t(BUDGETS.find((b) => b.key === budgetKey)?.labelKey || '')}` : '',
     ]
       .filter(Boolean)
       .join('\n');
@@ -146,9 +158,9 @@ export default function CustomizePage() {
         credentials: 'include',
         body: JSON.stringify(body),
       });
-      if (!res.ok) setError('Something went wrong, please try again!');
+      if (!res.ok) setError(t('customizePage.errorMessage'));
     } catch (e: any) {
-      setError(e?.message || 'Network error');
+      setError(e?.message || t('customizePage.networkError'));
     } finally {
       setLoading(false);
     }
@@ -157,10 +169,10 @@ export default function CustomizePage() {
   return (
     <>
       <Head>
-        <title>Customize | Roberto Jewelry</title>
+        <title>{t('customizePage.pageTitle')}</title>
       </Head>
 
-      <div className="min-h-screen pb-24 pt-28" style={{ background: COLORS.page }}>
+      <div className="min-h-screen pb-24 pt-28" style={{ background: COLORS.page }} dir={i18n.language === 'he' ? 'rtl' : 'ltr'}>
         <div className="max-w-6xl mx-auto px-6 pt-8">
           <Breadcrumb />
         </div>
@@ -172,16 +184,16 @@ export default function CustomizePage() {
             style={{ background: COLORS.surface, borderColor: '#ececec' }}
           >
             <h2 className="text-2xl font-bold mb-1 font-[Amandine]" style={{ color: COLORS.text }}>
-              Start Your Design
+              {t('customizePage.startDesign')}
             </h2>
             <p className="text-sm mb-5" style={{ color: COLORS.muted }}>
-              Tell us about your vision and upload any inspiration images
+              {t('customizePage.visionDescription')}
             </p>
 
             {/* Upload */}
             <div className="mb-6">
               <h3 className="text-sm font-semibold mb-2" style={{ color: COLORS.text }}>
-                Upload Reference Images
+                {t('customizePage.uploadReferences')}
               </h3>
               <Dragger
                 {...uploadProps}
@@ -191,16 +203,16 @@ export default function CustomizePage() {
                 <p className="ant-upload-drag-icon">
                   <UploadOutlined style={{ color: '#666666', fontSize: 36 }} />
                 </p>
-                <p className="ant-upload-text">Click or drag files here to upload</p>
+                <p className="ant-upload-text">{t('customizePage.uploadText')}</p>
                 <button
                   type="button"
                   className="mt-3 px-4 py-1 text-sm font-medium"
                   style={{ background: COLORS.accent, color: '#fff' }}
                 >
-                  Choose File
+                  {t('customizePage.chooseFile')}
                 </button>
                 <p className="ant-upload-hint mt-2" style={{ color: COLORS.muted }}>
-                  Support for single or bulk upload.
+                  {t('customizePage.uploadHint')}
                 </p>
               </Dragger>
             </div>
@@ -210,7 +222,7 @@ export default function CustomizePage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm mb-1" style={{ color: COLORS.text }}>
-                    Full Name
+                    {t('customizePage.fullName')}
                   </label>
                   <input
                     type="text"
@@ -223,7 +235,7 @@ export default function CustomizePage() {
 
                 <div>
                   <label className="block text-sm mb-1" style={{ color: COLORS.text }}>
-                    Email
+                    {t('email')}
                   </label>
                   <input
                     type="email"
@@ -237,7 +249,7 @@ export default function CustomizePage() {
 
               <div>
                 <label className="block text-sm mb-1" style={{ color: COLORS.text }}>
-                  Phone
+                  {t('customizePage.phone')}
                 </label>
                 <input
                   type="tel"
@@ -250,7 +262,7 @@ export default function CustomizePage() {
 
               <div>
                 <label className="block text-sm mb-1" style={{ color: COLORS.text }}>
-                  Design Description
+                  {t('customizePage.designDescription')}
                 </label>
                 <textarea
                   value={designDesc}
@@ -262,7 +274,7 @@ export default function CustomizePage() {
 
               <div>
                 <label className="block text-sm mb-1" style={{ color: COLORS.text }}>
-                  Budget
+                  {t('customizePage.budget')}
                 </label>
                 <select
                   value={budgetKey}
@@ -270,10 +282,10 @@ export default function CustomizePage() {
                   className="w-full border px-3 py-2"
                   style={{ borderColor: '#dcdcdc', background: COLORS.subtle }}
                 >
-                  <option value="">Select Budget</option>
+                  <option value="">{t('customizePage.selectBudget')}</option>
                   {BUDGETS.map((b) => (
                     <option key={b.key} value={b.key}>
-                      {b.label}
+                      {t(b.labelKey)}
                     </option>
                   ))}
                 </select>
@@ -290,7 +302,7 @@ export default function CustomizePage() {
                   background: 'linear-gradient(90deg, #F29D38 0%, #F27405 100%)',
                 }}
               >
-                {loading ? 'Submitting...' : <><img src="/icons/star.png" alt="Star" className="w-4 h-4" /> Start Your Design Journey</>}
+                {loading ? t('customizePage.submitting') : <><img src="/icons/star.png" alt={t('common.ariaLabels.starIcon')} className="w-4 h-4" /> {t('customizePage.submitButton')}</>}
               </button>
               {error ? (
                 <p className="mt-3 text-sm" style={{ color: '#b00020' }}>
@@ -308,12 +320,12 @@ export default function CustomizePage() {
               style={{ background: COLORS.surface, borderColor: '#ececec' }}
             >
               <h3 className="text-lg font-bold mb-4 tracking-wide font-[Amandine]" style={{ color: COLORS.text }}>
-                How It Works
+                {t('customizePage.howItWorks')}
               </h3>
               <ul className="space-y-4">
-                <StepItem step={1} title="Share Your Vision" desc="Upload reference images and describe your dream piece." />
-                <StepItem step={2} title="Collaborate & Refine" desc="Work with our master craftsman to perfect the design." />
-                <StepItem step={3} title="Handcrafted Excellence" desc="Watch your custom piece come to life with premium materials." />
+                <StepItem step={1} titleKey="customizePage.step1.title" descKey="customizePage.step1.description" />
+                <StepItem step={2} titleKey="customizePage.step2.title" descKey="customizePage.step2.description" />
+                <StepItem step={3} titleKey="customizePage.step3.title" descKey="customizePage.step3.description" />
               </ul>
             </div>
 
@@ -323,13 +335,13 @@ export default function CustomizePage() {
               style={{ background: COLORS.surface, borderColor: '#ececec' }}
             >
               <h3 className="text-lg font-bold mb-4 tracking-wide font-[Amandine]" style={{ color: COLORS.text }}>
-                Why Choose Custom?
+                {t('customizePage.whyCustom')}
               </h3>
               <ul className="space-y-3">
-                <WhyItem title="Unique Design" desc="One-of-a-kind piece crafted exclusively for you." />
-                <WhyItem title="Premium Materials" desc="Only the finest carefully sourced materials." />
-                <WhyItem title="Master Craftsmanship" desc="Handcrafted by skilled artisans." />
-                <WhyItem title="Lifetime Warranty" desc="Guaranteed craftsmanship for life." />
+                <WhyItem titleKey="customizePage.reason1.title" descKey="customizePage.reason1.description" />
+                <WhyItem titleKey="customizePage.reason2.title" descKey="customizePage.reason2.description" />
+                <WhyItem titleKey="customizePage.reason3.title" descKey="customizePage.reason3.description" />
+                <WhyItem titleKey="customizePage.reason4.title" descKey="customizePage.reason4.description" />
               </ul>
             </div>
 
@@ -339,10 +351,10 @@ export default function CustomizePage() {
               style={{ background: COLORS.surface, borderColor: '#ececec' }}
             >
               <h3 className="flex items-center gap-2 text-lg font-bold mb-2 tracking-wide font-[Amandine]" style={{ color: COLORS.text }}>
-                <MessageOutlined style={{ color: COLORS.accent }} /> Need Help?
+                <MessageOutlined style={{ color: COLORS.accent }} /> {t('customizePage.needHelp')}
               </h3>
               <p className="text-sm mb-4" style={{ color: COLORS.muted }}>
-                Talk to our designer — schedule a consultation call.
+                {t('customizePage.consultationText')}
               </p>
               <button
                 className="w-full border px-4 py-4 font-medium transition"
@@ -352,7 +364,7 @@ export default function CustomizePage() {
                   color: COLORS.text,
                 }}
               >
-                Book Consultation
+                {t('customizePage.bookConsultation')}
               </button>
             </div>
           </section>

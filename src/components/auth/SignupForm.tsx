@@ -5,6 +5,7 @@ import { signUpSchema } from '@/utils/validate';
 import { useState } from 'react';
 import { Loader } from '../loader/Loader';
 import { useAlert } from '@/context/AlertsContext';
+import { useTranslation } from 'react-i18next';
 
 export interface INewUser {
     firstName: string;
@@ -31,6 +32,7 @@ const initUser = {
 }
 
 const SignUpForm = () => {
+    const { t } = useTranslation();
     const { signup, login, setShowSignin } = useAuth();
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [loading, setLoading] = useState<boolean>(false);
@@ -86,10 +88,10 @@ const SignUpForm = () => {
                 setIsCodeSent(false)
             } else {
                 const errorData = await response.json();
-                setErrors({ verificationCode: errorData.message || 'Invalid verification code.' });
+                setErrors({ verificationCode: errorData.message || t('signUpForm.errors.invalidCode') });
             }
         } catch (error) {
-            setErrors({ verificationCode: 'Failed to verify code.' });
+            setErrors({ verificationCode: t('signUpForm.errors.failedToVerify') });
         } finally {
             setIsVerifying(false);
         }
@@ -105,13 +107,13 @@ const SignUpForm = () => {
             });
 
             if (response.ok) {
-                showAlert('Verification code resent successfully.', 'success');
+                showAlert(t('signUpForm.errors.codeResent'), 'success');
             } else {
                 const errorData = await response.json();
-                setErrors({ email: errorData.message || 'Failed to resend verification code.' });
+                setErrors({ email: errorData.message || t('signUpForm.errors.failedToResend') });
             }
         } catch (error) {
-            setErrors({ email: 'Failed to resend verification code.' });
+            setErrors({ email: t('signUpForm.errors.failedToResend') });
         } finally {
             setLoading(false);
         }
@@ -120,14 +122,14 @@ const SignUpForm = () => {
     if (isCodeSent) {
         return (
             <div className="flex flex-col items-center justify-evenly gap-2 h-[300px]">
-                <h2 className="font-amandine text-2xl mb-4">Verification Code</h2>
-                <p className='font-light'>You have recieved a verification code to {formData.email}</p>
+                <h2 className="font-amandine text-2xl mb-4">{t('signUpForm.verificationCode')}</h2>
+                <p className='font-light'>{t('signUpForm.verificationSent', { email: formData.email })}</p>
                 <input
                     type="text"
                     value={verificationCode}
                     onChange={(e) => setVerificationCode(e.target.value)}
                     className="w-full p-2 mb-4 border text-base"
-                    placeholder="Enter verification code"
+                    placeholder={t('signUpForm.enterVerificationCode')}
                     required
                 />
                 <button
@@ -136,7 +138,7 @@ const SignUpForm = () => {
                     className="w-full p-2 bg-black text-white flex justify-center items-center"
                     disabled={isVerifying}
                 >
-                    {isVerifying ? <Loader /> : "Verify Code"}
+                    {isVerifying ? <Loader /> : t('signUpForm.verifyCode')}
                 </button>
                 <button
                     type="button"
@@ -144,7 +146,7 @@ const SignUpForm = () => {
                     className="text-gray-500 flex justify-center items-center"
                     disabled={loading}
                 >
-                    {loading ? <Loader /> : "Resend Code"}
+                    {loading ? <Loader /> : t('signUpForm.resendCode')}
                 </button>
             </div>
         )
@@ -152,13 +154,13 @@ const SignUpForm = () => {
 
     return (
         <form className="flex flex-col gap-3 text-center py-2" onSubmit={handleSubmit}>
-            <h2 className="font-amandine text-2xl mb-4">Sign Up</h2>
+            <h2 className="font-amandine text-2xl mb-4">{t('signUpForm.signUp')}</h2>
             {Object.entries(errors).map(([key, value]) => (
                 <p key={key} className='text-sm text-red-600'>{value}</p>
             ))}
             <div className='flex justify-between gap-5'>
                 <div className="flex flex-col items-start gap-2 w-1/2">
-                    <label>First Name</label>
+                    <label>{t('signUpForm.firstName')}</label>
                     <input
                         type="text"
                         value={formData.firstName}
@@ -169,7 +171,7 @@ const SignUpForm = () => {
                     />
                 </div>
                 <div className="flex flex-col items-start gap-2 w-1/2">
-                    <label>Last Name</label>
+                    <label>{t('signUpForm.lastName')}</label>
                     <input
                         type="text"
                         name="lastName"
@@ -181,7 +183,7 @@ const SignUpForm = () => {
                 </div>
             </div>
             <div className="flex flex-col items-start gap-2">
-                <label>Email</label>
+                <label>{t('signUpForm.email')}</label>
                 <input
                     type="email"
                     name="email"
@@ -192,7 +194,7 @@ const SignUpForm = () => {
                 />
             </div>
             <div className="flex flex-col items-start gap-2">
-                <label>Phone number</label>
+                <label>{t('signUpForm.phoneNumber')}</label>
                 <input
                     className="w-full p-2 mb-4 border text-base"
                     name='phoneNumber'
@@ -201,7 +203,7 @@ const SignUpForm = () => {
                 />
             </div>
             <div className="flex flex-col items-start gap-2">
-                <label>Password</label>
+                <label>{t('signUpForm.password')}</label>
                 <input
                     type="password"
                     name="password"
@@ -212,7 +214,7 @@ const SignUpForm = () => {
                 />
             </div>
             <div className="flex flex-col items-start gap-2">
-                <label>Password Confirmation</label>
+                <label>{t('signUpForm.passwordConfirmation')}</label>
                 <input
                     type="password"
                     name="confirmPassword"
@@ -223,22 +225,22 @@ const SignUpForm = () => {
                 />
             </div>
             <div className='flex flex-col gap-5 items-start'>
-                <label>Date of Birth</label>
+                <label>{t('signUpForm.dateOfBirth')}</label>
                 <div className='flex justify-between gap-3'>
                     <input
-                        placeholder='Day'
+                        placeholder={t('signUpForm.day')}
                         onChange={(e) => setFormData((prev) => ({ ...prev, birthday: { ...prev.birthday, day: e.target.value } }))}
                         className="w-full p-2 mb-4 border text-base"
                         required
                     />
                     <input
-                        placeholder='Month'
+                        placeholder={t('signUpForm.month')}
                         onChange={(e) => setFormData((prev) => ({ ...prev, birthday: { ...prev.birthday, month: e.target.value } }))}
                         className="w-full p-2 mb-4 border text-base"
                         required
                     />
                     <input
-                        placeholder='Year'
+                        placeholder={t('signUpForm.year')}
                         onChange={(e) => setFormData((prev) => ({ ...prev, birthday: { ...prev.birthday, year: e.target.value } }))}
                         className="w-full p-2 mb-4 border text-base"
                         required
@@ -247,12 +249,13 @@ const SignUpForm = () => {
             </div>
 
             <button type="submit" className="w-full p-2 bg-black text-white flex justify-center items-center" disabled={isCodeSent || loading}>
-                {loading ? <Loader /> : "Submit"}
+                {loading ? <Loader /> : t('signUpForm.submit')}
             </button>
-            <a onClick={() => setShowSignin(true)} className="font-light text-sm m-1 cursor-pointer hover:text-blue-800">Already have an account? Sign in</a>
+            <a onClick={() => setShowSignin(true)} className="font-light text-sm m-1 cursor-pointer hover:text-blue-800">
+                {t('signUpForm.alreadyHaveAccount')}
+            </a>
         </form>
     );
 };
-
 
 export default SignUpForm;

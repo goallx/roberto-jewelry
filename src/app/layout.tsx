@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+
 import Navbar from "@/components/nav-bar/Navbar";
 import Footer from "@/components/footer/Footer";
 import { AuthProvider } from "@/context/AuthContext";
@@ -12,12 +13,14 @@ import AppLoader from "@/components/loader/AppLoader";
 import { AlertProvider } from "@/context/AlertsContext";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
+import { LanguageProvider } from "@/context/LanguageProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
 });
+
 const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
@@ -35,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Amandine&display=swap"
@@ -71,22 +74,25 @@ export default function RootLayout({
         />
       </head>
       <body className="flex flex-col min-h-screen font-sans">
-        <SpeedInsights />
-        <Analytics />
-        <LoaderProvider>
-          <AuthProvider>
-            <StoreProvider>
-              <AlertProvider>
-                <Suspense fallback={<AppLoader />}>
-                  <Navbar />
-                  <AuthComponent />
-                  <main className="flex-1 bg-gray-100">{children}</main>
-                  <Footer />
-                </Suspense>
-              </AlertProvider>
-            </StoreProvider>
-          </AuthProvider>
-        </LoaderProvider>
+        <LanguageProvider>
+          <SpeedInsights />
+          <Analytics />
+          <LoaderProvider>
+            <AuthProvider>
+              <StoreProvider>
+                <AlertProvider>
+                  <Suspense fallback={<AppLoader />}>
+                    <Navbar />
+                    <AuthComponent />
+                    <main className="flex-1 bg-gray-100">{children}</main>
+                    <Footer />
+                  </Suspense>
+                </AlertProvider>
+              </StoreProvider>
+            </AuthProvider>
+          </LoaderProvider>
+        </LanguageProvider>
+
         <script
           src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4Wo_pnncMwI6IgtyzasYLP-H6SbW8OpA&loading=async&libraries=places"
           async

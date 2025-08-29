@@ -1,37 +1,45 @@
+import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
 import ReviewCard, { IReview } from "./ReviewCard";
 
-const reviews: IReview[] = [
-  {
-    review:
-      "The most beautiful engagement ring I’ve ever seen. The craftsmanship is absolutely extraordinary.",
-    name: "Sarah Johnson",
-    location: "Beverly Hills, CA",
-  },
-  {
-    review:
-      "Roberto created a custom necklace for my wife's anniversary. The attention to detail was incredible.",
-    name: "Michael Chen",
-    location: "Manhattan, NY",
-  },
-  {
-    review:
-      "Outstanding service and quality. My custom earrings exceeded all expectations.",
-    name: "Emily Rodriguez",
-    location: "Miami, FL",
-  },
-];
-
 const ReviewsComponent = () => {
+  const { t, i18n } = useTranslation();
+  const [isRTL, setIsRTL] = useState(false);
+  
+  // Detect if current language is RTL
+  useEffect(() => {
+    setIsRTL(i18n.language === 'he');
+  }, [i18n.language]);
+
+  const reviews: IReview[] = [
+    {
+      reviewKey: "reviews.review1.text",
+      nameKey: "reviews.review1.name",
+      locationKey: "reviews.review1.location",
+    },
+    {
+      reviewKey: "reviews.review2.text",
+      nameKey: "reviews.review2.name",
+      locationKey: "reviews.review2.location",
+    },
+    {
+      reviewKey: "reviews.review3.text",
+      nameKey: "reviews.review3.name",
+      locationKey: "reviews.review3.location",
+    },
+  ];
+
   return (
     <div 
       className="pt-6 pb-3 px-6 text-center"
       style={{ backgroundColor: "#F5F3EFCC" }}
+      dir={isRTL ? 'rtl' : 'ltr'}
     >
       <h2 className="font-amandine text-3xl font-semibold tracking-wide mb-2">
-        What Our Clients Say
+        {t('reviews.title', 'What Our Clients Say')}
       </h2>
       <p className="text-sm text-gray-600 mb-12">
-        Hear from those who have experienced the Roberto difference.
+        {t('reviews.subtitle', 'Hear from those who have experienced the Roberto difference.')}
       </p>
 
       {/* Review cards section */}

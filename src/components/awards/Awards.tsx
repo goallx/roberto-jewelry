@@ -16,7 +16,7 @@ const awards = [
 const Awards = () => {
   return (
     <motion.section
-      className="py-12 px-4 lg:px-14 bg-[#F5F5F5] text-center flex flex-col gap-5"
+      className="py-12 px-4 lg:px-14 bg-[#F5F5F7] text-center flex flex-col gap-5"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}

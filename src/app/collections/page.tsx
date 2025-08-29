@@ -2,43 +2,51 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
 
-const products = [
-  {
-    title: 'Classic Diamond Ring',
-    price: '$2,500',
-    img: '/image/classic-diamond-ring.jpg',
-  },
-  {
-    title: 'Elegant Gold Necklace',
-    price: '$1,800',
-    img: '/image/classic-gold-necklace.jpg',
-  },
-  {
-    title: 'Tennis Bracelet',
-    price: '$3,200',
-    img: '/image/elegant-tennis-bracelet.jpg',
-  },
-  {
-    title: 'Diamond Stud Earrings',
-    price: '$1,500',
-    img: '/image/diamond-stud-earring.jpg',
-  },
-  {
-    title: 'Vintage Ring Collection',
-    price: '$4,500',
-    oldPrice: '$6,000',
-    img: '/image/classic-diamond-ring.jpg',
-  },
-  {
-    title: 'Pearl Drop Necklace',
-    price: '$2,200',
-    img: '/image/classic-gold-necklace.jpg',
-  },
-];
-
-export default function CollectionPage() {
+const CollectionPage = () => {
+  const { t, i18n } = useTranslation();
   const [wishlist, setWishlist] = useState<number[]>([]);
+
+  // Set document direction based on language
+  useEffect(() => {
+    document.documentElement.dir = i18n.language === 'he' ? 'rtl' : 'ltr';
+  }, [i18n.language]);
+
+  const products = [
+    {
+      titleKey: 'collection.products.classicDiamondRing.title',
+      price: '$2,500',
+      img: '/image/classic-diamond-ring.jpg',
+    },
+    {
+      titleKey: 'collection.products.elegantGoldNecklace.title',
+      price: '$1,800',
+      img: '/image/classic-gold-necklace.jpg',
+    },
+    {
+      titleKey: 'collection.products.tennisBracelet.title',
+      price: '$3,200',
+      img: '/image/elegant-tennis-bracelet.jpg',
+    },
+    {
+      titleKey: 'collection.products.diamondStudEarrings.title',
+      price: '$1,500',
+      img: '/image/diamond-stud-earring.jpg',
+    },
+    {
+      titleKey: 'collection.products.vintageRingCollection.title',
+      price: '$4,500',
+      oldPrice: '$6,000',
+      img: '/image/classic-diamond-ring.jpg',
+    },
+    {
+      titleKey: 'collection.products.pearlDropNecklace.title',
+      price: '$2,200',
+      img: '/image/classic-gold-necklace.jpg',
+    },
+  ];
 
   const toggleWishlist = (index: number) => {
     setWishlist((prev) =>
@@ -57,15 +65,14 @@ export default function CollectionPage() {
   };
 
   return (
-    <div className="bg-[#FAF8F6] min-h-screen">
+    <div className="bg-[#FAF8F6] min-h-screen" dir={i18n.language === 'he' ? 'rtl' : 'ltr'}>
       {/* Page content starts lower to avoid navbar overlap */}
       <div className="px-4 md:px-10 pt-32 pb-20">
         <h1 className="text-3xl md:text-4xl font-amandine font-semibold text-center mb-3">
-          Collection Name
+          {t('collection.title', 'Collection Name')}
         </h1>
         <p className="text-center text-sm text-gray-600 mb-10 max-w-xl mx-auto">
-          Discover our curated selection of handcrafted jewelry, each piece
-          designed to celebrate life's precious moments.
+          {t('collection.description', 'Discover our curated selection of handcrafted jewelry, each piece designed to celebrate life\'s precious moments.')}
         </p>
 
         <div className="flex flex-col md:flex-row gap-10">
@@ -73,34 +80,34 @@ export default function CollectionPage() {
           <div className="md:w-1/5 w-full space-y-6">
             <div className="border p-4 bg-white shadow-sm">
               <div className="flex items-center gap-2 mb-4">
-                <h3 className="font-semibold text-gray-700">Filters</h3>
+                <h3 className="font-semibold text-gray-700">{t('collection.filters', 'Filters')}</h3>
               </div>
 
               <div className="mb-4">
-                <label className="block text-sm font-medium">Category</label>
+                <label className="block text-sm font-medium">{t('collection.category', 'Category')}</label>
                 <select className="w-full border px-2 py-1 mt-1 text-sm">
-                  <option>All Jewelry</option>
+                  <option>{t('collection.allJewelry', 'All Jewelry')}</option>
                 </select>
               </div>
 
               <div className="mb-4">
-                <label className="block text-sm font-medium">Price Range</label>
+                <label className="block text-sm font-medium">{t('collection.priceRange', 'Price Range')}</label>
                 <select className="w-full border px-2 py-1 mt-1 text-sm">
-                  <option>All Prices</option>
+                  <option>{t('collection.allPrices', 'All Prices')}</option>
                 </select>
               </div>
 
               <div>
-                <label className="block text-sm font-medium">Material</label>
+                <label className="block text-sm font-medium">{t('collection.material', 'Material')}</label>
                 <div className="flex flex-col gap-1 mt-1 text-sm">
                   <label>
-                    <input type="checkbox" className="mr-2" /> Gold
+                    <input type="checkbox" className="mr-2" /> {t('collection.gold', 'Gold')}
                   </label>
                   <label>
-                    <input type="checkbox" className="mr-2" /> Silver
+                    <input type="checkbox" className="mr-2" /> {t('collection.silver', 'Silver')}
                   </label>
                   <label>
-                    <input type="checkbox" className="mr-2" /> Platinum
+                    <input type="checkbox" className="mr-2" /> {t('collection.platinum', 'Platinum')}
                   </label>
                 </div>
               </div>
@@ -111,7 +118,7 @@ export default function CollectionPage() {
           <div className="md:w-4/5 w-full">
             <div className="flex justify-between items-center mb-5">
               <p className="text-sm text-gray-600">
-                Showing {products.length} products
+                {t('collection.showingProducts', 'Showing {count} products', { count: products.length })}
               </p>
             </div>
 
@@ -125,7 +132,7 @@ export default function CollectionPage() {
                   <div className="relative w-full h-64">
                     <Image
                       src={product.img}
-                      alt={product.title}
+                      alt={t(product.titleKey)}
                       fill
                       className="object-cover"
                     />
@@ -164,7 +171,7 @@ export default function CollectionPage() {
 
                   <div className="p-4">
                     <h3 className="text-sm font-medium text-gray-900">
-                      {product.title}
+                      {t(product.titleKey)}
                     </h3>
                     <p className="text-orange-600 font-semibold text-sm mt-1">
                       {product.price}{' '}
@@ -183,4 +190,6 @@ export default function CollectionPage() {
       </div>
     </div>
   );
-}
+};
+
+export default CollectionPage;
