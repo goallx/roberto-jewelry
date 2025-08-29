@@ -1,4 +1,4 @@
-// components/awards/Awards.tsx
+
 import Image from "next/image";
 import { motion } from "framer-motion";
 
@@ -13,14 +13,14 @@ const awards = [
   { href: "https://www.worlddesignconsortium.com/partner.php?portfolio=18577100", src: "/image/W.png", width: 80, height: 40 },
 ];
 
-const Awards = () => {
+export const Awards = () => {
   return (
-    <motion.section
+    <section
       className="py-12 px-4 lg:px-14 bg-[#F5F5F5] text-center flex flex-col gap-5"
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 1 }}
+      // initial={{ opacity: 0, y: 50 }}
+      // whileInView={{ opacity: 1, y: 0 }}
+      // viewport={{ once: true }}
+      // transition={{ duration: 1 }}
     >
       <h2 className="font-amandine text-3xl font-bold text-black mb-4">
         Our Awards
@@ -47,8 +47,7 @@ const Awards = () => {
           </a>
         ))}
       </div>
-    </motion.section>
+    </section>
   );
 };
 
-export default Awards;
