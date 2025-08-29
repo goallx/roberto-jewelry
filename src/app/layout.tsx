@@ -1,22 +1,24 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+
 import Navbar from "@/components/nav-bar/Navbar";
 import Footer from "@/components/footer/Footer";
 import { AuthProvider } from "@/context/AuthContext";
 import { StoreProvider } from "@/context/StoreContext";
-import { LoaderProvider } from "@/context/AppLoaderContext";
 import { Suspense } from "react";
 import AppLoader from "@/components/loader/AppLoader";
 import { AlertProvider } from "@/context/AlertsContext";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
+import { LanguageProvider } from "@/context/LanguageProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
 });
+
 const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
@@ -34,7 +36,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Amandine&display=swap"
@@ -47,44 +49,23 @@ export default function RootLayout({
           type="font/otf"
           crossOrigin="anonymous"
         />
-        <link
-          rel="preload"
-          href="https://firebasestorage.googleapis.com/v0/b/general-ebf2c.firebasestorage.app/o/roberto-jewerly%2Fhomepage-header.png?alt=media&token=1e094978-0b99-4bd0-b1de-29b08388bd76"
-          type="image"
-        />
-        <link
-          rel="preload"
-          href="https://firebasestorage.googleapis.com/v0/b/roberto-jewerly.firebasestorage.app/o/videos%2Fheader-video.mp4?alt=media&token=d408d13c-348a-4e34-8cc5-25e11897f8c6"
-          type="video/mp4"
-        />
-        <link
-          rel="preload"
-          href="https://firebasestorage.googleapis.com/v0/b/roberto-jewerly.firebasestorage.app/o/videos%2Fheader-video.mp4"
-          as="video"
-        />
-        <link rel="icon" href="/favicon.png" type="image/png" />
-        <link
-          rel="preload"
-          href="https://firebasestorage.googleapis.com/v0/b/general-ebf2c.firebasestorage.app/o/roberto-jewerly%2Froberto-logo-1.png?alt=media&token=cacc86a9-43aa-4090-99da-9ed54525ee2d"
-          as="image"
-        />
       </head>
       <body className="flex flex-col min-h-screen font-sans">
         <SpeedInsights />
         <Analytics />
-        {/* <LoaderProvider> */}
-        <AuthProvider>
-          <StoreProvider>
-            <AlertProvider>
-              <Suspense fallback={<AppLoader />}>
-                <Navbar />
-                <main className="flex-1 bg-gray-100">{children}</main>
-                <Footer />
-              </Suspense>
-            </AlertProvider>
-          </StoreProvider>
-        </AuthProvider>
-        {/* </LoaderProvider> */}
+        <LanguageProvider>
+          <AuthProvider>
+            <StoreProvider>
+              <AlertProvider>
+                <Suspense fallback={<AppLoader />}>
+                  <Navbar />
+                  <main className="flex-1 bg-gray-100">{children}</main>
+                  <Footer />
+                </Suspense>
+              </AlertProvider>
+            </StoreProvider>
+          </AuthProvider>
+        </LanguageProvider>
         <script
           src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4Wo_pnncMwI6IgtyzasYLP-H6SbW8OpA&loading=async&libraries=places"
           async

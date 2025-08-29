@@ -27,7 +27,7 @@ const Products = observer(() => {
         setLoading(false)
     }, [productStore])
 
-    if (loading || !productStore || !productStore.products) return <Loader />
+    if (loading || !productStore) return <Loader />
 
     const filterProducts = productStore.products?.filter((product: IProduct) => product.name.toLocaleLowerCase().includes(searchQuery)) ?? null
 

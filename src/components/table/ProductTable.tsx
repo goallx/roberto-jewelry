@@ -78,8 +78,8 @@ const ProductRow: React.FC<{ product: IProduct }> = ({ product }) => {
         if (!productStore) productStore = new ProductStore()
         setLoading(true)
         try {
-            await productStore.deleteProduct(product._id)
-            await categoryStore?.updateCategoryNumberOfProducts(product.categoryName, (-product.stock))
+            await productStore.deleteProduct(product.id)
+            await categoryStore?.updateCategoryNumberOfProducts(product.categoryName || "", (-product.stock))
         } catch (err) {
             console.log(err)
         } finally {
@@ -95,7 +95,7 @@ const ProductRow: React.FC<{ product: IProduct }> = ({ product }) => {
     return (
         <tr className="bg-white border-b text-black dark:border-gray-700 hover:bg-gray-100 ">
             <td className="px-6 py-4">
-                {product._id}
+                {product.id}
             </td>
             <th scope="row" className="flex items-center justify-start gap-5 px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                 <BlurImage
@@ -110,7 +110,7 @@ const ProductRow: React.FC<{ product: IProduct }> = ({ product }) => {
                 {product.stock}
             </td>
             <td className="px-6 py-4">
-                {formatDate(product.createdAt ?? "")}
+                {formatDate(product.created_at ?? "")}
             </td>
             <td className="px-6 py-4">
                 {product.price.toLocaleString('en-US')}

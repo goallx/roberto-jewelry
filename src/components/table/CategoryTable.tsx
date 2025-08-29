@@ -6,6 +6,7 @@ import type { PopconfirmProps } from 'antd';
 import { useStores } from '@/context/StoreContext';
 import { useEffect, useState } from 'react';
 import { formatDate } from '@/utils/helpers';
+import { toJS } from 'mobx';
 
 
 interface CategoryTableProps {
@@ -14,8 +15,7 @@ interface CategoryTableProps {
 
 
 export const CategoryTable: React.FC<CategoryTableProps> = ({ categories }) => {
-
-
+    categories = toJS(categories)
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -59,15 +59,16 @@ export const CategoryTable: React.FC<CategoryTableProps> = ({ categories }) => {
 }
 
 const CategoryRow: React.FC<{ category: ICategory & { createdAt?: string } }> = ({ category }) => {
-
     const { categoryStore } = useStores()
     const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<string>("")
 
+    let thumbnail = JSON.parse(category.images as any)
+
     const handleDelete: PopconfirmProps['onConfirm'] = async () => {
         setError("")
         setLoading(true)
-        await categoryStore?.deleteCategory(category._id, (failureMessage) => setError(failureMessage))
+        await categoryStore?.deleteCategory(category.id, (failureMessage) => setError(failureMessage))
         setLoading(false)
     };
 
@@ -89,7 +90,7 @@ const CategoryRow: React.FC<{ category: ICategory & { createdAt?: string } }> = 
             <th scope="row" className="flex items-center justify-start gap-5 px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                 {
                     category.images.length !== 0 &&
-                    <img className="w-10 h-10 rounded-full" src={category.images[0].imgUrl} alt="" />
+                    <img className="w-10 h-10 rounded-full" src={thumbnail.imgUrl} alt="" />
                 }
                 {category.name}
             </th>
@@ -97,7 +98,8 @@ const CategoryRow: React.FC<{ category: ICategory & { createdAt?: string } }> = 
                 {category.numOfProducts ?? 0}
             </td>
             <td className="px-6 py-4">
-                {formatDate(category.createdAt ?? "")}
+                {formatDate(category.created_at
+                    ?? "")}
             </td>
             <td className="px-6 py-4 text-right">
                 {

@@ -1,23 +1,21 @@
 import { UploadedImagesResponse } from "@/app/api/uploads/images/manager";
 import { makeAutoObservable } from "mobx";
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+import { supabase as supabaseClient } from "@/lib/supabaseClient";
 
 export interface ICategory {
   name: string;
-  date?: string;
-  numOfProducts?: number;
   description?: string;
+  numOfProducts?: number;
   images: Array<UploadedImagesResponse>;
-  _id: string;
+  created_at?: string;
+  id: string;
 }
 
 export interface INewCategory {
   name: string;
+  description?: string;
   images?: Array<UploadedImagesResponse>;
 }
-
-export interface IUpdateCategory extends ICategory {}
 
 export class CategoryStore {
   categories: Array<ICategory> | null = null;
@@ -31,87 +29,78 @@ export class CategoryStore {
 
   async updateCategoryNumberOfProducts(categoryName: string, quantity: number) {
     try {
-      if (!this.categories) {
-        await this.fetchCategories();
-      }
+      if (!this.categories) await this.fetchCategories();
 
       const category = this.categories?.find(
-        (cat) => cat.name.toLowerCase() === categoryName?.toLowerCase()
+        (cat) => cat.name.toLowerCase() === categoryName.toLowerCase()
       );
+      if (!category) return;
 
-      if (!category) {
-        console.warn(`Category "${categoryName}" not found.`);
-        return;
-      }
+      const newCount = (category.numOfProducts || 0) + quantity;
 
-      if (typeof category.numOfProducts !== "number") {
-        console.error(
-          `Category "${categoryName}" has an invalid numOfProducts value.`
-        );
-        return;
-      }
+      // Update locally
+      category.numOfProducts = newCount;
 
-      category.numOfProducts = (category.numOfProducts || 0) + quantity;
-    } catch (error) {
-      console.error(
-        `Failed to update category "${categoryName}" with quantity ${quantity}:`,
-        error
-      );
+      // Persist in Supabase
+      const { error } = await supabaseClient
+        .from("categories")
+        .update({ numOfProducts: newCount })
+        .eq("name", categoryName);
+
+      if (error)
+        console.error("Failed to update category count:", error.message);
+    } catch (err) {
+      console.error("Error updating category count:", err);
     }
   }
-
-  async getCategoryByName(catName: string): Promise<ICategory | null> {
-    if (!this.categories) await this.fetchCategories();
-    return (
-      this.categories?.find(
-        (cat) =>
-          cat.name?.toLocaleLowerCase().trim() ===
-          catName?.toLocaleLowerCase().trim()
-      ) || null
-    );
-  }
-
-  async categoryNameById(catId: string): Promise<string> {
-    if (!this.categories) await this.fetchCategories();
-    const categoryName = this.categories?.find(
-      (category: ICategory) => category._id.toString() === catId
-    );
-    return categoryName?.name ?? "";
-  }
-
-  async refetchCategories(): Promise<void> {
-    this.categories = null;
-    await this.fetchCategories();
-    return;
-  }
-
-  async getCategoriesNames(): Promise<string[]> {
-    if (!this.categories) await this.fetchCategories();
-    return this.categories?.map((cat) => cat.name) || [];
-  }
-
+  // -----------------------------
+  // FETCH CATEGORIES
+  // -----------------------------
   async fetchCategories(): Promise<void> {
     this.isLoading = true;
-    if (this.categories) return;
     try {
-      const response = await fetch(`${API_BASE_URL}/api/category`, {
-        method: "GET",
-      });
-      const data = await response.json();
-      if (response.ok) {
-        this.categories = data.categories;
-      } else {
+      const { data, error } = await supabaseClient
+        .from("categories")
+        .select("*");
+      if (error) {
+        console.error("Error fetching categories:", error);
         this.categories = null;
+      } else {
+        this.categories = data;
       }
-      return;
-    } catch (error) {
-      console.error("Error fetching profile:", error);
-      return;
+    } catch (err) {
+      console.error("Unexpected error fetching categories:", err);
+      this.categories = null;
     } finally {
       this.isLoading = false;
     }
   }
 
+  // -----------------------------
+  // GET CATEGORY BY ID OR NAME
+  // -----------------------------
+  async getCategoryById(id: string): Promise<ICategory | null> {
+    if (!this.categories) await this.fetchCategories();
+    return this.categories?.find((c) => c.id === id) || null;
+  }
+
+  async getCategoryByName(name: string): Promise<ICategory | null> {
+    if (!this.categories) await this.fetchCategories();
+    return (
+      this.categories?.find(
+        (c) => c.name.toLowerCase().trim() === name.toLowerCase().trim()
+      ) || null
+    );
+  }
+
+  async getCategoriesNames(): Promise<string[]> {
+    if (!this.categories) await this.fetchCategories();
+    return this.categories?.map((c) => c.name) || [];
+  }
+
+  // -----------------------------
+  // ADD CATEGORY
+  // -----------------------------
   async addCategory(
     newCategory: INewCategory,
     onSuccess: () => void,
@@ -119,96 +108,97 @@ export class CategoryStore {
   ): Promise<void> {
     this.isLoading = true;
     try {
-      const response = await fetch("/api/category/add", {
-        method: "POST",
-        body: JSON.stringify(newCategory),
-        credentials: "include",
-      });
+      const { data, error } = await supabaseClient
+        .from("categories")
+        .insert([newCategory])
+        .select()
+        .single();
 
-      const data = await response.json();
-
-      if (response.ok) {
-        this.categories?.push(data.newCategory);
-        onSuccess();
+      if (error) {
+        console.error("Supabase insert error:", error);
+        onFailure(error.message);
       } else {
-        const errorData = await response.json();
-        onFailure(errorData);
+        if (!this.categories) this.categories = [];
+        this.categories.push(data);
+        onSuccess();
       }
-    } catch (error) {
-      onFailure();
+    } catch (err: any) {
+      console.error("Unexpected error:", err);
+      onFailure(err.message);
     } finally {
       this.isLoading = false;
     }
   }
 
+  // -----------------------------
+  // UPDATE CATEGORY
+  // -----------------------------
   async updateCategory(
-    category: (INewCategory | ICategory) & { imagesToDelete: string[] },
+    category: INewCategory & { id: string },
     onFailure: (msg: string) => void
   ) {
+    this.isLoading = true;
     try {
-      const response = await fetch("/api/category/update", {
-        method: "PUT",
-        body: JSON.stringify(category),
-        credentials: "include",
-        headers: {},
-      });
-      const data = await response.json();
-      if (response.ok) {
-        const { updatedCategory: updatedData } = data;
-        if (!this.categories) {
-          await this.fetchCategories();
-          return;
-        }
-        const index = this.categories?.findIndex(
-          (cat) => cat._id === updatedData._id
-        );
-        if (index > -1) {
-          this.categories[index] = updatedData;
+      const { data, error } = await supabaseClient
+        .from("categories")
+        .update(category)
+        .eq("id", category.id)
+        .select()
+        .single();
+
+      if (error) {
+        console.error("Error updating category:", error);
+        onFailure(error.message);
+      } else {
+        const index = this.categories?.findIndex((c) => c.id === data.id);
+        if (index !== undefined && index > -1 && this.categories) {
+          this.categories[index] = data;
         }
         this.openUpdateCategoryModal = false;
-        return;
-      } else {
-        onFailure("Something went wrong");
       }
     } catch (err: any) {
-      onFailure(err.message || err);
+      console.error("Unexpected error:", err);
+      onFailure(err.message);
+    } finally {
+      this.isLoading = false;
     }
   }
 
+  // -----------------------------
+  // DELETE CATEGORY
+  // -----------------------------
   async deleteCategory(
     categoryId: string,
     onFailure: (message: string) => void
   ): Promise<boolean> {
+    this.isLoading = true;
     try {
-      const response = await fetch(`/api/category/delete?id=${categoryId}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
-      const data = await response.json();
-      if (response.ok) {
-        if (data.status === 204) {
-          if (!this.categories) {
-            await this.fetchCategories();
-            return true;
-          } else {
-            this.categories = this.categories?.filter(
-              (cat: ICategory) => cat._id !== categoryId
-            );
-            return true;
-          }
-        }
+      const { error } = await supabaseClient
+        .from("categories")
+        .delete()
+        .eq("id", categoryId);
+
+      if (error) {
+        console.error("Error deleting category:", error);
+        onFailure(error.message);
         return false;
       } else {
-        console.log("@@here!!");
-        onFailure(data.message ?? "Something went wrong!");
-        return false;
+        this.categories =
+          this.categories?.filter((c) => c.id !== categoryId) || null;
+        return true;
       }
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      console.error("Unexpected error:", err);
+      onFailure(err.message);
       return false;
+    } finally {
+      this.isLoading = false;
     }
   }
 
+  // -----------------------------
+  // SETTERS
+  // -----------------------------
   setCategoryToUpdate(category: ICategory) {
     this.categoryToUpdate = category;
   }

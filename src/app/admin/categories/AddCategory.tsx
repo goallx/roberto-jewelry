@@ -34,7 +34,6 @@ const AddCategory = ({ visible, onClose }: { visible: boolean, onClose: () => vo
         }
 
         const uploadedImages = await UploadsManager.uploadImages(images)
-
         const newCategory: INewCategory = {
             name,
             images: uploadedImages

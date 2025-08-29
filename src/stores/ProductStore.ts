@@ -1,28 +1,28 @@
 import { UploadedImagesResponse } from "@/app/api/uploads/images/manager";
-import { message } from "antd";
 import { makeAutoObservable } from "mobx";
+import { supabase } from "@/lib/supabaseClient";
 
 export interface IProduct {
   name: string;
   category: string;
-  categoryName: string;
+  categoryName?: string;
   material: string;
   price: number;
   description: string;
   stock: number;
-  images: Array<UploadedImagesResponse>;
-  status: string;
-  date: string;
+  images: UploadedImagesResponse[];
+  status?: string;
+  date?: string;
   gender: string;
   size: number;
-  createdAt?: string;
-  _id: string;
+  created_at?: string;
+  id: string;
 }
 
 export interface INewProduct {
   name: string;
   category: string;
-  images: Array<UploadedImagesResponse>;
+  images: UploadedImagesResponse[];
   price: number;
   quantity: number;
   size: number;
@@ -32,8 +32,8 @@ export interface INewProduct {
 }
 
 export class ProductStore {
-  products: Array<IProduct> | null = null;
-  bestSellingProducts: Array<IProduct> = [];
+  products: IProduct[] | null = null;
+  bestSellingProducts: IProduct[] = [];
   productToUpdate: IProduct | null = null;
   openUpdateProductModal: boolean = false;
   isLoading: boolean = false;
@@ -42,139 +42,77 @@ export class ProductStore {
     makeAutoObservable(this);
   }
 
-  async getProductById(productId: string): Promise<IProduct | null> {
+  async fetchProducts(): Promise<void> {
+    this.isLoading = true;
     try {
-      const response = await fetch(`/api/product/${productId}`, {
-        method: "GET",
-        cache: "no-cache",
-      });
-      const data = await response.json();
-      if (response.ok) {
-        const { product } = data;
-        return product;
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .order("createdAt", { ascending: false });
+      console.log("@@products", data);
+      if (error) {
+        console.error("Error fetching products:", error.message);
+        this.products = null;
       } else {
-        return null;
+        this.products = data || [];
       }
     } catch (err) {
+      console.error(err);
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  async fetchProductsByCategory(
+    categoryId: string
+  ): Promise<IProduct[] | null> {
+    this.isLoading = true;
+    try {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .eq("category", categoryId)
+        .order("createdAt", { ascending: false });
+
+      if (error) throw error;
+      this.products = data || [];
+      return data || [];
+    } catch (err) {
+      console.error("Error fetching products by category:", err);
       return null;
+    } finally {
+      this.isLoading = false;
     }
   }
 
   async fetchBestSellingProducts(): Promise<void> {
-  
     try {
-      const response = await fetch("/api/product/best-selling", {
-        method: "GET",
-        cache: "no-cache",
-      });
-      const data = await response.json();
-      if (response.ok) {
-        const { data: bestSellingProducts } = data;
-        this.bestSellingProducts = bestSellingProducts;
-      } else {
-        this.bestSellingProducts = [];
-      }
-    } catch (err: any) {
-      console.log(err.message || err);
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .order("soldUnits", { ascending: false })
+        .limit(10);
+
+      if (error) throw error;
+      this.bestSellingProducts = data || [];
+    } catch (err) {
+      console.error(err);
     }
   }
 
-  async fetchProductsByCategory(catId: string): Promise<IProduct[] | null> {
-    this.isLoading = true;
+  async getProductById(productId: string): Promise<IProduct | null> {
     try {
-      const response = await fetch(`/api/product?categoryId=${catId}`, {
-        cache: "no-cache",
-      });
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .eq("_id", productId)
+        .single();
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch products");
-      }
-      const data = await response.json();
-      this.products = data.products;
-      return data.products;
-    } catch (error) {
-      console.error("Error fetching products:", error);
+      if (error) throw error;
+      return data || null;
+    } catch (err) {
+      console.error(err);
       return null;
-    } finally {
-      this.isLoading = false;
-    }
-  }
-
-  async fetchProducts(): Promise<void> {
-    this.isLoading = true;
-    try {
-      const response = await fetch("/api/product", {
-        method: "GET",
-        cache: "no-cache",
-      });
-      const data = await response.json();
-      if (response.ok) {
-        this.products = data.products;
-      } else {
-        this.products = null;
-      }
-      return;
-    } catch (error) {
-      console.error("Error fetching profile:", error);
-      return;
-    } finally {
-      this.isLoading = false;
-    }
-  }
-
-  async getProductsForTable(): Promise<any> {
-    if (!this.products) await this.fetchProducts();
-  }
-
-  async fetchProductByMaterial(material: string): Promise<IProduct[] | null> {
-    try {
-      const response = await fetch(`/api/product?material=${material}`, {
-        cache: "no-cache",
-      });
-      const data = await response.json();
-      if (response.ok) {
-        const { products } = data;
-        return products;
-      }
-      return null;
-    } catch (err: any) {
-      console.log("Error fetching products by material", err.message || err);
-      return null;
-    }
-  }
-
-  async updateProduct(
-    product: IProduct & { imagesToDelete: string[] },
-    onFailure: (err?: string) => void,
-    onSuccess: () => void
-  ) {
-    try {
-      const response = await fetch("/api/product/update", {
-        method: "PUT",
-        body: JSON.stringify(product),
-        credentials: "include",
-      });
-      const data = await response.json();
-      if (response.ok) {
-        const { updatedProduct } = data;
-        if (!this.products) {
-          await this.fetchProducts();
-          return;
-        }
-        const index = this.products?.findIndex(
-          (product) => product._id === updatedProduct._id
-        );
-        if (index > -1) {
-          this.products[index] = updatedProduct;
-        }
-        onSuccess();
-        this.openUpdateProductModal = false;
-        return;
-      } else {
-        onFailure("Something went wrong");
-      }
-    } catch (err: any) {
-      onFailure(err.message || err);
     }
   }
 
@@ -182,49 +120,83 @@ export class ProductStore {
     newProduct: INewProduct,
     onSuccess: () => void,
     onFailure: (err?: string) => void
-  ): Promise<void> {
+  ) {
     this.isLoading = true;
     try {
-      const response = await fetch("/api/product/add", {
-        method: "POST",
-        body: JSON.stringify(newProduct),
-        credentials: "include",
-        headers: {},
-      });
-      const data = await response.json();
+      const { data, error } = await supabase
+        .from("products")
+        .insert([
+          {
+            ...newProduct,
+            stock: newProduct.quantity,
+            createdAt: new Date().toISOString(),
+          },
+        ])
+        .select()
+        .single();
 
-      if (response.ok) {
-        this.products?.push(data.newProduct);
+      if (error) {
+        console.error("Error inserting product:", error.message);
+        onFailure(error.message);
+      } else if (data) {
+        this.products?.push(data);
         onSuccess();
-      } else {
-        const errorData = await response.json();
-        onFailure(errorData);
       }
-    } catch (error) {
-      onFailure();
+    } catch (err: any) {
+      onFailure(err.message);
     } finally {
       this.isLoading = false;
     }
   }
 
-  async deleteProduct(productId: string): Promise<void> {
+  async updateProduct(
+    product: IProduct & { imagesToDelete?: string[] },
+    onSuccess: () => void,
+    onFailure: (err?: string) => void
+  ) {
     try {
-      const response = await fetch(`/api/product?id=${productId}`, {
-        method: "DELETE",
-        headers: {},
-      });
+      const { data, error } = await supabase
+        .from("products")
+        .update({ ...product })
+        .eq("_id", product.id)
+        .select()
+        .single();
 
-      if (response.ok) {
-        this.products =
-          this.products?.filter(
-            (product: IProduct) => product._id !== productId
-          ) || [];
-        message.success("Product deleted Successfully");
-      } else {
-        message.error("Something went wrong");
+      if (error) {
+        console.error("Error updating product:", error.message);
+        onFailure(error.message);
+      } else if (data && this.products) {
+        const index = this.products.findIndex((p) => p.id === data.id);
+        if (index > -1) this.products[index] = data;
+        onSuccess();
+        this.openUpdateProductModal = false;
       }
-    } catch (err) {
-      message.error("Something went wrong");
+    } catch (err: any) {
+      onFailure(err.message);
+    }
+  }
+
+  async deleteProduct(
+    productId: string,
+    onSuccess?: () => void,
+    onFailure?: (err?: string) => void
+  ) {
+    try {
+      const { error } = await supabase
+        .from("products")
+        .delete()
+        .eq("_id", productId);
+
+      if (error) {
+        console.error("Error deleting product:", error.message);
+        onFailure?.(error.message);
+      } else {
+        this.products = this.products?.filter((p) => p.id !== productId) || [];
+        onSuccess?.();
+      }
+    } catch (err: any) {
+      console.error(err);
+      onFailure?.(err.message);
     }
   }
 
@@ -233,8 +205,6 @@ export class ProductStore {
   }
 
   setProductToUpdate(product: IProduct) {
-    if (product) {
-      this.productToUpdate = product;
-    }
+    this.productToUpdate = product;
   }
 }
