@@ -264,9 +264,9 @@ const Navbar = observer(() => {
           {lang}
         </button>
 
-        <button className={styles.iconBtn} aria-label="Search" onClick={() => navigate('/search')}>
+        {/* <button className={styles.iconBtn} aria-label="Search" onClick={() => navigate('/search')}>
           <SearchIcon className={styles.iconSvg} />
-        </button>
+        </button> */}
 
         <div className={styles.profileWrap} ref={profileRef}>
           <button className={`${styles.iconBtn} ${styles.profileIcon}`} aria-label="Profile" onClick={handleProfileClick}>
@@ -316,21 +316,27 @@ const Navbar = observer(() => {
           )}
         </div>
 
-        <button aria-label="Wishlist" className={styles.iconBtn} onClick={() => navigate('/wishlist')}>
-          <HeartIcon className={styles.iconSvg} />
-        </button>
+        {
+          isAuthenticated &&
+          <button aria-label="Wishlist" className={styles.iconBtn} onClick={() => navigate('/wishlist')}>
+            <HeartIcon className={styles.iconSvg} />
+          </button>
+        }
 
-        {/* Fixed cart button - now uses onClick to navigate */}
-        <button
-          className={styles.iconBtn}
-          aria-label="Cart"
-          onClick={handleCartClick}
-          style={{ display: 'inline-flex', alignItems: 'center' }}
-        >
-          <Badge count={cartStore?.numOfCartItems ?? 0} overflowCount={99}>
-            <BagIcon className={styles.iconSvg} />
-          </Badge>
-        </button>
+        {
+          isAuthenticated &&
+          <button
+            className={styles.iconBtn}
+            aria-label="Cart"
+            onClick={handleCartClick}
+            style={{ display: 'inline-flex', alignItems: 'center' }}
+          >
+            <Badge count={cartStore?.numOfCartItems ?? 0} overflowCount={99}>
+              <BagIcon className={styles.iconSvg} />
+            </Badge>
+          </button>
+        }
+
       </div>
 
       {/* MOBILE MENU */}
