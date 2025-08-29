@@ -66,7 +66,7 @@ const Navbar = observer(() => {
   const [lang, setLang] = useState<'EN' | 'HE'>('EN');
 
   const { isAuthenticated, logout, user } = useAuth();
-  const { cartStore, profileStore } = useStores();
+  const { cartStore, profileStore, wishlistStore } = useStores();
 
   const profileRef = useRef<HTMLDivElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -319,7 +319,9 @@ const Navbar = observer(() => {
         {
           isAuthenticated &&
           <button aria-label="Wishlist" className={styles.iconBtn} onClick={() => navigate('/wishlist')}>
-            <HeartIcon className={styles.iconSvg} />
+            <Badge count={wishlistStore?.items.length} overflowCount={99}>
+              <HeartIcon className={styles.iconSvg} />
+            </Badge>
           </button>
         }
 

@@ -4,6 +4,7 @@ import { NewsLetterStore } from "./NewsLetterStore";
 import { OrderStore } from "./OrderStore";
 import { ProductStore } from "./ProductStore";
 import { ProfileStore } from "./ProfileStore";
+import { WishlistStore } from "./WishlistStore";
 
 export class RootStore {
   profileStore: ProfileStore | null = null;
@@ -12,6 +13,7 @@ export class RootStore {
   cartStore: CartStore | null = null;
   orderStore: OrderStore | null = null;
   newsLetterStore: NewsLetterStore | null = null;
+  wishlistStore: WishlistStore | null = null;
 
   constructor() {
     this.categoryStore = new CategoryStore();
@@ -24,6 +26,7 @@ export class RootStore {
     this.cartStore = new CartStore();
     this.orderStore = new OrderStore();
     this.newsLetterStore = new NewsLetterStore();
+    this.wishlistStore = new WishlistStore();
   }
 }
 

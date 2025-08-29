@@ -118,8 +118,6 @@ export class CartStore {
       } = await supabase.auth.getUser();
       if (userError || !user) throw new Error("User not authenticated");
 
-      console.log("@@user", user);
-
       // Fetch user's active cart (take first one if multiple)
       let { data: carts, error: cartError } = await supabase
         .from("carts")
