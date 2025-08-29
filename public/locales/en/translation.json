@@ -1,0 +1,317 @@
+{
+  "signinForm": {
+    "verificationCode": "Verification Code",
+    "emailNotVerified": "Your email isn't verified yet!",
+    "codeSent": "A verification code has been sent to your email {email}",
+    "enterVerificationCode": "Enter verification code",
+    "verifyCode": "Verify Code",
+    "resendCode": "Resend Code",
+    "signIn": "Sign In",
+    "email": "Email",
+    "password": "Password",
+    "dontHaveAccount": "Don't have an account? Sign up",
+    "errors": {
+      "invalidCode": "Invalid verification code.",
+      "failedToVerify": "Failed to verify code.",
+      "failedToResend": "Failed to resend verification code.",
+      "codeResent": "Verification code resent successfully."
+    }
+  },
+  "signUpForm": {
+    "verificationCode": "Verification Code",
+    "verificationSent": "You have received a verification code to {email}",
+    "enterVerificationCode": "Enter verification code",
+    "verifyCode": "Verify Code",
+    "resendCode": "Resend Code",
+    "signUp": "Sign Up",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "phoneNumber": "Phone number",
+    "passwordConfirmation": "Password Confirmation",
+    "dateOfBirth": "Date of Birth",
+    "day": "Day",
+    "month": "Month",
+    "year": "Year",
+    "submit": "Submit",
+    "alreadyHaveAccount": "Already have an account? Sign in",
+    "errors": {
+      "invalidCode": "Invalid verification code.",
+      "failedToVerify": "Failed to verify code.",
+      "failedToResend": "Failed to resend verification code.",
+      "codeResent": "Verification code resent successfully."
+    }
+  },
+  "home": "Home",
+  "jewelry": "Jewelry",
+  "women": "Women",
+  "men": "Men",
+  "signature": "Signature",
+  "bracelets": "Bracelets",
+  "earrings": "Earrings",
+  "rings": "Rings",
+  "necklaces": "Necklaces",
+  "pendants": "Pendants",
+  "collections": "Collections",
+  "customize": "Customize",
+  "aboutUs": "About us",
+  "yourAccount": "Your account",
+  "becomeMember": "Become a member",
+  "robertoMembership": "Roberto Membership",
+  "profile": "Profile",
+  "myOrders": "My Orders",
+  "dashboard": "Dashboard",
+  "signOut": "Sign Out",
+  "wishlist": "Wishlist",
+  "login": "Login",
+  "about": {
+    "title": "About us",
+    "description": "At Roberto Jewelry, every piece is personal. We come from a long tradition of craftsmanship in the Nijem family, where jewelry making is more than a skill it's a way of life. Passed down through three generations, this tradition began in Nazareth, a city known for its rich history and artistry. Founded by Viktor Nijem Senior, his Grandfather, Roberto Jewelry brings a modern touch to this heritage. Viktor's grandfather, a skilled craftsman who worked for decades in the field in a known custom made crafts for jewelry and gold called Qatuf, inspired a love for creating jewelry that lasts a lifetime. Today, Viktor combines time honored techniques with a fresh, thoughtful approach to design, making each piece feel special and unique with awards from world renowned clubs and associations to prove his passion for crafting unique one of a kind pieces.",
+    "imageAlt": "About Roberto Jewelry"
+  },
+  "beliefs": {
+    "title": "What We Believe",
+    "subtitle": "Jewelry should go beyond beauty it should be as unique as you are. At Roberto, we focus on:",
+    "items": {
+      "craftsmanship": {
+        "title": "ONE-OF-A-KIND<br/>CRAFTSMANSHIP",
+        "description": "Every piece is custom made by hand, ensuring it's truly yours."
+      },
+      "materials": {
+        "title": "QUALITY<br/>MATERIALS",
+        "description": "Using solid gold, natural gems, and responsibly sourced diamonds to create jewelry that lasts."
+      },
+      "connection": {
+        "title": "PERSONAL<br/>CONNECTION",
+        "description": "Designs that incorporate meaningful details, like calligraphy, to celebrate your individuality."
+      }
+    }
+  },
+  "recognitions": {
+    "title": "Recognitions and Achievements",
+    "introduction": "Viktor's passion for craftsmanship and innovation has earned him recognition from some of the most prestigious organizations in the world of fine jewelry:",
+    "achievements": [
+      "A' Design Award Winner (2018-2019): Celebrated for the Global Warming Ring, a design that masterfully blends artistry with a powerful message of sustainability.",
+      "Membership in Esteemed Associations: Viktor's contributions to innovation and craftsmanship have been acknowledged by leading organizations such as the International Society of Product Manufacturers, the Design Association, and the World Design Consortium.",
+      "Honored by the International Council of Creative Industries Design: Recognized for redefining sustainable and artistic jewelry, pushing the boundaries of design and creativity."
+    ],
+    "awards": [
+      {
+        "name": "award1",
+        "alt": "A' Design Award",
+        "src": "https://firebasestorage.googleapis.com/v0/b/general-ebf2c.firebasestorage.app/o/roberto-jewerly%2Fa%20aard.png?alt=media&token=02e1d8e6-a514-4684-83a2-e38dfc8f35ea"
+      },
+      {
+        "name": "award2",
+        "alt": "Best Design Award",
+        "src": "https://firebasestorage.googleapis.com/v0/b/general-ebf2c.firebasestorage.app/o/roberto-jewerly%2Fbest.png?alt=media&token=64d3362d-d7f0-4930-9652-b4bb3f0b9c2c"
+      },
+      {
+        "name": "award3",
+        "alt": "Design Association Certificate",
+        "src": "https://firebasestorage.googleapis.com/v0/b/general-ebf2c.firebasestorage.app/o/roberto-jewerly%2Fdac.png?alt=media&token=ab78149c-0e84-45e1-a0a2-0d61bb98b30a"
+      },
+      {
+        "name": "award4",
+        "alt": "Design Club Recognition",
+        "src": "https://firebasestorage.googleapis.com/v0/b/general-ebf2c.firebasestorage.app/o/roberto-jewerly%2FDesign%20Club.png?alt=media&token=24e098a2-9f84-44e2-89e8-2d749aec96a5"
+      },
+      {
+        "name": "award5",
+        "alt": "ISPM Membership",
+        "src": "https://firebasestorage.googleapis.com/v0/b/general-ebf2c.firebasestorage.app/o/roberto-jewerly%2FISPM.png?alt=media&token=7cb58c20-3619-497c-b738-b461609516cf"
+      },
+      {
+        "name": "award6",
+        "alt": "Design Excellence Award",
+        "src": "https://firebasestorage.googleapis.com/v0/b/general-ebf2c.firebasestorage.app/o/roberto-jewerly%2FR.png?alt=media&token=88f4f069-772f-4b7b-94c6-d9346a8eb608"
+      },
+      {
+        "name": "award7",
+        "alt": "World Design Recognition",
+        "src": "https://firebasestorage.googleapis.com/v0/b/general-ebf2c.firebasestorage.app/o/roberto-jewerly%2FW.png?alt=media&token=793948ee-6306-4498-a3c3-2214e4f58a92"
+      },
+      {
+        "name": "award8",
+        "alt": "ICCI Design Honor",
+        "src": "/image/icci.png"
+      }
+    ]
+  },
+  "whyChoose": {
+    "title": "Why Choose Roberto?",
+    "description": "When you choose Roberto Jewelry, you're choosing more than a piece of jewelry you're choosing a story, a connection, and a reflection of who you are. Each creation is designed with care, made to celebrate life's special moments, and crafted to be as unique as the person who wears it. At Roberto, we don't just make jewelry we make your jewelry.",
+    "logoAlt1": "RRR Logo",
+    "logoAlt2": "Roberto Jewelry Logo"
+  },
+  "hero": {
+    "titlePart1": "Timeless",
+    "titlePart2": "Elegance",
+    "description": "Discover our exquisite collection of handcrafted jewelry, where every piece tells a story of luxury, love, and lasting beauty.",
+    "button1": "Explore Collection",
+    "button2": "Design Your Signature Piece!",
+    "altText": "Timeless Elegance - Roberto Jewelry"
+  },
+  "creativeVision": {
+    "title": "The Creative Vision Of Roberto",
+    "subtitle": "Shape the Sparkle of Your Design Vision",
+    "button": "Design Your Signature Piece!"
+  },
+  "ringsCollection": {
+    "title": "Our Rings Collection",
+    "description": "Discover our most beloved pieces, each crafted with exceptional attention to detail and timeless design.",
+    "viewAllButton": "View All Collections",
+    "eternalDiamondRing": {
+      "alt": "Eternal Diamond Ring",
+      "description": "Eternal Diamond Ring"
+    },
+    "classicGoldNecklace": {
+      "alt": "Classic Gold Necklace",
+      "description": "Classic Gold Necklace"
+    },
+    "elegantTennisBracelet": {
+      "alt": "Elegant Tennis Bracelet",
+      "description": "Elegant Tennis Bracelet"
+    },
+    "diamondDropEarrings": {
+      "alt": "Diamond Drop Earrings",
+      "description": "Diamond Drop Earrings"
+    }
+  },
+  "reviews": {
+    "title": "What Our Clients Say",
+    "subtitle": "Hear from those who have experienced the Roberto difference.",
+    "review1": {
+      "text": "The most beautiful engagement ring I've ever seen. The craftsmanship is absolutely extraordinary.",
+      "name": "Sarah Johnson",
+      "location": "Beverly Hills, CA"
+    },
+    "review2": {
+      "text": "Roberto created a custom necklace for my wife's anniversary. The attention to detail was incredible.",
+      "name": "Michael Chen",
+      "location": "Manhattan, NY"
+    },
+    "review3": {
+      "text": "Outstanding service and quality. My custom earrings exceeded all expectations.",
+      "name": "Emily Rodriguez",
+      "location": "Miami, FL"
+    }
+  },
+  "footer": {
+    "logoAlt": "Roberto Logo",
+    "jewelryAlt": "Jewelry",
+    "description": "Crafting exceptional jewelry since 1985. Each piece tells a story of elegance and timeless beauty.",
+    "shopTitle": "Shop",
+    "customerCareTitle": "Customer Care",
+    "contactUs": "Contact Us",
+    "aboutRoberto": "About Roberto",
+    "customJewelry": "Custom Jewelry",
+    "shippingReturns": "Shipping & Returns",
+    "connectTitle": "Connect",
+    "email": "hello@roberto.com",
+    "phone": "+1 (555) 123‑4567",
+    "instagram": "Instagram",
+    "facebook": "Facebook",
+    "twitter": "Twitter",
+    "copyright": "Roberto Jewelry. All rights reserved.",
+    "poweredBy": "POWERED BY"
+  },
+  "collection": {
+    "title": "Collection Name",
+    "description": "Discover our curated selection of handcrafted jewelry, each piece designed to celebrate life's precious moments.",
+    "filters": "Filters",
+    "category": "Category",
+    "allJewelry": "All Jewelry",
+    "priceRange": "Price Range",
+    "allPrices": "All Prices",
+    "material": "Material",
+    "gold": "Gold",
+    "silver": "Silver",
+    "platinum": "Platinum",
+    "showingProducts": "Showing {count} products",
+    "products": {
+      "classicDiamondRing": {
+        "title": "Classic Diamond Ring"
+      },
+      "elegantGoldNecklace": {
+        "title": "Elegant Gold Necklace"
+      },
+      "tennisBracelet": {
+        "title": "Tennis Bracelet"
+      },
+      "diamondStudEarrings": {
+        "title": "Diamond Stud Earrings"
+      },
+      "vintageRingCollection": {
+        "title": "Vintage Ring Collection"
+      },
+      "pearlDropNecklace": {
+        "title": "Pearl Drop Necklace"
+      }
+    }
+  },
+  "customizePage": {
+    "pageTitle": "Customize | Roberto Jewelry",
+    "startDesign": "Start Your Design",
+    "visionDescription": "Tell us about your vision and upload any inspiration images",
+    "uploadReferences": "Upload Reference Images",
+    "uploadText": "Click or drag files here to upload",
+    "chooseFile": "Choose File",
+    "uploadHint": "Support for single or bulk upload.",
+    "fullName": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
+    "designDescription": "Design Description",
+    "additionalNotes": "Additional Notes",
+    "budget": "Budget",
+    "selectBudget": "Select Budget",
+    "budgetOptions": {
+      "u500": "Under $500",
+      "500-2000": "$500 – $2,000",
+      "2k-5k": "$2,000 – $5,000",
+      "5k+": "$5,000+"
+    },
+    "submitButton": "Start Your Design Journey",
+    "submitting": "Submitting...",
+    "howItWorks": "How It Works",
+    "step1": {
+      "title": "Share Your Vision",
+      "description": "Upload reference images and describe your dream piece."
+    },
+    "step2": {
+      "title": "Collaborate & Refine",
+      "description": "Work with our master craftsman to perfect the design."
+    },
+    "step3": {
+      "title": "Handcrafted Excellence",
+      "description": "Watch your custom piece come to life with premium materials."
+    },
+    "whyCustom": "Why Choose Custom?",
+    "reason1": {
+      "title": "Unique Design",
+      "description": "One-of-a-kind piece crafted exclusively for you."
+    },
+    "reason2": {
+      "title": "Premium Materials",
+      "description": "Only the finest carefully sourced materials."
+    },
+    "reason3": {
+      "title": "Master Craftsmanship",
+      "description": "Handcrafted by skilled artisans."
+    },
+    "reason4": {
+      "title": "Lifetime Warranty",
+      "description": "Guaranteed craftsmanship for life."
+    },
+    "needHelp": "Need Help?",
+    "consultationText": "Talk to our designer — schedule a consultation call.",
+    "bookConsultation": "Book Consultation",
+    "errorMessage": "Something went wrong, please try again!",
+    "networkError": "Network error"
+  },
+  "common": {
+    "ariaLabels": {
+      "arrowIcon": "Arrow Icon",
+      "starIcon": "Star Icon"
+    }
+  }
+}

@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @import url("https://fonts.googleapis.com/css2?family=Red+Hat+Text:wght@400;700&display=swap");
 
 @font-face {
@@ -18,5 +19,16 @@
 }
 
 body {
-  @apply font-redHatText;
+  @apply font-redHatText bg-white text-black antialiased;
+}
+
+/* RTL/LTR support using global HTML dir */
+html[dir="rtl"] body {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir="ltr"] body {
+  direction: ltr;
+  text-align: left;
 }

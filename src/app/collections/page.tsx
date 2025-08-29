@@ -26,11 +26,10 @@ export default async function CollectionsPage({ searchParams }: CollectionsPageP
           {filters.category_name ? filters.category_name : "Collection Name"}
         </h1>
         <p className="text-center text-sm text-gray-600 mb-10 max-w-xl mx-auto">
-          Discover our curated selection of handcrafted jewelry, each piece
-          designed to celebrate life's precious moments.
+          {/* {t('collection.description', 'Discover our curated selection of handcrafted jewelry, each piece designed to celebrate life\'s precious moments.')} */}
         </p>
       </div>
       <CollectionsDisplay products={products} />
     </div>
   );
-}
+};

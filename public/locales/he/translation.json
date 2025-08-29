@@ -1,0 +1,317 @@
+{
+  "signinForm": {
+    "verificationCode": "קוד אימות",
+    "emailNotVerified": "האימייל שלך לא אומת עדיין!",
+    "codeSent": "קוד אימות נשלח לאימייל שלך {email}",
+    "enterVerificationCode": "הזן קוד אימות",
+    "verifyCode": "אמת קוד",
+    "resendCode": "שלח קוד מחדש",
+    "signIn": "התחברות",
+    "email": "אימייל",
+    "password": "סיסמה",
+    "dontHaveAccount": "אין לך חשבון? הירשם",
+    "errors": {
+      "invalidCode": "קוד אימות לא חוקי.",
+      "failedToVerify": "אימות הקוד נכשל.",
+      "failedToResend": "שליחת הקוד מחדש נכשלה.",
+      "codeResent": "קוד האימות נשלח מחדש בהצלחה."
+    }
+  },
+  "signUpForm": {
+    "verificationCode": "קוד אימות",
+    "verificationSent": "קיבלת קוד אימות ב{email}",
+    "enterVerificationCode": "הזן קוד אימות",
+    "verifyCode": "אמת קוד",
+    "resendCode": "שלח קוד מחדש",
+    "signUp": "הרשמה",
+    "firstName": "שם פרטי",
+    "lastName": "שם משפחה",
+    "phoneNumber": "מספר טלפון",
+    "passwordConfirmation": "אימות סיסמה",
+    "dateOfBirth": "תאריך לידה",
+    "day": "יום",
+    "month": "חודש",
+    "year": "שנה",
+    "submit": "שלח",
+    "alreadyHaveAccount": "כבר יש לך חשבון? התחבר",
+    "errors": {
+      "invalidCode": "קוד אימות לא חוקי.",
+      "failedToVerify": "אימות הקוד נכשל.",
+      "failedToResend": "שליחת הקוד מחדש נכשלה.",
+      "codeResent": "קוד האימות נשלח מחדש בהצלחה."
+    }
+  },
+  "home": "בית",
+  "jewelry": "תכשיטים",
+  "women": "נשים",
+  "men": "גברים",
+  "signature": "חתימה",
+  "bracelets": "צמידים",
+  "earrings": "עגילים",
+  "rings": "טבעות",
+  "necklaces": "שרשראות",
+  "pendants": "תליונים",
+  "collections": "אוספים",
+  "customize": "התאמה אישית",
+  "aboutUs": "אודותינו",
+  "yourAccount": "החשבון שלך",
+  "becomeMember": "הפוך לחבר",
+  "robertoMembership": "חברות רוברטו",
+  "profile": "פרופיל",
+  "myOrders": "ההזמנות שלי",
+  "dashboard": "לוח מחוונים",
+  "signOut": "התנתק",
+  "wishlist": "רשימת משאלות",
+  "login": "התחברות",
+  "about": {
+    "title": "אודותינו",
+    "description": "ברוברטו ג'ואלרי, כל יצירה היא אישית. אנחנו מגיעים ממסורת ארוכה של עבודת ידיים במשפחת ניג'ם, שבה יצירת תכשיטים היא יותר מרק מיומנות - זו דרך חיים. מסורת שעוברת כבר שלושה דורות, החלה בנצרת, עיר הידועה בהיסטוריה העשירה ובאומנות שלה. נוסד על ידי ויקטור ניג'ם האב, סבו, רוברטו ג'ואלרי מביא מגע מודרני למורשת זו. סבו של ויקטור, אומן מיומן שעבד עשרות שנים בתחום ביצירת תכשיטים иזהב בהתאמה אישית במפעל ידוע בשם קאטוף, העניק השראה לאהבה ליצירת תכשיטים שנמשכת כל החיים. היום, ויקטור משלב בין טכניקות מסורתיות לגישה עיצובית חדשה ומחשבת, והופך כל יצירה למיוחדת וייחודית עם פרסים ממועדונים ואיגודים מובילים בעולם המוכיחים את תשוקתו ליצירת תכשיטים ייחודיים ובלעדיים.",
+    "imageAlt": "אודות רוברטו ג'ואלרי"
+  },
+  "beliefs": {
+    "title": "מה אנחנו מאמינים",
+    "subtitle": "תכשיטים צריכים להיות יותר מיפים - הם צריכים להיות ייחודיים כמוך. ברוברטו, אנחנו מתמקדים ב:",
+    "items": {
+      "craftsmanship": {
+        "title": "עבודת יד<br/>ייחודית",
+        "description": "כל יצירה מיוצרת בעבודת יד בהתאמה אישית, כדי להבטיח שהיא תהיה באמת שלך."
+      },
+      "materials": {
+        "title": "חומרים<br/>איכותיים",
+        "description": "אנחנו משתמשים בזהב טהור, אבנים טבעיות ויהלומים שמקורם באחריות כדי ליצור תכשיטים שיחזיקו מעמד."
+      },
+      "connection": {
+        "title": "חיבור<br/>אישי",
+        "description": "עיצובים הכוללים פרטים משמעותיים, כמו קליגרפיה, כדי לחגוג את הייחודיות שלך."
+      }
+    }
+  },
+  "recognitions": {
+    "title": "הוקרות והישגים",
+    "introduction": "התשוקה של ויקטור ליצירה וחדשנות זיכתה אותו בהכרה מכמה מהארגונים היוקרתיים ביותר בעולם התכשיטים:",
+    "achievements": [
+      "זוכה פרס A' Design (2018-2019): הוענק עבור טבעת ההתחממות הגלובלית, עיצוב המשלב בצורה מושלמת בין אומנות למסר חזק של קיימות.",
+      "חברות באיגודים יוקרתיים: תרומותיו של ויקטור לחדשנות ויצירה זכו להכרה מארגונים מובילים כמו האיגוד הבינלאומי ליצרני מוצרים, איגוד העיצוב, וקונסורציון העיצוב העולמי.",
+      "הוקרה מהמועצה הבינלאומית לתעשיות יצירתיות: הוכר על הגדרה מחדש של תכשיטים בני קיימא ואומנותיים, ודחיפת הגבולות של עיצוב ויצירתיות."
+    ],
+    "awards": [
+      {
+        "name": "award1",
+        "alt": "פרס A' Design",
+        "src": "https://firebasestorage.googleapis.com/v0/b/general-ebf2c.firebasestorage.app/o/roberto-jewerly%2Fa%20aard.png?alt=media&token=02e1d8e6-a514-4684-83a2-e38dfc8f35ea"
+      },
+      {
+        "name": "award2",
+        "alt": "פרס העיצוב הטוב ביותר",
+        "src": "https://firebasestorage.googleapis.com/v0/b/general-ebf2c.firebasestorage.app/o/roberto-jewerly%2Fbest.png?alt=media&token=64d3362d-d7f0-4930-9652-b4bb3f0b9c2c"
+      },
+      {
+        "name": "award3",
+        "alt": "תעודת איגוד העיצוב",
+        "src": "https://firebasestorage.googleapis.com/v0/b/general-ebf2c.firebasestorage.app/o/roberto-jewerly%2Fdac.png?alt=media&token=ab78149c-0e84-45e1-a0a2-0d61bb98b30a"
+      },
+      {
+        "name": "award4",
+        "alt": "הוקרת מועדון העיצוב",
+        "src": "https://firebasestorage.googleapis.com/v0/b/general-ebf2c.firebasestorage.app/o/roberto-jewerly%2FDesign%20Club.png?alt=media&token=24e098a2-9f84-44e2-89e8-2d749aec96a5"
+      },
+      {
+        "name": "award5",
+        "alt": "חברות ISPM",
+        "src": "https://firebasestorage.googleapis.com/v0/b/general-ebf2c.firebasestorage.app/o/roberto-jewerly%2FISPM.png?alt=media&token=7cb58c20-3619-497c-b738-b461609516cf"
+      },
+      {
+        "name": "award6",
+        "alt": "פרס מצוינות בעיצוב",
+        "src": "https://firebasestorage.googleapis.com/v0/b/general-ebf2c.firebasestorage.app/o/roberto-jewerly%2FR.png?alt=media&token=88f4f069-772f-4b7b-94c6-d9346a8eb608"
+      },
+      {
+        "name": "award7",
+        "alt": "הוקרת עיצוב עולמית",
+        "src": "https://firebasestorage.googleapis.com/v0/b/general-ebf2c.firebasestorage.app/o/roberto-jewerly%2FW.png?alt=media&token=793948ee-6306-4498-a3c3-2214e4f58a92"
+      },
+      {
+        "name": "award8",
+        "alt": "הוקרת עיצוב ICCI",
+        "src": "/image/icci.png"
+      }
+    ]
+  },
+  "whyChoose": {
+    "title": "למה לבחור ברוברטו?",
+    "description": "כשאתה בוחר ברוברטו ג'ואלרי, אתה בוחר יותר מתכשיט - אתה בוחר בסיפור, בחיבור, ובהשתקפות של מי שאתה. כל יצירה מעוצבת בקפידה, נוצרה כדי לחגוג רגעים מיוחדים בחיים, ומיוצרת כדי להיות ייחודית כמו האדם שלובש אותה. ברוברטו, אנחנו לא רק מייצרים תכשיטים - אנחנו יוצרים את התכשיטים שלך.",
+    "logoAlt1": "לוגו RRR",
+    "logoAlt2": "לוגו רוברטו ג'ואלרי"
+  },
+  "hero": {
+    "titlePart1": "נצחי",
+    "titlePart2": "אלגנטי",
+    "description": "גלה את האוסף העדין שלנו של תכשיטים מעשה יד, שם כל פריט מספר סיפור של יוקרה, אהבה ויופי מתמשך.",
+    "button1": "חקור את האוסף",
+    "button2": "עצב את הפריט החתום שלך!",
+    "altText": "אלגנטיות נצחית - תכשיטי רוברטו"
+  },
+  "creativeVision": {
+    "title": "החזון היצירתי של רוברטו",
+    "subtitle": "עצב את הניצוץ של חזון העיצוב שלך",
+    "button": "עצב את הפריט החתום שלך!"
+  },
+  "ringsCollection": {
+    "title": "קולקציית הטבעות",
+    "description": "גלה את הפריטים האהובים עלינו ביותר, כל אחד מעוצב עם תשומת לב יוצאת דופן לפרטים ועיצוב נצחי.",
+    "viewAllButton": "צפה בכל האוספים",
+    "eternalDiamondRing": {
+      "alt": "טבעת יהלום נצחית",
+      "description": "טבעת יהלום נצחית"
+    },
+    "classicGoldNecklace": {
+      "alt": "שרשרת זהב קלאסית",
+      "description": "שרשרת זהב קלאסית"
+    },
+    "elegantTennisBracelet": {
+      "alt": "צמיד טניס אלגנטי",
+      "description": "צמיד טניס אלגנטי"
+    },
+    "diamondDropEarrings": {
+      "alt": "עגילי יהלום תלויים",
+      "description": "עגילי יהלום תלויים"
+    }
+  },
+  "reviews": {
+    "title": "מה הלקוחות שלנו אומרים",
+    "subtitle": "שמעו מאלה שחוו את ההבדל של רוברטו.",
+    "review1": {
+      "text": "טבעת האירוסין היפה ביותר שראיתי מעודי. הא craftsmanship הוא יוצא דופן לחלוטין.",
+      "name": "שרה ג'ונסון",
+      "location": "בוורלי הילס, קליפורניה"
+    },
+    "review2": {
+      "text": "רוברטו יצר שרשרת מותאמת אישית ליום השנה של אשתי. תשומת הלב לפרטים הייתה מדהימה.",
+      "name": "מייקל צ'ן",
+      "location": "מנהטן, ניו יורק"
+    },
+    "review3": {
+      "text": "שירות ואיכות מעולים. העגילים המותאמים אישית שלי עלו על כל הציפיות.",
+      "name": "אמילי רודריגז",
+      "location": "מיאמי, פלורידה"
+    }
+  },
+  "footer": {
+    "logoAlt": "לוגו רוברטו",
+    "jewelryAlt": "תכשיטים",
+    "description": "ייצור תכשיטים יוצא דופן מאז 1985. כל פריט מספר סיפור של אלגנטיות ויופי נצחי.",
+    "shopTitle": "חנות",
+    "customerCareTitle": "שירות לקוחות",
+    "contactUs": "צור קשר",
+    "aboutRoberto": "אודות רוברטו",
+    "customJewelry": "תכשיטים מותאמים אישית",
+    "shippingReturns": "משלוחים והחזרות",
+    "connectTitle": "התחברות",
+    "email": "hello@roberto.com",
+    "phone": "+1 (555) 123‑4567",
+    "instagram": "אינסטגרם",
+    "facebook": "פייסבוק",
+    "twitter": "טוויטר",
+    "copyright": "תכשיטי רוברטו. כל הזכויות שמורות.",
+    "poweredBy": "מופעל על ידי"
+  },
+  "collection": {
+    "title": "שם האוסף",
+    "description": "גלה את המבחר המוקפד שלנו של תכשיטים מעשה יד, כל פריט מעוצב כדי לחגוג את הרגעים היקרים של החיים.",
+    "filters": "מסננים",
+    "category": "קטגוריה",
+    "allJewelry": "כל התכשיטים",
+    "priceRange": "טווח מחירים",
+    "allPrices": "כל המחירים",
+    "material": "חומר",
+    "gold": "זהב",
+    "silver": "כסף",
+    "platinum": "פלטינה",
+    "showingProducts": "מציג {count} מוצרים",
+    "products": {
+      "classicDiamondRing": {
+        "title": "טבעת יהלום קלאסית"
+      },
+      "elegantGoldNecklace": {
+        "title": "שרשרת זהב אלגנטית"
+      },
+      "tennisBracelet": {
+        "title": "צמיד טניס"
+      },
+      "diamondStudEarrings": {
+        "title": "עגילי יהלום"
+      },
+      "vintageRingCollection": {
+        "title": "אוסף טבעות וינטג'"
+      },
+      "pearlDropNecklace": {
+        "title": "שרשרת פנינים תלויה"
+      }
+    }
+  },
+  "customizePage": {
+    "pageTitle": "התאמה אישית | תכשיטי רוברטו",
+    "startDesign": "התחל את העיצוב שלך",
+    "visionDescription": "ספר לנו על החזון שלך והעלה תמונות השראה",
+    "uploadReferences": "העלה תמונות הפניה",
+    "uploadText": "לחץ או גרור קבצים לכאן להעלאה",
+    "chooseFile": "בחר קובץ",
+    "uploadHint": "תמיכה בהעלאה בודדת или מרובה.",
+    "fullName": "שם מלא",
+    "email": "אימייל",
+    "phone": "טלפון",
+    "designDescription": "תיאור העיצוב",
+    "additionalNotes": "הערות נוספות",
+    "budget": "תקציב",
+    "selectBudget": "בחר תקציב",
+    "budgetOptions": {
+      "u500": "מתחת ל-500$",
+      "500-2000": "500$ – 2,000$",
+      "2k-5k": "2,000$ – 5,000$",
+      "5k+": "5,000$+"
+    },
+    "submitButton": "התחל את מסע העיצוב שלך",
+    "submitting": "שולח...",
+    "howItWorks": "איך זה עובד",
+    "step1": {
+      "title": "שתף את החזון שלך",
+      "description": "העלה תמונות הפניה ותאר את הפריט החלומי שלך."
+    },
+    "step2": {
+      "title": "שתף פעולה ושפר",
+      "description": "עבוד עם בעל המלאכה המומחה שלנו כדי לשפר את העיצוב."
+    },
+    "step3": {
+      "title": "איכות מעשה ידי אמן",
+      "description": "ראה כיצד הפריט המותאם אישית שלך מקבל חיים עם חומרים פרמיים."
+    },
+    "whyCustom": "למה לבחור בהתאמה אישית?",
+    "reason1": {
+      "title": "עיצוב ייחודי",
+      "description": "פריט חד פעמי מעוצב במיוחד עבורך."
+    },
+    "reason2": {
+      "title": "חומרים פרמיים",
+      "description": "רק החומרים המשובחים ביותר שנבחרו בקפידה."
+    },
+    "reason3": {
+      "title": "מעשה ידי אמן מומחה",
+      "description": "מעוצב ביד על ידי אומנים מיומנים."
+    },
+    "reason4": {
+      "title": "אחריות לכל החיים",
+      "description": "אומנות מובטחת לכל החיים."
+    },
+    "needHelp": "צריך עזרה?",
+    "consultationText": "דבר עם המעצב שלנו — קבע שיחת ייעוץ.",
+    "bookConsultation": "זמן ייעוץ",
+    "errorMessage": "משהו השתבש, אנא נסה שוב!",
+    "networkError": "שגיאת רשת"
+  },
+  "common": {
+    "ariaLabels": {
+      "arrowIcon": "סמל חץ",
+      "starIcon": "סמל כוכב"
+    }
+  }
+}

@@ -1,9 +1,19 @@
 'use client'
 
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const CreativeVision = () => {
   const router = useRouter();
+  const { t, i18n } = useTranslation();
+  const [isRTL, setIsRTL] = useState(false);
+  
+  // Detect if current language is RTL
+  useEffect(() => {
+    setIsRTL(i18n.language === 'he');
+  }, [i18n.language]);
 
   return (
     <section
@@ -13,10 +23,10 @@ const CreativeVision = () => {
       }}
     >
       <h1 className="text-4xl font-amandine mb-4 text-white">
-        The Creative Vision Of Roberto
+        {t('creativeVision.title', 'The Creative Vision Of Roberto')}
       </h1>
       <p className="text-xl mb-6 text-white">
-        Shape the Sparkle of Your Design Vision
+        {t('creativeVision.subtitle', 'Shape the Sparkle of Your Design Vision')}
       </p>
       <button
         onClick={() => router.push("/customize")}
@@ -32,24 +42,26 @@ const CreativeVision = () => {
           display: "inline-flex",
           alignItems: "center",
           justifyContent: "center",
-          paddingLeft: 40, // space for the star icon
-          paddingRight: 20,
+          paddingLeft: isRTL ? 20 : 40, // Adjust padding based on language direction
+          paddingRight: isRTL ? 40 : 20,
           border: "none",
           cursor: "pointer",
         }}
       >
-        <img
+        <Image
           src="/icons/star.png"
-          alt="Star Icon"
+          alt={t('common.ariaLabels.starIcon', 'Star Icon')}
+          width={18}
+          height={18}
           style={{
             position: "absolute",
-            left: 12,
+            [isRTL ? 'right' : 'left']: 12, // Position icon based on language direction
             width: 18,
             height: 18,
             pointerEvents: "none",
           }}
         />
-        Design Your Signature Piece!
+        {t('creativeVision.button', 'Design Your Signature Piece!')}
       </button>
     </section>
   );
