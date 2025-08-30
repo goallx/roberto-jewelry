@@ -61,8 +61,8 @@ const Footer: React.FC = () => {
           <h4 className={styles.columnTitle}>{t('footer.customerCareTitle', 'Customer Care')}</h4>
           <ul className={styles.linkList}>
             <li><Link href="/contact">{t('footer.contactUs', 'Contact Us')}</Link></li>
-            <li><Link href="/about">{t('footer.aboutRoberto', 'About Roberto')}</Link></li>
-            <li><Link href="/custom-jewelry">{t('footer.customJewelry', 'Custom Jewelry')}</Link></li>
+            <li><Link href="/about-us">{t('footer.aboutRoberto', 'About Roberto')}</Link></li> {/* Updated link */}
+            <li><Link href="/customize">{t('footer.customJewelry', 'Custom Jewelry')}</Link></li> {/* Updated link */}
             <li><Link href="/shipping-returns">{t('footer.shippingReturns', 'Shipping & Returns')}</Link></li>
           </ul>
         </div>

@@ -1,0 +1,143 @@
+.profileContainer {
+  padding: 90px 20px 20px; /* Adjusted top padding to bring everything a bit lower */
+  background-color: #f5f5f5; /* Light background for the page */
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.breadcrumb {
+  margin-bottom: 30px; /* Adjusted margin for breadcrumb */
+  font-size: 16px; /* Adjusted font size */
+  color: #666;
+  display: flex;
+  justify-content: flex-start; /* Breadcrumb aligned to the left */
+  align-items: center;
+  padding-left: 10%; /* Shifted breadcrumb a bit to the right */
+}
+
+.breadcrumb span:not(:last-child) {
+  margin-right: 5px;
+}
+
+.profileForm {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px; /* Adjusted gap between columns */
+  max-width: 1000px; /* Adjusted width for better alignment */
+  margin: 0 auto;
+  padding: 15px; /* Reduced padding to shrink the form */
+  border-radius: 8px;
+  background: none; /* Removed background color to blend with the page */
+}
+
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Reduced gap between sections */
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  color: #333;
+  /* Removed the border-bottom to eliminate underlining */
+}
+
+.fieldGroup {
+  margin-bottom: 15px; /* Reduced margin */
+}
+
+.inputRow {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+
+.inputRow .inputGroup {
+  flex: 1;
+}
+
+.inputGroup {
+  margin-bottom: 15px;
+}
+
+.inputGroup label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 5px;
+  font-size: 13px;
+  color: #555;
+}
+
+.inputGroup input,
+.inputGroup select {
+  width: 100%;
+  padding: 8px 12px; /* Reduced padding */
+  border: 1px solid #000; /* Black borders for all input fields */
+  font-size: 14px;
+  background: #fff;
+  border-radius: 0px; /* Ensured sharp corners */
+}
+
+/* Fields with no value (empty fields) will have the same background color as the page */
+.inputGroup input:empty,
+.inputGroup select:empty {
+  background-color: #f5f5f5; /* Same background color as the page */
+}
+
+.currentValue {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 10px;
+  padding: 8px 0;
+}
+
+.updateButton {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 13px; /* Smaller font size */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 10px;
+  border-radius: 0px; /* Ensure buttons have sharp corners */
+  width: 100%; /* Full width of the column */
+}
+
+.updateButton:hover {
+  background: #333;
+}
+
+.updateButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive design */
+@media (max-width: 900px) {
+  .profileForm {
+    grid-template-columns: 1fr;
+    gap: 30px; /* More gap between columns for smaller screens */
+  }
+}
+
+@media (max-width: 600px) {
+  .inputRow {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .profileForm {
+    padding: 15px;
+  }
+
+  .profileContainer {
+    padding: 60px 15px 15px;
+  }
+}

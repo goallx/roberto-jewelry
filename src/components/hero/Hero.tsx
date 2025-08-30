@@ -16,7 +16,7 @@ const Hero = () => {
 
   return (
     <header
-      className={`relative w-full h-[600px] md:h-[650px] pt-16 md:pt-20 ${isRTL ? 'rtl' : ''}`}
+      className={`relative w-full h-[600px] md:h-[650px] pt-40 md:pt-44 ${isRTL ? 'rtl' : ''}`} // Increased top padding for both image and text
       dir={isRTL ? 'rtl' : 'ltr'}
     >
       {/* Background Image */}

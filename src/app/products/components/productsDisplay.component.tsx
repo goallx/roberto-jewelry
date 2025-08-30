@@ -1,5 +1,4 @@
 import { Breadcrumb } from "@/components/breadcrumbs/Breadcrumb"
-import { ProductCard } from "@/components/product-card/ProductCard"
 import { CustomizedButton } from "@/components/ui/customized-button/CustomizedButton"
 import { useStores } from "@/context/StoreContext"
 import { CategoryStore, ICategory } from "@/stores/CategoryStore"

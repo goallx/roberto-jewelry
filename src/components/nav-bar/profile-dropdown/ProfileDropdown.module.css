@@ -1,0 +1,144 @@
+.profileDropdown {
+  position: absolute;
+  top: calc(100% + 28px); /* Adjust the space below navbar */
+  right: 5px; /* Adjusted position to make it align under the icons */
+  width: 220px; /* Shrunk width to be more compact */
+  z-index: 1000;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+/* Frosted glass background */
+.frostedGlass {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px); /* Reduced blur */
+  -webkit-backdrop-filter: blur(8px);
+  z-index: -1;
+}
+
+/* Content container */
+.dropdownContent {
+  position: relative;
+  padding: 1rem; /* Reduced padding for more compact content */
+}
+
+/* User Header Section with Profile Picture */
+.userHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* Adjusted gap between image and name */
+  margin-bottom: 1rem;
+}
+
+.profileImageContainer {
+  width: 40px; /* Adjusted profile image size */
+  height: 40px; /* Adjusted profile image size */
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(245, 245, 245, 0.7);
+}
+
+.profileImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profilePlaceholder {
+  width: 25px; /* Adjusted placeholder size */
+  height: 25px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.userName {
+  font-size: 1.125rem; /* Reduced font size */
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Separator */
+.separator {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.1);
+  margin: 1rem 0;
+}
+
+/* Navigation Section */
+.navigationSection {
+  margin-bottom: 1rem;
+}
+
+.navMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* Adjusted gap */
+  padding: 0.5rem 0.5rem; /* Reduced padding */
+  color: #333;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.navItem:hover {
+  background: rgba(248, 249, 250, 0.7);
+}
+
+.navIcon {
+  width: 14px; /* Reduced icon size */
+  height: 14px;
+  color: #666;
+}
+
+/* Logout Section */
+.logoutSection {
+  margin-top: 0.5rem;
+}
+
+.logoutButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem; /* Reduced padding */
+  background: #d32f2f;
+  border: none;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.85rem; /* Reduced font size */
+}
+
+.logoutButton:hover {
+  background: #b71c1c;
+}
+
+.logoutButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profileDropdown {
+    width: 210px; /* Further reduced width for smaller screens */
+    right: 10px; /* Adjusted position to make it align under the icons */
+  }
+}

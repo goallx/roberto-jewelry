@@ -1,4 +1,5 @@
 'use client';
+
 import { useStores } from '@/context/StoreContext';
 import { IProduct } from '@/stores/ProductStore';
 import React, { useEffect } from 'react';
@@ -16,12 +17,11 @@ const Cart: React.FC = observer(() => {
     let { cartStore, profileStore } = useStores();
 
     useEffect(() => {
-        if (!cartStore) cartStore = new CartStore()
-        if (!profileStore) profileStore = new ProfileStore()
+        if (!cartStore) cartStore = new CartStore();
+        if (!profileStore) profileStore = new ProfileStore();
         cartStore?.fetchUserCart();
         profileStore?.fetchProfile();
     }, [cartStore, profileStore]);
-
 
     const hasMembership = !!profileStore?.profile?.membership;
     const discountPercentage = 0.1;
@@ -30,13 +30,12 @@ const Cart: React.FC = observer(() => {
         ? originalTotal * (1 - discountPercentage)
         : originalTotal;
 
-
     return (
-        <div className="w-full bg-[#F2EFED] rounded-lg p-6 shadow-md">
-            <h1 className="text-2xl font-semibold mb-6">Cart</h1>
+        <div className="w-full bg-[#F2EFED] rounded-lg p-4 shadow-md">
+            <h1 className="text-2xl font-semibold mb-4">Cart</h1>
 
             {/* Cart Items */}
-            <div className="space-y-4 max-h-[500px] overflow-y-auto">
+            <div className="space-y-4 max-h-[300px] overflow-y-auto">
                 {!cartStore?.cart?.items?.length ? (
                     <p className="my-4 font-light text-center">No items in the cart</p>
                 ) : (
@@ -51,23 +50,21 @@ const Cart: React.FC = observer(() => {
             </div>
 
             {/* Total */}
-            <div className="border-t border-gray-300 mt-6 pt-4">
+            <div className="border-t border-gray-300 mt-4 pt-2">
                 <div className="flex justify-between items-center">
                     <span className="text-lg font-semibold">Total:</span>
                     {hasMembership ? (
                         <div className="text-right">
                             <div className="line-through text-gray-500 text-sm">
-                                {originalTotal.toLocaleString('en-US')}$
+                                {originalTotal.toLocaleString('en-US')}$ 
                             </div>
                             <div className="text-green-600 text-xl font-bold">
-                                {discountedTotal.toLocaleString('en-US')}$
+                                {discountedTotal.toLocaleString('en-US')}$ 
                             </div>
                             <div className="text-xs text-gray-400">(10% membership discount)</div>
                         </div>
                     ) : (
-                        <span className="text-xl font-bold">
-                            {originalTotal.toLocaleString('en-US')}$
-                        </span>
+                        <span className="text-xl font-bold">{originalTotal.toLocaleString('en-US')}$</span>
                     )}
                 </div>
             </div>
@@ -94,7 +91,7 @@ const CartProductCard: React.FC<{
     };
 
     return (
-        <div className="bg-[#D9D9D9] rounded-lg p-4 relative">
+        <div className="bg-[#D9D9D9] rounded-lg p-3 relative">
             {/* Delete button */}
             <Button
                 onClick={handleDelete}
@@ -109,11 +106,11 @@ const CartProductCard: React.FC<{
             />
 
             <div className="flex flex-col">
-                <h3 className="text-lg font-medium mb-2">{product.name}</h3>
+                <h3 className="text-sm font-medium mb-2">{product.name}</h3>
 
                 {/* Details */}
                 <div className="space-y-1 text-sm text-gray-600">
-                    <p>
+                    <p className="flex items-center">
                         Quantity:
                         <Button
                             shape="circle"
@@ -147,7 +144,7 @@ const CartProductCard: React.FC<{
 
                 {/* Price */}
                 <p className="text-right font-semibold mt-2">
-                    Price: {(product.price * product.quantity).toLocaleString('en-US')}$
+                    Price: {(product.price * product.quantity).toLocaleString('en-US')}$ 
                 </p>
             </div>
         </div>
