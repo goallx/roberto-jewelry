@@ -20,6 +20,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import ProfileDropdown from './profile-dropdown/ProfileDropdown';
+import { useLanguage } from '@/context/LanguageProvider';
 
 const menuVariants = {
   open: { opacity: 1, x: 0, transition: { duration: 0.28, ease: 'easeOut' } },
@@ -64,7 +65,7 @@ const Navbar = observer(() => {
   const [isLoading, setIsLoading] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isNavbarHovered, setIsNavbarHovered] = useState(false);
-  const [lang, setLang] = useState<'EN' | 'HE'>('EN');
+  const { toggleLang, lang } = useLanguage()
 
   const { isAuthenticated, logout, user } = useAuth();
 
@@ -75,7 +76,6 @@ const Navbar = observer(() => {
   const navbarRef = useRef<HTMLElement | null>(null);
 
   const capitalize = (s: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : '');
-  const fullName = `${capitalize(user?.firstName || '')} ${capitalize(user?.lastName || '')}`.trim();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -124,7 +124,6 @@ const Navbar = observer(() => {
 
   const toggleMenu = () => setMenuOpen((m) => !m);
   const toggleDropdown = () => setDropdownOpen((d) => !d);
-  const toggleLang = () => setLang((prev) => (prev === 'EN' ? 'HE' : 'EN'));
 
   if (pathname?.includes('admin')) return null;
 
