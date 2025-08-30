@@ -67,6 +67,7 @@ const Navbar = observer(() => {
   const [lang, setLang] = useState<'EN' | 'HE'>('EN');
 
   const { isAuthenticated, logout, user } = useAuth();
+
   const { cartStore, profileStore, wishlistStore } = useStores();
 
   const profileRef = useRef<HTMLDivElement | null>(null);
@@ -175,7 +176,7 @@ const Navbar = observer(() => {
               <div className={styles.dropdownMenu} role="menu" aria-label="Jewelry menu">
                 {/* Frosted glass background for dropdown */}
                 <div className={styles.frostedGlass}></div>
-                
+
                 <div className={styles.dropdownContent}>
                   <div className={styles.dropdownInner}>
                     <div className={styles.columns}>
@@ -276,8 +277,7 @@ const Navbar = observer(() => {
 
           <ProfileDropdown
             isOpen={isAuthenticated && profileOpen}
-            user={user}
-            profileStore={profileStore}
+            user={profileStore?.profile}
             isLoading={isLoading}
             onLogout={handleLogout}
             onClose={() => setProfileOpen(false)}
