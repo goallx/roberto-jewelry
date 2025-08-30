@@ -1,4 +1,4 @@
-import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { createClient } from "@/lib/supabase/supabaseAdmin";
 import { IProduct } from "@/stores/ProductStore";
 
 type ProductFilters = {
@@ -14,6 +14,7 @@ type ProductFilters = {
 export async function getMostSellingProducts(
   limit: number = 4
 ): Promise<IProduct[]> {
+  const supabaseAdmin = await createClient();
   try {
     const { data, error } = await supabaseAdmin
       .from("products")
@@ -33,6 +34,7 @@ export async function getMostSellingProducts(
 export async function getProductsByCategory(
   catId: string
 ): Promise<IProduct[] | null> {
+  const supabaseAdmin = await createClient();
   try {
     if (!catId) throw new Error("Category id is required");
 
@@ -51,6 +53,7 @@ export async function getProductsByCategory(
 }
 
 export async function getProductById(id: string): Promise<IProduct | null> {
+  const supabaseAdmin = await createClient();
   try {
     if (!id) throw new Error("Product ID is required");
     const { data, error } = await supabaseAdmin
@@ -71,6 +74,7 @@ export async function getProductById(id: string): Promise<IProduct | null> {
 export async function getProducts(
   filters?: ProductFilters
 ): Promise<IProduct[]> {
+  const supabaseAdmin = await createClient();
   const supabase = supabaseAdmin;
 
   let query = supabase.from("products").select("*, categories!inner(name)");

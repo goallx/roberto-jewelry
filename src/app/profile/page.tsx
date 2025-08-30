@@ -1,148 +1,246 @@
-'use client';
+"use client";
 
-import React from 'react';
-import styles from './profile.module.css';
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase/supabaseClient";
+import {
+  UserIcon,
+  PhoneIcon,
+  AtSignIcon,
+  CalendarIcon,
+  MapPinIcon,
+  SaveIcon,
+} from "lucide-react";
 
-const ProfilePage = () => {
-  return (
-    <div className={styles.profileContainer}>
-      {/* Breadcrumb */}
-      <div className={styles.breadcrumb}>
-        <span>Home</span>
-        <span>/</span>
-        <span>Profile</span>
+export default function ProfilePage() {
+  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState({
+    full_name: "",
+    phone: "",
+    email: "",
+    birthday: "",
+    street: "",
+    city: "",
+    zip_code: "",
+  });
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      setLoading(true);
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) return;
+
+      setProfile((prev) => ({ ...prev, email: user.email || "" }));
+
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("first_name, last_name, phone_number, birthday, address")
+        .eq("id", user.id)
+        .single();
+
+      if (!error && data) {
+        setProfile({
+          full_name: `${data.first_name || ''} ${data.last_name || ''}`.trim(),
+          phone: data.phone_number || "",
+          email: user.email || "",
+          birthday: data.birthday || "",
+          street: data.address.street,
+          city: data.address.city,
+          zip_code: data.address.zip,
+        });
+      }
+      setLoading(false);
+    };
+
+    fetchProfile();
+  }, []);
+
+  const updateProfile = async () => {
+    setLoading(true);
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    const [first_name, ...last_nameParts] = profile.full_name.split(' ');
+    const last_name = last_nameParts.join(' ');
+
+    const updates = {
+      id: user?.id,
+      first_name: first_name || "",
+      last_name: last_name || "",
+      phone_number: profile.phone,
+      birthday: profile.birthday,
+      address: {
+        city: profile.city,
+        street: profile.street,
+        zip: profile.zip_code
+      },
+      updated_at: new Date().toISOString(),
+    };
+
+    let { error } = await supabase.from("profiles").upsert(updates).eq("id", user?.id)
+
+    if (error) {
+      alert("Error updating profile: " + error.message);
+    } else {
+      alert("Profile updated successfully!");
+    }
+    setLoading(false);
+  };
+
+  if (loading) {
+    return (
+      <div className="max-w-xl mx-auto mt-32 flex justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
       </div>
+    );
+  }
 
-      <div className={styles.profileForm}>
-        {/* Left Section */}
-        <div className={styles.formSection}>
-          {/* Name Field */}
-          <h3 className={styles.sectionTitle}>Name</h3>
-          <div className={styles.fieldGroup}>
-            <div className={styles.inputRow}>
-              <div className={styles.inputGroup}>
-                <label>First Name</label>
-                <input type="text" defaultValue="John" />
-              </div>
-              <div className={styles.inputGroup}>
-                <label>Last Name</label>
-                <input type="text" defaultValue="Doe" />
-              </div>
-            </div>
-            <button className={styles.updateButton}>Update</button>
-          </div>
+  return (
+    <div className="max-w-2xl mx-auto space-y-6 my-28 p-4">
+      <div className="bg-white rounded-2xl shadow-md p-6 space-y-6">
+        {/* Name */}
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+            <UserIcon className="w-4 h-4" />
+            שם מלא
+          </label>
+          <input
+            type="text"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none"
+            placeholder="הכנס שם מלא"
+            value={profile.full_name}
+            onChange={(e) =>
+              setProfile({ ...profile, full_name: e.target.value })
+            }
+          />
+        </div>
 
-          {/* Email Field */}
-          <h3 className={styles.sectionTitle}>E-mail</h3>
-          <div className={styles.fieldGroup}>
-            <div className={styles.currentValue}>Username: johndoe@gmail.com</div>
-            <div className={styles.inputGroup}>
-              <label>The New Email Address</label>
-              <input type="email" placeholder="Enter new email" />
-            </div>
-            <div className={styles.inputGroup}>
-              <label>Password</label>
-              <input type="password" placeholder="Enter your password" />
-            </div>
-            <button className={styles.updateButton}>Update</button>
-          </div>
+        {/* Phone */}
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+            <PhoneIcon className="w-4 h-4" />
+            מספר טלפון
+          </label>
+          <input
+            type="tel"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none"
+            placeholder="הכנס מספר טלפון"
+            value={profile.phone}
+            onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
+          />
+        </div>
 
-          {/* Password Field */}
-          <h3 className={styles.sectionTitle}>Password</h3>
-          <div className={styles.fieldGroup}>
-            <div className={styles.inputGroup}>
-              <label>The Current Password</label>
-              <input type="password" placeholder="Enter current password" />
+        {/* Email */}
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+            <AtSignIcon className="w-4 h-4" />
+            כתובת אימייל
+          </label>
+          <input
+            type="email"
+            className="w-full p-3 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
+            placeholder="אימייל"
+            disabled
+            value={profile.email}
+          />
+          <p className="text-xs text-gray-500">לא ניתן לשנות את כתובת האימייל</p>
+        </div>
+
+        {/* Birthdate */}
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+            <CalendarIcon className="w-4 h-4" />
+            תאריך לידה
+          </label>
+          <input
+            type="date"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none"
+            value={profile.birthday || ""}
+            onChange={(e) =>
+              setProfile({ ...profile, birthday: e.target.value })
+            }
+          />
+        </div>
+
+        {/* Address Section */}
+        <div className="border-t pt-4 mt-2">
+          <h3 className="text-lg font-medium text-gray-800 mb-4 flex items-center gap-2">
+            <MapPinIcon className="w-5 h-5" />
+            כתובת
+          </h3>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Street */}
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium text-gray-700">
+                רחוב
+              </label>
+              <input
+                type="text"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none"
+                placeholder="שם הרחוב"
+                value={profile.street}
+                onChange={(e) =>
+                  setProfile({ ...profile, street: e.target.value })
+                }
+              />
             </div>
-            <div className={styles.inputGroup}>
-              <label>The New Password</label>
-              <input type="password" placeholder="Enter new password" />
+
+            {/* City */}
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium text-gray-700">
+                עיר
+              </label>
+              <input
+                type="text"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none"
+                placeholder="שם העיר"
+                value={profile.city}
+                onChange={(e) =>
+                  setProfile({ ...profile, city: e.target.value })
+                }
+              />
             </div>
-            <div className={styles.inputGroup}>
-              <label>The New Password Confirmation</label>
-              <input type="password" placeholder="Confirm new password" />
+
+            {/* Zip Code */}
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium text-gray-700">
+                מיקוד
+              </label>
+              <input
+                type="text"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none"
+                placeholder="מיקוד"
+                value={profile.zip_code}
+                onChange={(e) =>
+                  setProfile({ ...profile, zip_code: e.target.value })
+                }
+              />
             </div>
-            <button className={styles.updateButton}>Update</button>
           </div>
         </div>
 
-        {/* Right Section */}
-        <div className={styles.formSection}>
-          {/* Phone Number Field */}
-          <h3 className={styles.sectionTitle}>Phone Number</h3>
-          <div className={styles.fieldGroup}>
-            <div className={styles.currentValue}>Current: *972500000000</div>
-            <div className={styles.inputGroup}>
-              <label>The New Phone Number</label>
-              <input type="tel" placeholder="Enter new phone number" />
-            </div>
-            <div className={styles.inputGroup}>
-              <label>Password</label>
-              <input type="password" placeholder="Enter your password" />
-            </div>
-            <button className={styles.updateButton}>Update</button>
-          </div>
-
-          {/* Date of Birth Field */}
-          <h3 className={styles.sectionTitle}>Date of Birth</h3>
-          <div className={styles.fieldGroup}>
-            <div className={styles.currentValue}>Current: 00-00-0000</div>
-            <div className={styles.inputRow}>
-              <div className={styles.inputGroup}>
-                <label>Day</label>
-                <input type="text" placeholder="DD" />
-              </div>
-              <div className={styles.inputGroup}>
-                <label>Month</label>
-                <input type="text" placeholder="MM" />
-              </div>
-              <div className={styles.inputGroup}>
-                <label>Year</label>
-                <input type="text" placeholder="YYYY" />
-              </div>
-            </div>
-            <button className={styles.updateButton}>Update</button>
-          </div>
-
-          {/* Shipping Address Field */}
-          <h3 className={styles.sectionTitle}>Shipping Address</h3>
-          <div className={styles.fieldGroup}>
-            <div className={styles.inputRow}>
-              <div className={styles.inputGroup}>
-                <label>First Name</label>
-                <input type="text" defaultValue="John" />
-              </div>
-              <div className={styles.inputGroup}>
-                <label>Second Name</label>
-                <input type="text" defaultValue="Doe" />
-              </div>
-            </div>
-            <div className={styles.inputRow}>
-              <div className={styles.inputGroup}>
-                <label>City</label>
-                <input type="text" defaultValue="New York" />
-              </div>
-              <div className={styles.inputGroup}>
-                <label>ZIP Code</label>
-                <input type="text" defaultValue="10001" />
-              </div>
-            </div>
-            <div className={styles.inputGroup}>
-              <label>Country</label>
-              <select>
-                <option>Select Country</option>
-                <option>USA</option>
-                <option>UK</option>
-                <option>Israel</option>
-                <option>Europe</option>
-              </select>
-            </div>
-            <button className={styles.updateButton}>Update</button>
-          </div>
-        </div>
+        <button
+          onClick={updateProfile}
+          disabled={loading}
+          className="w-full py-3 rounded-xl bg-black text-white font-semibold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 mt-6"
+        >
+          {loading ? (
+            <>
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+              מתעדכן...
+            </>
+          ) : (
+            <>
+              <SaveIcon className="w-5 h-5" />
+              עדכון פרטים
+            </>
+          )}
+        </button>
       </div>
     </div>
   );
-};
-
-export default ProfilePage;
+}

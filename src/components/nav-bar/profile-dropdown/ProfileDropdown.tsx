@@ -4,9 +4,7 @@ import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faFileLines,
-  faEye,
   faHeart,
-  faComment,
   faUserCircle,
 } from '@fortawesome/free-regular-svg-icons';
 import { Loader } from '@/components/loader/Loader';
@@ -15,7 +13,6 @@ import styles from './ProfileDropdown.module.css';
 interface ProfileDropdownProps {
   isOpen: boolean;
   user: any;
-  profileStore: any;
   isLoading: boolean;
   onLogout: () => void;
   onClose: () => void;
@@ -24,13 +21,12 @@ interface ProfileDropdownProps {
 const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
   isOpen,
   user,
-  profileStore,
   isLoading,
   onLogout,
   onClose,
 }) => {
   const router = useRouter();
-  
+
   if (!isOpen) return null;
 
   const capitalize = (s: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : '');
@@ -45,23 +41,12 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
     <div className={styles.profileDropdown}>
       {/* Frosted glass background overlay */}
       <div className={styles.frostedGlass}></div>
-      
+
       {/* Content container */}
       <div className={styles.dropdownContent}>
-        {/* User Header Section with Profile Picture - Clickable */}
-        <div className={styles.userHeader} onClick={handleProfileClick} style={{ cursor: 'pointer' }}>
-          <div className={styles.profileImageContainer}>
-            {user?.profilePicture ? (
-              <img 
-                src={user.profilePicture} 
-                alt="Profile" 
-                className={styles.profileImage}
-              />
-            ) : (
-              <FontAwesomeIcon icon={faUserCircle} className={styles.profilePlaceholder} />
-            )}
-          </div>
+        <div className={styles.userHeader} style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
           <h3 className={styles.userName}>{fullName || 'User Name'}</h3>
+          <p className='font-light text-sm'>{user.email}</p>
         </div>
 
         <div className={styles.separator} />
@@ -70,25 +55,20 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
         <div className={styles.navigationSection}>
           <nav className={styles.navMenu}>
             {/* Changed to /my-orders */}
+            <Link href="/profile" className={styles.navItem} onClick={onClose}>
+              <FontAwesomeIcon icon={faUserCircle} className={styles.navIcon} />
+              <span>Profile</span>
+            </Link>
             <Link href="/my-orders" className={styles.navItem} onClick={onClose}>
               <FontAwesomeIcon icon={faFileLines} className={styles.navIcon} />
               <span>My Orders</span>
             </Link>
-            
-            <Link href="/history" className={styles.navItem} onClick={onClose}>
-              <FontAwesomeIcon icon={faEye} className={styles.navIcon} />
-              <span>History</span>
-            </Link>
-            
+
             <Link href="/wishlist" className={styles.navItem} onClick={onClose}>
               <FontAwesomeIcon icon={faHeart} className={styles.navIcon} />
               <span>Wishlist</span>
             </Link>
-            
-            <Link href="/reviews" className={styles.navItem} onClick={onClose}>
-              <FontAwesomeIcon icon={faComment} className={styles.navIcon} />
-              <span>To Review</span>
-            </Link>
+
           </nav>
         </div>
 
@@ -96,9 +76,9 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
 
         {/* Logout Section */}
         <div className={styles.logoutSection}>
-          <button 
-            className={styles.logoutButton} 
-            onClick={onLogout} 
+          <button
+            className={styles.logoutButton}
+            onClick={onLogout}
             disabled={isLoading}
           >
             {isLoading ? (

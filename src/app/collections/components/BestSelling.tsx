@@ -1,6 +1,6 @@
 import { IProduct } from "@/stores/ProductStore";
 import { ProductCard } from "./ProductCard";
-import { getMostSellingProducts } from "@/app/products/action";
+import { getMostSellingProducts } from "@/app/collections/action";
 import { Loader } from "@/components/loader/Loader";
 
 export default async function BestSelling() {

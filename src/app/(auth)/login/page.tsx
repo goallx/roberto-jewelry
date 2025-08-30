@@ -1,9 +1,8 @@
 'use client'
 
 import { useState } from 'react';
-import { supabase } from '@/lib/supabaseClient';
+import { supabase } from '@/lib/supabase/supabaseClient';
 import { Loader } from '@/components/loader/Loader';
-import { useRouter } from 'next/navigation';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');

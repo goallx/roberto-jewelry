@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
-import { supabase } from "@/lib/supabaseClient";
+
 import { IProduct } from "./ProductStore";
+import { supabase } from "@/lib/supabase/supabaseClient";
 
 export interface IWishlistItem {
   id: string;

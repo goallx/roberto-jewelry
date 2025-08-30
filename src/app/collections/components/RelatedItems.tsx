@@ -1,6 +1,6 @@
 import { IProduct } from "@/stores/ProductStore"
 import { Loader } from "@/components/loader/Loader"
-import { getProductsByCategory } from "@/app/products/action"
+import { getProductsByCategory } from "@/app/collections/action"
 import { ProductCard } from "./ProductCard"
 
 interface RelatedItemsProps {
