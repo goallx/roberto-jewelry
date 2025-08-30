@@ -1,6 +1,6 @@
 import { UploadedImagesResponse } from "@/app/api/uploads/images/manager";
 import { makeAutoObservable } from "mobx";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabase/supabaseClient";
 
 export interface IProduct {
   name: string;

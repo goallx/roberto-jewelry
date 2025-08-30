@@ -1,4 +1,4 @@
-import { getProductById } from "@/app/products/action"
+import { getProductById } from "@/app/collections/action"
 import ProductPage from "../components/ProductPage"
 import NotFound from "./not-found"
 

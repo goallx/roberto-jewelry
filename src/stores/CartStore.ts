@@ -1,5 +1,5 @@
 import { makeAutoObservable, toJS } from "mobx";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabase/supabaseClient";
 import { IProduct } from "./ProductStore";
 
 export interface ICartItem {

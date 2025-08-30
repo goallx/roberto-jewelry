@@ -1,7 +1,7 @@
 'use server'
 
 import { ProductCard } from "@/app/collections/components/ProductCard";
-import { getProducts } from "@/app/products/action";
+import { getProducts } from "@/app/collections/action";
 import Image from "next/image";
 import Link from "next/link";
 

@@ -1,4 +1,4 @@
-import { getProducts } from "../products/action";
+import { getProducts } from "./action";
 import CollectionsDisplay from "./components/CollectionsDisplay";
 
 
