@@ -19,6 +19,7 @@ import { useStores } from '@/context/StoreContext';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import ProfileDropdown from './profile-dropdown/ProfileDropdown';
 
 const menuVariants = {
   open: { opacity: 1, x: 0, transition: { duration: 0.28, ease: 'easeOut' } },
@@ -132,7 +133,6 @@ const Navbar = observer(() => {
     router.push(href);
   };
 
-  // Function to handle cart icon click
   const handleCartClick = () => {
     setMenuOpen(false);
     setDropdownOpen(false);
@@ -173,44 +173,49 @@ const Navbar = observer(() => {
 
             {dropdownOpen && (
               <div className={styles.dropdownMenu} role="menu" aria-label="Jewelry menu">
-                <div className={styles.dropdownInner}>
-                  <div className={styles.columns}>
-                    <div className={styles.col}>
-                      <h4>WOMEN</h4>
-                      <Link href="/products?category=bracelets" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Bracelets</Link>
-                      <Link href="/products?category=earrings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Earrings</Link>
-                      <Link href="/products?category=rings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Rings</Link>
-                      <Link href="/products?category=necklaces" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Necklaces</Link>
-                      <Link href="/products?category=pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Pendants</Link>
+                {/* Frosted glass background for dropdown */}
+                <div className={styles.frostedGlass}></div>
+                
+                <div className={styles.dropdownContent}>
+                  <div className={styles.dropdownInner}>
+                    <div className={styles.columns}>
+                      <div className={styles.col}>
+                        <h4>WOMEN</h4>
+                        <Link href="/products?category=bracelets" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Bracelets</Link>
+                        <Link href="/products?category=earrings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Earrings</Link>
+                        <Link href="/products?category=rings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Rings</Link>
+                        <Link href="/products?category=necklaces" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Necklaces</Link>
+                        <Link href="/products?category=pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Pendants</Link>
+                      </div>
+
+                      <div className={styles.col}>
+                        <h4>MEN</h4>
+                        <Link href="/products?category=men-bracelets" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Bracelets</Link>
+                        <Link href="/products?category=men-earrings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Earrings</Link>
+                        <Link href="/products?category=men-rings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Rings</Link>
+                        <Link href="/products?category=men-necklaces" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Necklaces</Link>
+                        <Link href="/products?category=men-pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Pendants</Link>
+                      </div>
+
+                      <div className={styles.col}>
+                        <h4>SIGNATURE</h4>
+                        <Link href="/products?category=signature-bracelets" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Bracelets</Link>
+                        <Link href="/products?category=signature-earrings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Earrings</Link>
+                        <Link href="/products?category=signature-rings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Rings</Link>
+                        <Link href="/products?category=signature-necklaces" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Necklaces</Link>
+                        <Link href="/products?category=signature-pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Pendants</Link>
+                      </div>
                     </div>
 
-                    <div className={styles.col}>
-                      <h4>MEN</h4>
-                      <Link href="/products?category=men-bracelets" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Bracelets</Link>
-                      <Link href="/products?category=men-earrings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Earrings</Link>
-                      <Link href="/products?category=men-rings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Rings</Link>
-                      <Link href="/products?category=men-necklaces" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Necklaces</Link>
-                      <Link href="/products?category=men-pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Pendants</Link>
+                    <div className={styles.dropdownImageWrapper}>
+                      <Image
+                        src="/image/dropdown.jpg"
+                        alt="Jewelry collection"
+                        width={960}
+                        height={320}
+                        style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
+                      />
                     </div>
-
-                    <div className={styles.col}>
-                      <h4>SIGNATURE</h4>
-                      <Link href="/products?category=signature-bracelets" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Bracelets</Link>
-                      <Link href="/products?category=signature-earrings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Earrings</Link>
-                      <Link href="/products?category=signature-rings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Rings</Link>
-                      <Link href="/products?category=signature-necklaces" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Necklaces</Link>
-                      <Link href="/products?category=signature-pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Pendants</Link>
-                    </div>
-                  </div>
-
-                  <div className={styles.dropdownImageWrapper}>
-                    <Image
-                      src="/image/dropdown.jpg"
-                      alt="Jewelry collection"
-                      width={960}
-                      height={320}
-                      style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
-                    />
                   </div>
                 </div>
               </div>
@@ -264,69 +269,30 @@ const Navbar = observer(() => {
           {lang}
         </button>
 
-        {/* <button className={styles.iconBtn} aria-label="Search" onClick={() => navigate('/search')}>
-          <SearchIcon className={styles.iconSvg} />
-        </button> */}
-
         <div className={styles.profileWrap} ref={profileRef}>
           <button className={`${styles.iconBtn} ${styles.profileIcon}`} aria-label="Profile" onClick={handleProfileClick}>
             <UserIcon className={styles.iconSvg} />
           </button>
 
-          {isAuthenticated && profileOpen && (
-            <div className={styles.profileDropdown}>
-              <div className={styles.profileHeader}>
-                <h2 className={styles.profileName}>
-                  {fullName || 'Your account'} {profileStore?.profile?.membership && <FontAwesomeIcon icon={faCheckCircle} />}
-                </h2>
-                {!profileStore?.profile?.membership ? (
-                  <Link href="/membership" className={styles.memberLink}>Become a member</Link>
-                ) : (
-                  <p className="text-xs">Roberto Membership</p>
-                )}
-              </div>
-
-              <div className={styles.separator} />
-
-              <ul>
-                <li>
-                  <Link href="/profile" className={styles.profileItem}>
-                    <FontAwesomeIcon icon={faIdCard} className={styles.smallIcon} /> Profile
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/orders" className={styles.profileItem}>
-                    <FontAwesomeIcon icon={faCreditCard} className={styles.smallIcon} /> My Orders
-                  </Link>
-                </li>
-                {user?.role === 'admin' && (
-                  <li>
-                    <Link href="/admin" className={styles.profileItem}>
-                      <FontAwesomeIcon icon={faPenToSquare} className={styles.smallIcon} /> Dashboard
-                    </Link>
-                  </li>
-                )}
-                <li>
-                  <button className={styles.logoutBtn} onClick={handleLogout}>
-                    {isLoading ? <Loader /> : 'Sign Out'}
-                  </button>
-                </li>
-              </ul>
-            </div>
-          )}
+          <ProfileDropdown
+            isOpen={isAuthenticated && profileOpen}
+            user={user}
+            profileStore={profileStore}
+            isLoading={isLoading}
+            onLogout={handleLogout}
+            onClose={() => setProfileOpen(false)}
+          />
         </div>
 
-        {
-          isAuthenticated &&
+        {isAuthenticated && (
           <button aria-label="Wishlist" className={styles.iconBtn} onClick={() => navigate('/wishlist')}>
             <Badge count={wishlistStore?.items.length} overflowCount={99}>
               <HeartIcon className={styles.iconSvg} />
             </Badge>
           </button>
-        }
+        )}
 
-        {
-          isAuthenticated &&
+        {isAuthenticated && (
           <button
             className={styles.iconBtn}
             aria-label="Cart"
@@ -337,8 +303,7 @@ const Navbar = observer(() => {
               <BagIcon className={styles.iconSvg} />
             </Badge>
           </button>
-        }
-
+        )}
       </div>
 
       {/* MOBILE MENU */}
@@ -382,19 +347,6 @@ const Navbar = observer(() => {
                 {isLoading ? <Loader /> : 'Sign Out'}
               </button>
             )}
-
-            {/* {!isAuthenticated && (
-              <button
-                className={styles.signInBtn}
-                onClick={() => {
-                  setMenuOpen(false);
-                  if (typeof setShowModal === 'function') setShowModal(true);
-                  else router.push('/login');
-                }}
-              >
-                Login
-              </button>
-            )} */}
           </div>
         </motion.div>
       )}

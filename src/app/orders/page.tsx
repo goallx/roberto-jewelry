@@ -50,14 +50,14 @@ const Orders: React.FC = () => {
                                 <h1 className="m-auto text-center font-semibold">You have no orders!</h1>
                                 :
                                 orders.map((order: IOrderWithProduct, index: number) => (
-                                    <>
-                                        <OrderPageCard order={order} key={order._id} />
+                                    <div key={order._id}>
+                                        <OrderPageCard order={order} />
                                         {
-                                            index < orders.length && (
-                                                <div key={index + 1} className="h-[2px] bg-gray-200 w-[70%] m-auto mb-10" />
+                                            index < orders.length - 1 && (
+                                                <div className="h-[2px] bg-gray-200 w-[70%] m-auto mb-10" />
                                             )
                                         }
-                                    </>
+                                    </div>
                                 ))
                     }
                 </div>
@@ -113,7 +113,10 @@ const OrderPageCard: React.FC<{ order: IOrderWithProduct }> = ({ order }) => {
     }
 
     const handleProductNavigation = async (product: IProduct) => {
-        const pathName = `/products/${product.categoryName.toLocaleLowerCase()}?id=${product._id}`;
+        // Use optional chaining and provide a fallback for categoryName
+        const category = product.categoryName?.toLocaleLowerCase() ?? 'all';
+        // Use 'id' instead of '_id' to match the IProduct interface
+        const pathName = `/products/${category}?id=${product.id}`;
         router.push(pathName);
     };
 
@@ -149,7 +152,7 @@ const OrderPageCard: React.FC<{ order: IOrderWithProduct }> = ({ order }) => {
                             height={190}
                             className="object-contain shadow-lg cursor-pointer"
                             src={item.product?.images[0].imgUrl}
-                            alt={`${item}-img`}
+                            alt={item.product?.name || `Product ${index}`}
                         />
                     ))}
                 </div>
