@@ -21,6 +21,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import ProfileDropdown from './profile-dropdown/ProfileDropdown';
 import { useLanguage } from '@/context/LanguageProvider';
+import { useTranslation } from 'react-i18next';
 
 const menuVariants = {
   open: { opacity: 1, x: 0, transition: { duration: 0.28, ease: 'easeOut' } },
@@ -65,17 +66,16 @@ const Navbar = observer(() => {
   const [isLoading, setIsLoading] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isNavbarHovered, setIsNavbarHovered] = useState(false);
-  const { toggleLang, lang } = useLanguage()
 
-  const { isAuthenticated, logout, user } = useAuth();
+  const { toggleLang, lang } = useLanguage();
+  const { t } = useTranslation();
 
+  const { isAuthenticated, logout } = useAuth();
   const { cartStore, profileStore, wishlistStore } = useStores();
 
   const profileRef = useRef<HTMLDivElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const navbarRef = useRef<HTMLElement | null>(null);
-
-  const capitalize = (s: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : '');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -116,7 +116,7 @@ const Navbar = observer(() => {
 
   const handleProfileClick = () => {
     if (!isAuthenticated) {
-      router.push('/login')
+      router.push('/login');
     } else {
       setProfileOpen((p) => !p);
     }
@@ -151,7 +151,7 @@ const Navbar = observer(() => {
     >
       {/* LEFT AREA */}
       <div className={styles.leftArea}>
-        <div className={styles.hamburger} onClick={toggleMenu} role="button" aria-label="Toggle menu">
+        <div className={styles.hamburger} onClick={toggleMenu} role="button" aria-label={t('toggle_menu') ?? 'Toggle menu'}>
           <span />
           <span />
           <span />
@@ -159,7 +159,7 @@ const Navbar = observer(() => {
 
         <div className={styles.navbarLeft}>
           <Link href="/" className={styles.navLink}>
-            Home
+            {t('home')}
           </Link>
 
           <div className={styles.jewelryWrap} ref={dropdownRef}>
@@ -168,11 +168,11 @@ const Navbar = observer(() => {
               onClick={toggleDropdown}
               aria-expanded={dropdownOpen}
             >
-              Jewelry
+              {t('jewelry')}
             </button>
 
             {dropdownOpen && (
-              <div className={styles.dropdownMenu} role="menu" aria-label="Jewelry menu">
+              <div className={styles.dropdownMenu} role="menu" aria-label={t('jewelry_menu') ?? 'Jewelry menu'}>
                 {/* Frosted glass background for dropdown */}
                 <div className={styles.frostedGlass}></div>
 
@@ -180,37 +180,37 @@ const Navbar = observer(() => {
                   <div className={styles.dropdownInner}>
                     <div className={styles.columns}>
                       <div className={styles.col}>
-                        <h4>WOMEN</h4>
-                        <Link href="/products?category=bracelets" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Bracelets</Link>
-                        <Link href="/products?category=earrings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Earrings</Link>
-                        <Link href="/products?category=rings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Rings</Link>
-                        <Link href="/products?category=necklaces" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Necklaces</Link>
-                        <Link href="/products?category=pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Pendants</Link>
+                        <h4>{t('women')}</h4>
+                        <Link href="/products?category=bracelets" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('bracelets')}</Link>
+                        <Link href="/products?category=earrings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('earrings')}</Link>
+                        <Link href="/products?category=rings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('rings')}</Link>
+                        <Link href="/products?category=necklaces" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('necklaces')}</Link>
+                        <Link href="/products?category=pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('pendants')}</Link>
                       </div>
 
                       <div className={styles.col}>
-                        <h4>MEN</h4>
-                        <Link href="/products?category=men-bracelets" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Bracelets</Link>
-                        <Link href="/products?category=men-earrings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Earrings</Link>
-                        <Link href="/products?category=men-rings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Rings</Link>
-                        <Link href="/products?category=men-necklaces" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Necklaces</Link>
-                        <Link href="/products?category=men-pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Pendants</Link>
+                        <h4>{t('men')}</h4>
+                        <Link href="/products?category=men-bracelets" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('bracelets')}</Link>
+                        <Link href="/products?category=men-earrings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('earrings')}</Link>
+                        <Link href="/products?category=men-rings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('rings')}</Link>
+                        <Link href="/products?category=men-necklaces" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('necklaces')}</Link>
+                        <Link href="/products?category=men-pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('pendants')}</Link>
                       </div>
 
                       <div className={styles.col}>
-                        <h4>SIGNATURE</h4>
-                        <Link href="/products?category=signature-bracelets" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Bracelets</Link>
-                        <Link href="/products?category=signature-earrings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Earrings</Link>
-                        <Link href="/products?category=signature-rings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Rings</Link>
-                        <Link href="/products?category=signature-necklaces" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Necklaces</Link>
-                        <Link href="/products?category=signature-pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Pendants</Link>
+                        <h4>{t('signature')}</h4>
+                        <Link href="/products?category=signature-bracelets" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('bracelets')}</Link>
+                        <Link href="/products?category=signature-earrings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('earrings')}</Link>
+                        <Link href="/products?category=signature-rings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('rings')}</Link>
+                        <Link href="/products?category=signature-necklaces" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('necklaces')}</Link>
+                        <Link href="/products?category=signature-pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('pendants')}</Link>
                       </div>
                     </div>
 
                     <div className={styles.dropdownImageWrapper}>
                       <Image
                         src="/image/dropdown.jpg"
-                        alt="Jewelry collection"
+                        alt={t('jewelry_collection')}
                         width={960}
                         height={320}
                         style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
@@ -223,22 +223,22 @@ const Navbar = observer(() => {
           </div>
 
           <Link href="/collections" className={styles.navLink}>
-            Collections
+            {t('collections')}
           </Link>
 
           <Link href="/customize" className={styles.navLink}>
-            Customize
+            {t('customize')}
           </Link>
 
           <Link href="/about-us" className={styles.navLink}>
-            About us
+            {t('aboutUs')}
           </Link>
         </div>
       </div>
 
       {/* LOGO (centered) */}
       <div className={styles.navbarLogo}>
-        <Link href="/" aria-label="Home" className={styles.logoWrapper}>
+        <Link href="/" aria-label={t('home')} className={styles.logoWrapper}>
           <Image
             className={styles.logoMain}
             src="https://firebasestorage.googleapis.com/v0/b/general-ebf2c.firebasestorage.app/o/roberto-jewerly%2Froberto-logo-1.png?alt=media&token=cacc86a9-43aa-4090-99da-9ed54525ee2d"
@@ -262,15 +262,15 @@ const Navbar = observer(() => {
       <div className={styles.navbarRight}>
         <button
           className={`${styles.langBtn} ${styles.langBtnEnhanced}`}
-          onClick={toggleLang}
-          aria-label="Toggle language"
+          onClick={() => toggleLang()}
+          aria-label={t('toggle_language') ?? 'Toggle language'}
         >
           <FontAwesomeIcon icon={faGlobe} className={styles.globeIcon} />
-          {lang}
+          {lang.toUpperCase()}
         </button>
 
         <div className={styles.profileWrap} ref={profileRef}>
-          <button className={`${styles.iconBtn} ${styles.profileIcon}`} aria-label="Profile" onClick={handleProfileClick}>
+          <button className={`${styles.iconBtn} ${styles.profileIcon}`} aria-label={t('profile')} onClick={handleProfileClick}>
             <UserIcon className={styles.iconSvg} />
           </button>
 
@@ -284,7 +284,7 @@ const Navbar = observer(() => {
         </div>
 
         {isAuthenticated && (
-          <button aria-label="Wishlist" className={styles.iconBtn} onClick={() => navigate('/wishlist')}>
+          <button aria-label={t('wishlist')} className={styles.iconBtn} onClick={() => navigate('/wishlist')}>
             <Badge count={wishlistStore?.items.length} overflowCount={99}>
               <HeartIcon className={styles.iconSvg} />
             </Badge>
@@ -294,7 +294,7 @@ const Navbar = observer(() => {
         {isAuthenticated && (
           <button
             className={styles.iconBtn}
-            aria-label="Cart"
+            aria-label={t('cart')}
             onClick={handleCartClick}
             style={{ display: 'inline-flex', alignItems: 'center' }}
           >
@@ -310,40 +310,40 @@ const Navbar = observer(() => {
         <motion.div className={styles.mobileMenu} initial="closed" animate="open" variants={menuVariants}>
           <div className={styles.mobileInner}>
             <ul className={styles.mobileList}>
-              <li className={styles.mobileHeader}>HOME</li>
+              <li className={styles.mobileHeader}>{t('home')}</li>
 
-              <li className={styles.mobileHeader}>WOMEN</li>
-              <li><Link href="/products?category=bracelets" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>BRACELETS</Link></li>
-              <li><Link href="/products?category=earrings" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>EARRINGS</Link></li>
-              <li><Link href="/products?category=rings" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>RINGS</Link></li>
-              <li><Link href="/products?category=necklaces" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>NECKLACES</Link></li>
+              <li className={styles.mobileHeader}>{t('women')}</li>
+              <li><Link href="/products?category=bracelets" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('bracelets')}</Link></li>
+              <li><Link href="/products?category=earrings" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('earrings')}</Link></li>
+              <li><Link href="/products?category=rings" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('rings')}</Link></li>
+              <li><Link href="/products?category=necklaces" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('necklaces')}</Link></li>
 
-              <li className={styles.mobileHeader}>MEN</li>
-              <li><Link href="/products?category=men-bracelets" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>BRACELETS</Link></li>
-              <li><Link href="/products?category=men-earrings" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>EARRINGS</Link></li>
-              <li><Link href="/products?category=men-rings" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>RINGS</Link></li>
+              <li className={styles.mobileHeader}>{t('men')}</li>
+              <li><Link href="/products?category=men-bracelets" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('bracelets')}</Link></li>
+              <li><Link href="/products?category=men-earrings" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('earrings')}</Link></li>
+              <li><Link href="/products?category=men-rings" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('rings')}</Link></li>
 
-              <li className={styles.mobileHeader}>SIGNATURE</li>
-              <li><Link href="/products?category=signature-bracelets" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>BRACELETS</Link></li>
-              <li><Link href="/products?category=signature-earrings" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>EARRINGS</Link></li>
+              <li className={styles.mobileHeader}>{t('signature')}</li>
+              <li><Link href="/products?category=signature-bracelets" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('bracelets')}</Link></li>
+              <li><Link href="/products?category=signature-earrings" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('earrings')}</Link></li>
 
-              <li className={styles.mobileHeader}>COLLECTIONS</li>
-              <li><Link href="/collections" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Collections</Link></li>
-              <li><Link href="/customize" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Customise</Link></li>
-              <li><Link href="/about-us" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>About us</Link></li>
+              <li className={styles.mobileHeader}>{t('collections')}</li>
+              <li><Link href="/collections" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('collections')}</Link></li>
+              <li><Link href="/customize" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('customize')}</Link></li>
+              <li><Link href="/about-us" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('aboutUs')}</Link></li>
             </ul>
 
             <div className={styles.mobileIcons}>
-              <Link href="/profile" className={styles.mobileLink}><UserIcon className={styles.iconSvg} /> Profile</Link>
-              <Link href="/orders" className={styles.mobileLink}><FontAwesomeIcon icon={faCreditCard} className={styles.smallIcon} /> My Orders</Link>
-              <Link href="/history" className={styles.mobileLink}><FontAwesomeIcon icon={faIdCard} className={styles.smallIcon} /> History</Link>
-              <Link href="/wishlist" className={styles.mobileLink}><HeartIcon className={styles.iconSvg} /> Wishlist</Link>
-              <Link href="/reviews" className={styles.mobileLink}><FontAwesomeIcon icon={faPenToSquare} className={styles.smallIcon} /> To Review</Link>
+              <Link href="/profile" className={styles.mobileLink}><UserIcon className={styles.iconSvg} /> {t('profile')}</Link>
+              <Link href="/orders" className={styles.mobileLink}><FontAwesomeIcon icon={faCreditCard} className={styles.smallIcon} /> {t('myOrders') ?? 'My Orders'}</Link>
+              <Link href="/history" className={styles.mobileLink}><FontAwesomeIcon icon={faIdCard} className={styles.smallIcon} /> {t('history') ?? 'History'}</Link>
+              <Link href="/wishlist" className={styles.mobileLink}><HeartIcon className={styles.iconSvg} /> {t('wishlist')}</Link>
+              <Link href="/reviews" className={styles.mobileLink}><FontAwesomeIcon icon={faPenToSquare} className={styles.smallIcon} /> {t('to_review') ?? 'To Review'}</Link>
             </div>
 
             {isAuthenticated && (
               <button className={styles.signOutBtn} onClick={handleLogout}>
-                {isLoading ? <Loader /> : 'Sign Out'}
+                {isLoading ? <Loader /> : t('signOut')}
               </button>
             )}
           </div>

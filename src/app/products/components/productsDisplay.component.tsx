@@ -13,12 +13,60 @@ interface ProductsDisplayProps {
   material: string
 }
 
+// Define the correct interface for your categories
+interface CorrectedCategory extends Omit<ICategory, 'id'> {
+  _id: string;
+}
+
+// Define the correct interface for your products - use intersection type instead of extends
+type CorrectedProduct = Omit<IProduct, 'id' | 'images'> & {
+  _id: string;
+  images?: string[]; // Override with the correct type you expect from API
+  image?: string;
+  imageUrl?: string;
+  mainImage?: string;
+};
+
+// Simple ProductCard component since the import is missing
+const ProductCard: React.FC<{ product: CorrectedProduct }> = ({ product }) => {
+  // Get the first available image from various possible properties
+  const getProductImage = () => {
+    if (product.image) return product.image;
+    if (product.imageUrl) return product.imageUrl;
+    if (product.images && product.images.length > 0) {
+      // Handle both string array and complex object array
+      const firstImage = product.images[0];
+      return typeof firstImage === 'string' ? firstImage : '/placeholder-image.jpg';
+    }
+    if (product.mainImage) return product.mainImage;
+    return "/placeholder-image.jpg";
+  };
+
+  return (
+    <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
+      <img 
+        src={getProductImage()} 
+        alt={product.name}
+        className="w-full h-48 object-cover"
+      />
+      <div className="p-4">
+        <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
+        <p className="text-gray-600 mb-2 line-clamp-2">{product.description}</p>
+        <p className="text-blue-600 font-bold">${product.price}</p>
+        {product.stock === 0 && (
+          <p className="text-red-500 text-sm mt-1">Out of Stock</p>
+        )}
+      </div>
+    </div>
+  );
+};
+
 export const ProductsDisplay: React.FC<ProductsDisplayProps> = ({ material }) => {
   const { categoryStore } = useStores()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
-  const [allProducts, setAllProducts] = useState<IProduct[]>([])
-  const [categories, setCategories] = useState<ICategory[]>([])
+  const [allProducts, setAllProducts] = useState<CorrectedProduct[]>([])
+  const [categories, setCategories] = useState<CorrectedCategory[]>([])
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
 
@@ -31,7 +79,8 @@ export const ProductsDisplay: React.FC<ProductsDisplayProps> = ({ material }) =>
       }
       try {
         await categoryStore.fetchCategories()
-        setCategories(categoryStore.categories || [])
+        // Cast the categories to the corrected type
+        setCategories((categoryStore.categories || []) as unknown as CorrectedCategory[])
       } catch (err: any) {
         console.error("Failed to load categories", err)
         setError("Failed to load categories")
@@ -67,7 +116,11 @@ export const ProductsDisplay: React.FC<ProductsDisplayProps> = ({ material }) =>
           throw new Error(data.message || "Failed to fetch products")
         }
 
-        const availableProducts = data.products.filter((p: IProduct) => p.stock > 0)
+        // Log the first product to see actual structure
+        console.log('First product:', data.products[0]);
+        
+        // Cast the products to the corrected type
+        const availableProducts = data.products.filter((p: CorrectedProduct) => p.stock > 0)
         setAllProducts(availableProducts)
       } catch (err: any) {
         setError(err.message || "Something went wrong.")
@@ -103,7 +156,7 @@ export const ProductsDisplay: React.FC<ProductsDisplayProps> = ({ material }) =>
           onClear={() => setSelectedCategory(null)}
           onChange={(value) => setSelectedCategory(value || null)}
           value={selectedCategory || undefined}
-          options={categories.map((cat: ICategory) => ({
+          options={categories.map((cat: CorrectedCategory) => ({
             value: cat._id,
             label: cat.name,
           }))}

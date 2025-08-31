@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { useTranslation } from 'react-i18next'; // i18n import
 
 // Placeholder orders data with images
 const orders = [
@@ -11,7 +12,7 @@ const orders = [
     itemsCount: 6,
     total: 792,
     date: 'Jan 12, 2025',
-    image: '/images/silver-ring.jpg', // Custom image for ring
+    image: '/images/silver-ring.jpg',
   },
   {
     id: 2,
@@ -19,7 +20,7 @@ const orders = [
     itemsCount: 4,
     total: 420,
     date: 'Feb 20, 2025',
-    image: '/images/necklace-homepage-card.png', // Custom image for necklace
+    image: '/images/necklace-homepage-card.png',
   },
   {
     id: 3,
@@ -27,31 +28,33 @@ const orders = [
     itemsCount: 3,
     total: 1350,
     date: 'Mar 15, 2025',
-    image: '/images/diamond-drop-earrings.jpg', // Custom image for earrings
+    image: '/images/diamond-drop-earrings.jpg',
   },
 ];
 
 const OrdersPage = () => {
+  const { t } = useTranslation(); // Initialize i18n
+
   return (
-    <div className="min-h-screen bg-gray-50 pt-32 pb-8"> {/* Added padding to prevent navbar overlap */}
+    <div className="min-h-screen bg-gray-50 pt-32 pb-8">
       {/* Orders Section */}
       <div className="w-full max-w-5xl mx-auto px-6">
-        <h1 className="text-3xl font-semibold mb-8">My Orders</h1>
+        <h1 className="text-3xl font-semibold mb-8">{t('orders.myOrders')}</h1>
 
         {/* Orders List */}
         <div className="space-y-6">
           {orders.map((order) => (
             <div
               key={order.id}
-              className="bg-[#F2F2F2] rounded-lg shadow-md p-6 flex flex-col lg:flex-row justify-between items-center" // Layout with flexbox for responsive design
+              className="bg-[#F2F2F2] rounded-lg shadow-md p-6 flex flex-col lg:flex-row justify-between items-center"
             >
               {/* Left Column (Order Number, Items Count) */}
               <div className="flex flex-col items-start w-full lg:w-1/4 mb-4 lg:mb-0">
                 <div className="text-sm text-gray-600 mb-2">
-                  <strong>Order Number:</strong> {order.orderNumber}
+                  <strong>{t('orders.orderNumber')}:</strong> {order.orderNumber}
                 </div>
                 <div className="text-sm text-gray-600 mb-2">
-                  <strong>Items:</strong> {order.itemsCount} items
+                  <strong>{t('orders.items')}:</strong> {order.itemsCount} {t('orders.itemsLabel')}
                 </div>
               </div>
 
@@ -59,7 +62,7 @@ const OrdersPage = () => {
               <div className="flex justify-center items-center w-1/2 mb-4 lg:mb-0">
                 <Image
                   src={order.image}
-                  alt="Product"
+                  alt={t('orders.productImage')}
                   width={120}
                   height={120}
                   className="object-cover rounded-md"
@@ -69,10 +72,10 @@ const OrdersPage = () => {
               {/* Right Column (Date, Total Price) */}
               <div className="flex flex-col items-end w-full lg:w-1/4 mb-4 lg:mb-0">
                 <div className="text-sm text-gray-600 mb-2">
-                  <strong>Date:</strong> {order.date}
+                  <strong>{t('orders.date')}:</strong> {order.date}
                 </div>
                 <div className="text-sm text-gray-600 mb-2">
-                  <strong>Total:</strong> ${order.total.toLocaleString()}
+                  <strong>{t('orders.total')}:</strong> ${order.total.toLocaleString()}
                 </div>
               </div>
             </div>
