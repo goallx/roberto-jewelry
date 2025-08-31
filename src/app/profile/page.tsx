@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase/supabaseClient";
@@ -26,29 +26,26 @@ export default function ProfilePage() {
   useEffect(() => {
     const fetchProfile = async () => {
       setLoading(true);
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const { data, error } = await supabase.auth.getUser();
+      const user = data?.user;
+      if (!user) return setLoading(false);
 
-      if (!user) return;
-
-      setProfile((prev) => ({ ...prev, email: user.email || "" }));
-
-      const { data, error } = await supabase
+      const { data: profileData, error: profileError } = await supabase
         .from("profiles")
         .select("first_name, last_name, phone_number, birthday, address")
         .eq("id", user.id)
         .single();
 
-      if (!error && data) {
+      if (!profileError && profileData) {
+        const address = profileData.address || {};
         setProfile({
-          full_name: `${data.first_name || ''} ${data.last_name || ''}`.trim(),
-          phone: data.phone_number || "",
+          full_name: `${profileData.first_name || ''} ${profileData.last_name || ''}`.trim(),
+          phone: profileData.phone_number || "",
           email: user.email || "",
-          birthday: data.birthday || "",
-          street: data.address.street,
-          city: data.address.city,
-          zip_code: data.address.zip,
+          birthday: profileData.birthday || "",
+          street: address.street || "",
+          city: address.city || "",
+          zip_code: address.zip || "",
         });
       }
       setLoading(false);
@@ -59,15 +56,15 @@ export default function ProfilePage() {
 
   const updateProfile = async () => {
     setLoading(true);
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const { data } = await supabase.auth.getUser();
+    const user = data?.user;
+    if (!user) return setLoading(false);
 
     const [first_name, ...last_nameParts] = profile.full_name.split(' ');
     const last_name = last_nameParts.join(' ');
 
     const updates = {
-      id: user?.id,
+      id: user.id,
       first_name: first_name || "",
       last_name: last_name || "",
       phone_number: profile.phone,
@@ -80,7 +77,7 @@ export default function ProfilePage() {
       updated_at: new Date().toISOString(),
     };
 
-    let { error } = await supabase.from("profiles").upsert(updates).eq("id", user?.id)
+    const { error } = await supabase.from("profiles").upsert(updates);
 
     if (error) {
       alert("Error updating profile: " + error.message);
