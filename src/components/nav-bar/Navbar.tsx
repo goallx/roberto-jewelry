@@ -184,7 +184,7 @@ const Navbar = observer(() => {
                         <h4>WOMEN</h4>
                         {
                           categoryStore?.categories?.map(cat => (
-                            <Link href={`/collections?category=${cat.name}&gender=female`} className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}</Link>
+                            <Link prefetch href={`/collections?category=${cat.name}&gender=female`} className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}</Link>
                           ))
                         }
                       </div>
@@ -193,7 +193,7 @@ const Navbar = observer(() => {
                         <h4>MEN</h4>
                         {
                           categoryStore?.categories?.map(cat => (
-                            <Link href={`/collections?category=${cat.name}&gender=male`} className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}</Link>
+                            <Link prefetch href={`/collections?category=${cat.name}&gender=male`} className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}</Link>
                           ))
                         }
                       </div>
@@ -214,15 +214,15 @@ const Navbar = observer(() => {
             )}
           </div>
 
-          <Link href="/collections" className={styles.navLink}>
+          <Link prefetch href="/collections" className={styles.navLink}>
             Collections
           </Link>
 
-          <Link href="/customize" className={styles.navLink}>
+          <Link prefetch href="/customize" className={styles.navLink}>
             Customize
           </Link>
 
-          <Link href="/about-us" className={styles.navLink}>
+          <Link prefetch href="/about-us" className={styles.navLink}>
             About us
           </Link>
         </div>

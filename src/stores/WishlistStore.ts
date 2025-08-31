@@ -48,12 +48,11 @@ export class WishlistStore {
   }
 
   async addToWishlist(productId: string) {
-    console.log("@@productid", productId);
     try {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      if (!user) throw new Error("User not authenticated");
+      if (!user) throw "not authenticated";
 
       const { error } = await supabase
         .from("wishlist_items")
@@ -62,8 +61,8 @@ export class WishlistStore {
       if (error) throw error;
 
       await this.fetchWishlist();
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      throw new Error(err);
     }
   }
 

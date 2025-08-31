@@ -8,17 +8,37 @@ import { useState } from "react";
 import { observer } from "mobx-react-lite";
 
 interface ProductCardProps {
-    product: IProduct;
+    product?: IProduct;
 }
-const DEFAULT_IMAGE = "/products/rings/ring1"
+const DEFAULT_IMAGE = "/products/rings/ring1";
+
+// Skeleton Component
+const ProductCardSkeleton: React.FC = () => {
+    return (
+        <div className="h-[330px] flex flex-col cursor-pointer shadow-md relative animate-pulse">
+            {/* Wishlist Skeleton */}
+            <div className="absolute top-3 right-3 z-50 w-8 h-8 bg-gray-200 rounded-full"></div>
+
+            {/* Image Skeleton */}
+            <div className="relative w-full h-full bg-gray-200"></div>
+
+            {/* Text Skeleton */}
+            <div className="h-[88px] mt-3 px-1 text-left">
+                <div className="h-4 bg-gray-200 rounded mb-2 w-3/4"></div>
+                <div className="h-5 bg-gray-200 rounded w-1/2"></div>
+            </div>
+        </div>
+    );
+};
 
 export const ProductCard: React.FC<ProductCardProps> = observer(({ product }) => {
-    if (!product) return <div>SOMETHING WENT WRONG!</div>;
-
     const router = useRouter();
     const { wishlistStore } = useStores();
     const [loading, setLoading] = useState(false);
 
+    if (loading || !product) {
+        return <ProductCardSkeleton />;
+    }
 
     const isInWishlist = wishlistStore?.isInWishlist(product.id);
 
@@ -31,20 +51,21 @@ export const ProductCard: React.FC<ProductCardProps> = observer(({ product }) =>
                 await wishlistStore.addToWishlist(product.id);
             else
                 await wishlistStore.removeFromWishlist(product.id)
-        } catch (err) {
-            console.error("Wishlist error:", err);
+        } catch (err: any) {
+            if (err.message === "not authenticated") {
+                router.push('/login')
+                return
+            }
         } finally {
             setLoading(false);
         }
     };
-
 
     return (
         <div
             onClick={() => router.push(`/collections/${product.id}`)}
             className="h-[330px] flex flex-col cursor-pointer shadow-md relative"
         >
-            {/* Wishlist button */}
             <div
                 onClick={handleWishlistClick}
                 className="absolute top-3 right-3 z-50 w-8 h-8 bg-white border border-gray-300 flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors"
@@ -67,7 +88,7 @@ export const ProductCard: React.FC<ProductCardProps> = observer(({ product }) =>
 
             <div className="relative w-full h-full">
                 <Image
-                    src={product.images?.[0].imgUrl || DEFAULT_IMAGE}
+                    src={product.images?.[0]?.imgUrl || DEFAULT_IMAGE}
                     alt={DEFAULT_IMAGE}
                     fill
                     loading="lazy"
@@ -81,4 +102,4 @@ export const ProductCard: React.FC<ProductCardProps> = observer(({ product }) =>
             </div>
         </div>
     );
-})
+});
