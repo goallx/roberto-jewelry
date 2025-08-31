@@ -1,21 +1,20 @@
+'use client'
+
 import { ICategory } from '@/stores/CategoryStore'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
-import { Button, Tooltip, Popconfirm, message } from 'antd'
+import { Button, Tooltip, Popconfirm } from 'antd'
 import { Loader } from '../loader/Loader'
 import type { PopconfirmProps } from 'antd';
 import { useStores } from '@/context/StoreContext';
 import { useEffect, useState } from 'react';
 import { formatDate } from '@/utils/helpers';
-import { toJS } from 'mobx';
-
 
 interface CategoryTableProps {
     categories: ICategory[] | null
 }
 
-
 export const CategoryTable: React.FC<CategoryTableProps> = ({ categories }) => {
-    categories = toJS(categories)
+
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -63,7 +62,6 @@ const CategoryRow: React.FC<{ category: ICategory & { createdAt?: string } }> = 
     const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<string>("")
 
-    let thumbnail = JSON.parse(category.images as any)
 
     const handleDelete: PopconfirmProps['onConfirm'] = async () => {
         setError("")
@@ -90,7 +88,7 @@ const CategoryRow: React.FC<{ category: ICategory & { createdAt?: string } }> = 
             <th scope="row" className="flex items-center justify-start gap-5 px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                 {
                     category.images.length !== 0 &&
-                    <img className="w-10 h-10 rounded-full" src={thumbnail.imgUrl} alt="" />
+                    <img className="w-10 h-10 rounded-full" src={category.images[0].imgUrl} alt="" />
                 }
                 {category.name}
             </th>
