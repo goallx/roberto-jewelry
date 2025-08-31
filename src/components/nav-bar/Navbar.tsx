@@ -69,19 +69,20 @@ const Navbar = observer(() => {
 
   const { isAuthenticated, logout, user } = useAuth();
 
-  const { cartStore, profileStore, wishlistStore } = useStores();
+  const { cartStore, profileStore, wishlistStore, categoryStore } = useStores();
 
   const profileRef = useRef<HTMLDivElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const navbarRef = useRef<HTMLElement | null>(null);
-
-  const capitalize = (s: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : '');
 
   useEffect(() => {
     const handleScroll = () => {
       const offset = window.scrollY;
       setIsScrolled(offset > 100);
     };
+
+    const fetchCategories = async () => await categoryStore?.fetchCategories()
+    if (!categoryStore?.categories) fetchCategories()
 
     window.addEventListener('scroll', handleScroll);
 
@@ -181,29 +182,20 @@ const Navbar = observer(() => {
                     <div className={styles.columns}>
                       <div className={styles.col}>
                         <h4>WOMEN</h4>
-                        <Link href="/products?category=bracelets" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Bracelets</Link>
-                        <Link href="/products?category=earrings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Earrings</Link>
-                        <Link href="/products?category=rings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Rings</Link>
-                        <Link href="/products?category=necklaces" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Necklaces</Link>
-                        <Link href="/products?category=pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Pendants</Link>
+                        {
+                          categoryStore?.categories?.map(cat => (
+                            <Link href={`/collections?category=${cat.name}&gender=female`} className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}</Link>
+                          ))
+                        }
                       </div>
 
                       <div className={styles.col}>
                         <h4>MEN</h4>
-                        <Link href="/products?category=men-bracelets" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Bracelets</Link>
-                        <Link href="/products?category=men-earrings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Earrings</Link>
-                        <Link href="/products?category=men-rings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Rings</Link>
-                        <Link href="/products?category=men-necklaces" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Necklaces</Link>
-                        <Link href="/products?category=men-pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Pendants</Link>
-                      </div>
-
-                      <div className={styles.col}>
-                        <h4>SIGNATURE</h4>
-                        <Link href="/products?category=signature-bracelets" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Bracelets</Link>
-                        <Link href="/products?category=signature-earrings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Earrings</Link>
-                        <Link href="/products?category=signature-rings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Rings</Link>
-                        <Link href="/products?category=signature-necklaces" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Necklaces</Link>
-                        <Link href="/products?category=signature-pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>Pendants</Link>
+                        {
+                          categoryStore?.categories?.map(cat => (
+                            <Link href={`/collections?category=${cat.name}&gender=male`} className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}</Link>
+                          ))
+                        }
                       </div>
                     </div>
 
