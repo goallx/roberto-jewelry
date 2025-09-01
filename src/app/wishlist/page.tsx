@@ -1,5 +1,8 @@
 'use client'
-import React, { useState } from "react";
+import { useStores } from "@/context/StoreContext";
+import { IWishlistItem } from "@/stores/WishlistStore";
+import { observer } from "mobx-react-lite";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaHeart } from "react-icons/fa";
 
@@ -11,49 +14,21 @@ interface WishlistItem {
   image: string;
 }
 
-const initialWishlistItems: WishlistItem[] = [
-  {
-    id: 1,
-    title: "classicDiamondRing",
-    description: "classicDiamondRingDesc",
-    price: "$2,500",
-    image: "/images/classicDiamondRing.png",
-  },
-  {
-    id: 2,
-    title: "elegantGoldNecklace",
-    description: "elegantGoldNecklaceDesc",
-    price: "$1,800",
-    image: "/images/elegantGoldNecklace.png",
-  },
-  {
-    id: 3,
-    title: "diamondDropEarrings",
-    description: "diamondDropEarringsDesc",
-    price: "$950",
-    image: "/images/diamondDropEarrings.png",
-  },
-  {
-    id: 4,
-    title: "tennisBracelet",
-    description: "tennisBraceletDesc",
-    price: "$1,200",
-    image: "/images/tennisBracelet.png",
-  },
-  {
-    id: 5,
-    title: "pearlDropNecklace",
-    description: "pearlDropNecklaceDesc",
-    price: "$1,500",
-    image: "/images/pearlDropNecklace.png",
-  },
-];
 
-const Wishlist = () => {
+const Wishlist = observer(() => {
   const { t, i18n } = useTranslation();
-  const [wishlistItems, setWishlistItems] = useState(initialWishlistItems);
+  const [wishlistItems, setWishlistItems] = useState<IWishlistItem[]>([]);
+  const { wishlistStore } = useStores()
 
-  const removeFromWishlist = (id: number) => {
+  useEffect(() => {
+    const fetchItems = async () => {
+      await wishlistStore?.fetchWishlist()
+    }
+    fetchItems()
+  }, [])
+
+
+  const removeFromWishlist = (id: string) => {
     setWishlistItems(wishlistItems.filter((item) => item.id !== id));
   };
 
@@ -65,43 +40,41 @@ const Wishlist = () => {
         <h2 className="text-2xl md:text-3xl font-semibold text-[#333333] mb-6">
           {t("wishlist.title")}
         </h2>
-        
-        {wishlistItems.length === 0 ? (
+
+        {wishlistStore?.items.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-600 text-lg">{t("wishlist.empty")}</p>
           </div>
         ) : (
           <>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-              {wishlistItems.map((item) => (
+              {wishlistStore?.items.map((item) => (
                 <div
                   key={item.id}
                   className="relative bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-shadow duration-300 text-center"
                 >
-                  {/* Heart Icon */}
                   <button
-                    onClick={() => removeFromWishlist(item.id)}
-                    className={`absolute top-2 ${
-                      isRTL ? "left-2" : "right-2"
-                    } bg-transparent p-1 text-red-500 hover:text-red-600`}
+                    onClick={() => wishlistStore.removeFromWishlist(item.id)}
+                    className={`absolute top-2 ${isRTL ? "left-2" : "right-2"
+                      } bg-transparent p-1 text-red-500 hover:text-red-600`}
                     aria-label={t("wishlist.removeItem")}
                   >
                     <FaHeart />
                   </button>
 
                   <img
-                    src={item.image}
-                    alt={t(`wishlist.products.${item.title}`)}
+                    src={item.product.images?.[0].imgUrl ?? ""}
+                    alt={t(`wishlist.products.${item.product.name}`)}
                     className="w-full h-32 object-cover rounded-t-xl"
                   />
                   <div className="p-2">
                     <h3 className="text-sm font-medium text-[#333333] mb-1">
-                      {t(`wishlist.products.${item.title}`)}
+                      {t(`wishlist.products.${item.product.name}`)}
                     </h3>
                     <p className="text-xs text-gray-600 mb-2">
-                      {t(`wishlist.products.${item.description}`)}
+                      {t(`wishlist.products.${item.product.description}`)}
                     </p>
-                    <span className="text-sm font-semibold text-gray-800">{item.price}</span>
+                    <span className="text-sm font-semibold text-gray-800">{item.product.price}</span>
                   </div>
                 </div>
               ))}
@@ -118,6 +91,6 @@ const Wishlist = () => {
       </div>
     </section>
   );
-};
+})
 
 export default Wishlist;

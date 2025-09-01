@@ -185,30 +185,39 @@ const Navbar = observer(() => {
                     <div className={styles.columns}>
                       <div className={styles.col}>
                         <h4>{t('women')}</h4>
-                        <Link href="/products?category=bracelets" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('bracelets')}</Link>
-                        <Link href="/products?category=earrings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('earrings')}</Link>
+                        {
+                          categoryStore?.categories?.map(cat => (
+                            <Link prefetch key={cat.id} href={`/collections?category=${cat.name}&gender=female`} className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{cat.name}</Link>
+                          ))
+                        }
+                        {/* <Link href="/products?category=earrings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('earrings')}</Link>
                         <Link href="/products?category=rings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('rings')}</Link>
                         <Link href="/products?category=necklaces" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('necklaces')}</Link>
-                        <Link href="/products?category=pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('pendants')}</Link>
+                        <Link href="/products?category=pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('pendants')}</Link> */}
                       </div>
 
                       <div className={styles.col}>
                         <h4>{t('men')}</h4>
-                        <Link href="/products?category=men-bracelets" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('bracelets')}</Link>
+                        {
+                          categoryStore?.categories?.map(cat => (
+                            <Link prefetch key={cat.id} href={`/collections?category=${cat.name}&gender=male`} className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{cat.name}</Link>
+                          ))
+                        }
+                        {/* <Link href="/products?category=men-bracelets" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('bracelets')}</Link>
                         <Link href="/products?category=men-earrings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('earrings')}</Link>
                         <Link href="/products?category=men-rings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('rings')}</Link>
                         <Link href="/products?category=men-necklaces" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('necklaces')}</Link>
-                        <Link href="/products?category=men-pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('pendants')}</Link>
+                        <Link href="/products?category=men-pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('pendants')}</Link> */}
                       </div>
 
-                      <div className={styles.col}>
+                      {/* <div className={styles.col}>
                         <h4>{t('signature')}</h4>
                         <Link href="/products?category=signature-bracelets" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('bracelets')}</Link>
                         <Link href="/products?category=signature-earrings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('earrings')}</Link>
                         <Link href="/products?category=signature-rings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('rings')}</Link>
                         <Link href="/products?category=signature-necklaces" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('necklaces')}</Link>
                         <Link href="/products?category=signature-pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('pendants')}</Link>
-                      </div>
+                      </div> */}
                     </div >
 
                     <div className={styles.dropdownImageWrapper}>
@@ -226,15 +235,15 @@ const Navbar = observer(() => {
             )}
           </div >
 
-          <Link href="/collections" className={styles.navLink}>
+          <Link prefetch href="/collections" className={styles.navLink}>
             {t('collections')}
           </Link>
 
-          <Link href="/customize" className={styles.navLink}>
+          <Link prefetch href="/customize" className={styles.navLink}>
             {t('customize')}
           </Link>
 
-          <Link href="/about-us" className={styles.navLink}>
+          <Link prefetch href="/about-us" className={styles.navLink}>
             {t('aboutUs')}
           </Link>
         </div>
