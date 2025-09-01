@@ -1,6 +1,7 @@
+'use client';
 
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const awards = [
   { href: "https://competition.adesignaward.com/gooddesigner.php?profile=227701", src: "/image/a aard.jpg", width: 80, height: 40 },
@@ -14,16 +15,12 @@ const awards = [
 ];
 
 export const Awards = () => {
+  const { t } = useTranslation();
+
   return (
-    <section
-      className="py-12 px-4 lg:px-14 bg-[#F5F5F5] text-center flex flex-col gap-5"
-      // initial={{ opacity: 0, y: 50 }}
-      // whileInView={{ opacity: 1, y: 0 }}
-      // viewport={{ once: true }}
-      // transition={{ duration: 1 }}
-    >
+    <section className="py-12 px-4 lg:px-14 bg-[#F5F5F5] text-center flex flex-col gap-5">
       <h2 className="font-amandine text-3xl font-bold text-black mb-4">
-        Our Awards
+        {t('awards.title')}
       </h2>
       <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6">
         {awards.map(({ href, src, width, height }, i) => (
@@ -37,7 +34,7 @@ export const Awards = () => {
             <div className="relative flex items-center justify-center w-[120px] h-[70px]">
               <Image
                 src={src}
-                alt={`award-${i + 1}`}
+                alt={t(`awards.alt${i + 1}`, `Award ${i + 1}`)}
                 width={width}
                 height={height}
                 loading="lazy"
@@ -50,4 +47,3 @@ export const Awards = () => {
     </section>
   );
 };
-

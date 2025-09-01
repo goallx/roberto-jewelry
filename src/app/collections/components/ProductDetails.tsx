@@ -34,21 +34,25 @@ const ProductDetails: React.FC<{ product: IProduct }> = ({ product }) => {
         try {
             await cartStore?.addToCart(product.id);
             showAlert(`'${product.name}' has been added to cart`, 'success');
-        } catch (error) {
+        } catch (error: any) {
+            if (error.message === "not authenticated") {
+                router.push('/login')
+                throw new Error(error.message)
+            }
             showAlert('Failed to add product to cart', 'error');
         } finally {
             setLoading(false);
         }
     }
 
-    const handleBuyProduct = useCallback(async () => {
+    const handleBuyProduct = async () => {
         try {
             await handleAddToCart();
             router.push('/payment');
         } catch (error) {
             showAlert('Failed to proceed to payment', 'error');
         }
-    }, [handleAddToCart, router, showAlert]);
+    }
 
     const handleImageClick = useCallback((img: string) => {
         if (mainImage !== img) {

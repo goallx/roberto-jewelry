@@ -1,14 +1,13 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faFileLines,
-  faHeart,
-  faUserCircle,
-} from '@fortawesome/free-regular-svg-icons';
+import { faFileLines, faHeart, faUserCircle } from '@fortawesome/free-regular-svg-icons';
 import { Loader } from '@/components/loader/Loader';
 import styles from './ProfileDropdown.module.css';
+import { useTranslation } from 'react-i18next';
 
 interface ProfileDropdownProps {
   isOpen: boolean;
@@ -18,14 +17,9 @@ interface ProfileDropdownProps {
   onClose: () => void;
 }
 
-const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
-  isOpen,
-  user,
-  isLoading,
-  onLogout,
-  onClose,
-}) => {
+const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ isOpen, user, isLoading, onLogout, onClose }) => {
   const router = useRouter();
+  const { t, i18n } = useTranslation();
 
   if (!isOpen) return null;
 
@@ -37,55 +31,65 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
     onClose();
   };
 
+  const isRTL = i18n.language === 'he';
+
   return (
-    <div className={styles.profileDropdown}>
-      {/* Frosted glass background overlay */}
+    <div className={styles.profileDropdown} dir={isRTL ? 'rtl' : 'ltr'}>
       <div className={styles.frostedGlass}></div>
-
-      {/* Content container */}
       <div className={styles.dropdownContent}>
-        <div className={styles.userHeader} style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-          <h3 className={styles.userName}>{fullName || 'User Name'}</h3>
-          <p className='font-light text-sm'>{user.email}</p>
+        {/* User Header */}
+        <div
+          className={styles.userHeader}
+          style={{ cursor: 'pointer', textAlign: isRTL ? 'right' : 'left' }}
+          onClick={handleProfileClick}
+        >
+          {/* Display "User Name" in English and its translation in Hebrew */}
+          <h3 className={styles.userName}>
+            {isRTL ? 'שם משתמש' : 'User Name'}: {fullName || ''}
+          </h3>
+          {/* Email under the name */}
+          {user?.email && <p className="font-light text-sm">{user.email}</p>}
         </div>
 
         <div className={styles.separator} />
 
-        {/* Navigation Links */}
-        <div className={styles.navigationSection}>
-          <nav className={styles.navMenu}>
-            {/* Changed to /my-orders */}
-            <Link href="/profile" className={styles.navItem} onClick={onClose}>
-              <FontAwesomeIcon icon={faUserCircle} className={styles.navIcon} />
-              <span>Profile</span>
-            </Link>
-            <Link href="/my-orders" className={styles.navItem} onClick={onClose}>
-              <FontAwesomeIcon icon={faFileLines} className={styles.navIcon} />
-              <span>My Orders</span>
-            </Link>
-
-            <Link href="/wishlist" className={styles.navItem} onClick={onClose}>
-              <FontAwesomeIcon icon={faHeart} className={styles.navIcon} />
-              <span>Wishlist</span>
-            </Link>
-
-          </nav>
-        </div>
-
-        <div className={styles.separator} />
-
-        {/* Logout Section */}
-        <div className={styles.logoutSection}>
-          <button
-            className={styles.logoutButton}
-            onClick={onLogout}
-            disabled={isLoading}
+        {/* Navigation */}
+        <nav className={styles.navMenu}>
+          <Link
+            href="/profile"
+            className={styles.navItem}
+            onClick={onClose}
+            style={{ flexDirection: isRTL ? 'row-reverse' : 'row' }}
           >
-            {isLoading ? (
-              <Loader />
-            ) : (
-              <span>Sign Out</span>
-            )}
+            <FontAwesomeIcon icon={faUserCircle} className={styles.navIcon} />
+            <span>{t('profile')}</span>
+          </Link>
+          <Link
+            href="/my-orders"
+            className={styles.navItem}
+            onClick={onClose}
+            style={{ flexDirection: isRTL ? 'row-reverse' : 'row' }}
+          >
+            <FontAwesomeIcon icon={faFileLines} className={styles.navIcon} />
+            <span>{t('myOrders')}</span>
+          </Link>
+          <Link
+            href="/wishlist"
+            className={styles.navItem}
+            onClick={onClose}
+            style={{ flexDirection: isRTL ? 'row-reverse' : 'row' }}
+          >
+            <FontAwesomeIcon icon={faHeart} className={styles.navIcon} />
+            <span>{t('wishlist.title')}</span> {/* Fixed: use wishlist.title instead of wishlist */}
+          </Link>
+        </nav>
+
+        <div className={styles.separator} />
+
+        {/* Logout */}
+        <div className={styles.logoutSection} style={{ justifyContent: isRTL ? 'flex-end' : 'flex-start' }}>
+          <button className={styles.logoutButton} onClick={onLogout} disabled={isLoading}>
+            {isLoading ? <Loader /> : <span>{t('signOut')}</span>}
           </button>
         </div>
       </div>

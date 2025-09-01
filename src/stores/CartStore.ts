@@ -116,7 +116,7 @@ export class CartStore {
         data: { user },
         error: userError,
       } = await supabase.auth.getUser();
-      if (userError || !user) throw new Error("User not authenticated");
+      if (userError || !user) throw "not authenticated";
 
       // Fetch user's active cart (take first one if multiple)
       let { data: carts, error: cartError } = await supabase
@@ -149,14 +149,12 @@ export class CartStore {
         .maybeSingle(); // returns null if not exists
       if (existingError) throw existingError;
       if (existingItem) {
-        // Increase quantity
         const { error: updateError } = await supabase
           .from("cart_items")
           .update({ quantity: existingItem.quantity + 1 })
           .eq("id", existingItem.id);
         if (updateError) throw updateError;
       } else {
-        // Insert new cart item
         const { error: insertError } = await supabase
           .from("cart_items")
           .insert({
@@ -168,8 +166,8 @@ export class CartStore {
       }
 
       await this.fetchUserCart();
-    } catch (err) {
-      console.error("Error in addToCart:", err);
+    } catch (err: any) {
+      throw new Error(err);
     }
   }
 

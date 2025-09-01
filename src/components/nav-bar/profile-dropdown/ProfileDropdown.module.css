@@ -1,12 +1,20 @@
 .profileDropdown {
   position: absolute;
-  top: calc(100% + 28px); /* Adjust the space below navbar */
-  right: 5px; /* Adjusted position to make it align under the icons */
-  width: 220px; /* Shrunk width to be more compact */
+  top: calc(100% + 28px);
+  width: 220px;
   z-index: 1000;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   border-radius: 0;
   overflow: hidden;
+}
+
+/* Positioning based on direction */
+.profileDropdown[dir='ltr'] {
+  right: 5px;
+}
+
+.profileDropdown[dir='rtl'] {
+  left: 5px;
 }
 
 /* Frosted glass background */
@@ -17,7 +25,7 @@
   width: 100%;
   height: 100%;
   background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(8px); /* Reduced blur */
+  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   z-index: -1;
 }
@@ -25,46 +33,36 @@
 /* Content container */
 .dropdownContent {
   position: relative;
-  padding: 1rem; /* Reduced padding for more compact content */
+  padding: 1rem;
 }
 
-/* User Header Section with Profile Picture */
+/* User Header Section */
 .userHeader {
   display: flex;
-  align-items: center;
-  gap: 0.75rem; /* Adjusted gap between image and name */
+  flex-direction: column; /* Keep email under name */
+  align-items: flex-start;
+  gap: 0.25rem;
   margin-bottom: 1rem;
 }
 
-.profileImageContainer {
-  width: 40px; /* Adjusted profile image size */
-  height: 40px; /* Adjusted profile image size */
-  border-radius: 50%;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(245, 245, 245, 0.7);
-}
-
-.profileImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.profilePlaceholder {
-  width: 25px; /* Adjusted placeholder size */
-  height: 25px;
-  color: rgba(0, 0, 0, 0.5);
+/* Mirror for RTL */
+.profileDropdown[dir='rtl'] .userHeader {
+  align-items: flex-end;
+  text-align: right;
 }
 
 .userName {
-  font-size: 1.125rem; /* Reduced font size */
+  font-size: 1.125rem;
   font-weight: 600;
   color: #1a1a1a;
   margin: 0;
   line-height: 1.2;
+}
+
+.userEmail {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #555;
 }
 
 /* Separator */
@@ -88,12 +86,17 @@
 .navItem {
   display: flex;
   align-items: center;
-  gap: 0.5rem; /* Adjusted gap */
-  padding: 0.5rem 0.5rem; /* Reduced padding */
+  gap: 0.5rem;
+  padding: 0.5rem 0.5rem;
   color: #333;
   text-decoration: none;
   transition: all 0.2s ease;
   font-weight: 500;
+}
+
+/* Mirror nav items for RTL */
+.profileDropdown[dir='rtl'] .navItem {
+  flex-direction: row-reverse;
 }
 
 .navItem:hover {
@@ -101,7 +104,7 @@
 }
 
 .navIcon {
-  width: 14px; /* Reduced icon size */
+  width: 14px;
   height: 14px;
   color: #666;
 }
@@ -116,14 +119,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem 1rem; /* Reduced padding */
+  padding: 0.5rem 1rem;
   background: #d32f2f;
   border: none;
   color: white;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-size: 0.85rem; /* Reduced font size */
+  font-size: 0.85rem;
 }
 
 .logoutButton:hover {
@@ -138,7 +141,12 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .profileDropdown {
-    width: 210px; /* Further reduced width for smaller screens */
-    right: 10px; /* Adjusted position to make it align under the icons */
+    width: 210px;
+  }
+  .profileDropdown[dir='ltr'] {
+    right: 10px;
+  }
+  .profileDropdown[dir='rtl'] {
+    left: 10px;
   }
 }
