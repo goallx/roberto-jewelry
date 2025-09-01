@@ -1,10 +1,12 @@
 'use client';
 
 import { useSearchParams, useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 
 export default function FiltersSidebar() {
     const searchParams = useSearchParams();
     const router = useRouter();
+    const { t } = useTranslation();
 
     const updateQuery = (key: string, value?: string) => {
         const params = new URLSearchParams(searchParams.toString());
@@ -26,31 +28,31 @@ export default function FiltersSidebar() {
         <div className="md:w-1/5 w-full space-y-6">
             <div className="border p-4 bg-white shadow-sm flex flex-col gap-4">
                 <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-semibold text-gray-700">Filters</h3>
+                    <h3 className="font-semibold text-gray-700">{t('Filters.title')}</h3>
                     <button
                         onClick={clearFilters}
                         className="text-xs text-gray-500 hover:underline"
                     >
-                        Clear All
+                        {t('Filters.clearAll')}
                     </button>
                 </div>
 
                 <div className="mb-4">
-                    <label className="block text-sm font-medium">Category</label>
+                    <label className="block text-sm font-medium">{t('Filters.category')}</label>
                     <select
                         className="w-full border px-2 py-1 mt-1 text-sm"
                         value={searchParams.get('category') || 'all'}
                         onChange={(e) => updateQuery('category', e.target.value)}
                     >
-                        <option value="all">All Jewelry</option>
-                        <option value="rings">Rings</option>
-                        <option value="necklaces">Necklaces</option>
-                        <option value="bracelets">Bracelets</option>
+                        <option value="all">{t('Filters.allJewelry')}</option>
+                        <option value="rings">{t('Navbar.Rings')}</option>
+                        <option value="necklaces">{t('Navbar.Necklaces')}</option>
+                        <option value="bracelets">{t('Navbar.Bracelets')}</option>
                     </select>
                 </div>
 
                 <div className="mb-4">
-                    <label className="block text-sm font-medium">Price Range</label>
+                    <label className="block text-sm font-medium">{t('Filters.priceRange')}</label>
                     <select
                         className="w-full border px-2 py-1 mt-1 text-sm"
                         value={searchParams.get('priceRange') || 'all'}
@@ -72,29 +74,29 @@ export default function FiltersSidebar() {
                             updateQuery('priceRange', val);
                         }}
                     >
-                        <option value="all">All Prices</option>
-                        <option value="0-100">$0 - $100</option>
-                        <option value="100-500">$100 - $500</option>
-                        <option value="500+">$500+</option>
+                        <option value="all">{t('Filters.allPrices')}</option>
+                        <option value="0-100">{t('Filters.priceRanges.0-100')}</option>
+                        <option value="100-500">{t('Filters.priceRanges.100-500')}</option>
+                        <option value="500+">{t('Filters.priceRanges.500+')}</option>
                     </select>
                 </div>
 
                 <div className="mb-4">
-                    <label className="block text-sm font-medium">Gender</label>
+                    <label className="block text-sm font-medium">{t('Filters.gender')}</label>
                     <select
                         className="w-full border px-2 py-1 mt-1 text-sm"
                         value={searchParams.get('gender') || 'all'}
                         onChange={(e) => updateQuery('gender', e.target.value)}
                     >
-                        <option value="all"></option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="unisex">Unisex</option>
+                        <option value="all">{t('Filters.genders.all')}</option>
+                        <option value="male">{t('Filters.genders.male')}</option>
+                        <option value="female">{t('Filters.genders.female')}</option>
+                        <option value="unisex">{t('Filters.genders.unisex')}</option>
                     </select>
                 </div>
 
                 <div className="mb-4">
-                    <label className="block text-sm font-medium">Material</label>
+                    <label className="block text-sm font-medium">{t('Filters.material')}</label>
                     <div className="flex flex-col gap-1 mt-1 text-sm">
                         {['Gold', 'Silver', 'Platinum'].map((mat) => (
                             <label key={mat} className="flex items-center">
@@ -118,7 +120,7 @@ export default function FiltersSidebar() {
                                         router.push('?' + params.toString());
                                     }}
                                 />
-                                {mat[0].toUpperCase() + mat.slice(1)}
+                                {t(`Filters.materials.${mat}`)}
                             </label>
                         ))}
                     </div>

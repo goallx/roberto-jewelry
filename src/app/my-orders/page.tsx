@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { useTranslation } from 'react-i18next'; // i18n import
+import { useTranslation } from 'react-i18next';
 
 // Placeholder orders data with images
 const orders = [
@@ -33,7 +33,7 @@ const orders = [
 ];
 
 const OrdersPage = () => {
-  const { t } = useTranslation(); // Initialize i18n
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen bg-gray-50 pt-32 pb-8">

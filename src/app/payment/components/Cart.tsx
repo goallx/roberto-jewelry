@@ -1,3 +1,4 @@
+// Cart.tsx
 'use client';
 
 import { useStores } from '@/context/StoreContext';
@@ -8,6 +9,7 @@ import { observer } from 'mobx-react-lite';
 import { CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { ProfileStore } from '@/stores/ProfileStore';
 import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
 
 export interface ICartProduct extends IProduct {
     quantity: number;
@@ -15,6 +17,7 @@ export interface ICartProduct extends IProduct {
 
 const Cart: React.FC = observer(() => {
     let { cartStore, profileStore } = useStores();
+    const { t, i18n } = useTranslation();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -37,15 +40,19 @@ const Cart: React.FC = observer(() => {
         ? originalTotal * (1 - discountPercentage)
         : originalTotal;
 
+    const locale = i18n?.language === 'he' ? 'he-IL' : 'en-US';
+    const formatCurrency = (value: number) =>
+        new Intl.NumberFormat(locale, { style: 'currency', currency: 'USD', maximumFractionDigits: 2 }).format(value);
+
     return (
         <div className="w-full lg:w-96">
             <div className="bg-[#F2EFED] p-6">
-                <h1 className="text-2xl font-amandine mb-6">Cart</h1>
+                <h1 className="text-2xl font-amandine mb-6">{t('payment.cart.title')}</h1>
 
                 {/* Cart Items */}
                 <div className="space-y-4 max-h-[300px] overflow-y-auto">
-                    {cartStore?.cart?.items.length === 0 ? (
-                        <p className="my-4 font-light text-center">No items in the cart</p>
+                    {(!cartStore?.cart?.items || cartStore?.cart?.items.length === 0) ? (
+                        <p className="my-4 font-light text-center">{t('payment.cart.empty')}</p>
                     ) : (
                         cartStore?.cart?.items.map((item) => (
                             <CartProductCard
@@ -60,8 +67,8 @@ const Cart: React.FC = observer(() => {
                 {/* Total */}
                 <div className="border-t border-gray-300 mt-6 pt-4">
                     <div className="flex justify-between items-center">
-                        <span className="text-lg font-semibold">Total:</span>
-                        <span className="text-xl font-bold">{originalTotal.toLocaleString('en-US')}$</span>
+                        <span className="text-lg font-semibold">{t('payment.cart.total')}:</span>
+                        <span className="text-xl font-bold">{formatCurrency(discountedTotal)}</span>
                     </div>
                 </div>
             </div>
@@ -75,6 +82,8 @@ const CartProductCard: React.FC<{
     product: IProduct & { quantity: number };
     cartStore: CartStore;
 }> = observer(({ product, cartStore }) => {
+    const { t, i18n } = (require('react-i18next') as any).useTranslation ? (require('react-i18next') as any).useTranslation() : { t: (k:string, o?:any) => k, i18n: { language: 'en' } }; // safe fallback for SSR
+
     const handleDelete = async () => {
         await cartStore.deleteProductFromCart(product.id);
     };
@@ -87,11 +96,16 @@ const CartProductCard: React.FC<{
         await cartStore.deleteProductQuantity(product.id);
     };
 
+    const locale = i18n?.language === 'he' ? 'he-IL' : 'en-US';
+    const formatCurrency = (value: number) =>
+        new Intl.NumberFormat(locale, { style: 'currency', currency: 'USD', maximumFractionDigits: 2 }).format(value);
+
     return (
         <div className="bg-white p-4 border border-gray-200 relative">
             <button
                 onClick={() => handleDelete()}
                 className="absolute top-2 right-2 text-gray-500 hover:text-red-500"
+                aria-label={t('payment.cart.removeItem')}
             >
                 <CloseOutlined />
             </button>
@@ -112,10 +126,11 @@ const CartProductCard: React.FC<{
 
                     <div className="space-y-1 text-sm text-gray-600">
                         <div className="flex items-center">
-                            <span className="mr-2">Quantity:</span>
+                            <span className="mr-2">{t('payment.cart.quantity')}:</span>
                             <button
                                 onClick={handleDecrease}
                                 className="p-1 rounded-full hover:bg-gray-100"
+                                aria-label={t('payment.cart.decreaseQuantity')}
                             >
                                 <MinusOutlined />
                             </button>
@@ -123,6 +138,7 @@ const CartProductCard: React.FC<{
                             <button
                                 onClick={handleIncrease}
                                 className="p-1 rounded-full hover:bg-gray-100"
+                                aria-label={t('payment.cart.increaseQuantity')}
                             >
                                 <PlusOutlined />
                             </button>
@@ -130,17 +146,18 @@ const CartProductCard: React.FC<{
 
                         {product.material && (
                             <p>
-                                Material: <span className="font-medium">{product.material}</span>
+                                {t('payment.cart.material')}: <span className="font-medium">{product.material}</span>
                             </p>
                         )}
 
                         <p>
-                            Size: <span className="font-medium">{product.size || '-'}</span>
+                            {t('payment.cart.size')}: <span className="font-medium">{product.size || '-'}</span>
                         </p>
                     </div>
 
                     <p className="text-right font-semibold mt-2">
-                        Price: {(product.price * product.quantity).toLocaleString('en-US')}$</p>
+                        {t('payment.cart.price')}: {formatCurrency(product.price * product.quantity)}
+                    </p>
                 </div>
             </div>
         </div>
