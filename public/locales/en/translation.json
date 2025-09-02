@@ -49,12 +49,9 @@
   "jewelry": "Jewelry",
   "women": "Women",
   "men": "Men",
-  "signature": "Signature",
-  "bracelets": "Bracelets",
-  "earrings": "Earrings",
+  "earrings":"Earrings",
   "rings": "Rings",
   "necklaces": "Necklaces",
-  "pendants": "Pendants",
   "collections": "Collections",
   "customize": "Customize",
   "aboutUs": "About Us",
@@ -155,7 +152,7 @@
   "ringsCollection": {
     "title": "Our Rings Collection",
     "description": "Discover our most beloved pieces, each crafted with exceptional attention to detail and timeless design.",
-    "viewAllButton": "View All Collections",
+    "viewAll": "View All Collections",
     "eternalDiamondRing": "Eternal Diamond Ring",
     "classicGoldNecklace": "Classic Gold Necklace",
     "elegantTennisBracelet": "Elegant Tennis Bracelet",
@@ -215,5 +212,73 @@
     },
     "materials": { "gold": "Gold", "silver": "Silver", "platinum": "Platinum" },
     "countries": { "usa": "United States", "uk": "United Kingdom", "israel": "Israel" }
+  },
+  "customizePage": {
+    "pageTitle": "Customize | Roberto Jewelry",
+    "startDesign": "Start Your Design",
+    "visionDescription": "Tell us about your vision and upload inspiration images",
+    "uploadReferences": "Upload Inspiration Images",
+    "uploadText": "Click or drag files here to upload",
+    "chooseFile": "Choose file",
+    "uploadHint": "Support for a single or bulk upload.",
+    "fullName": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
+    "designDescription": "Design Description",
+    "additionalNotes": "Additional Notes",
+    "budget": "Budget",
+    "selectBudget": "Select Budget",
+    "budgetOptions": {
+      "u500": "Under $500",
+      "500-2000": "$500 – $2,000",
+      "2k-5k": "$2,000 – $5,000",
+      "5k+": "$5,000+"
+    },
+    "submitButton": "Start Your Design Journey",
+    "submitting": "Submitting...",
+    "howItWorks": "How It Works",
+    "step1": {
+      "title": "Share Your Vision",
+      "description": "Upload inspiration images and describe the item you dreamed of."
+    },
+    "step2": {
+      "title": "Collaborate & Refine",
+      "description": "Work with our artisan to refine the design."
+    },
+    "step3": {
+      "title": "Handcrafted Excellence",
+      "description": "Watch your custom creation come to life with premium materials."
+    },
+    "whyCustom": "Why Choose Custom?",
+    "reason1": {
+      "title": "Unique Design",
+      "description": "A unique piece created exclusively for you."
+    },
+    "reason2": {
+      "title": "Premium Materials",
+      "description": "Only the finest and carefully selected materials."
+    },
+    "reason3": {
+      "title": "Handmade Artistry",
+      "description": "Crafted by skilled artisans."
+    },
+    "reason4": {
+      "title": "Lifetime Warranty",
+      "description": "Lifetime warranty on product quality."
+    },
+    "needHelp": "Need Help?",
+    "consultationText": "Talk to our designer — schedule a consultation.",
+    "bookConsultation": "Book Consultation",
+    "errorMessage": "Something went wrong, please try again!",
+    "networkError": "Network Error"
+  },
+  "orders": {
+    "myOrders": "My Orders",
+    "orderNumber": "Order Number",
+    "items": "Items",
+    "itemsLabel": "items",
+    "date": "Date",
+    "total": "Total",
+    "productImage": "Product image"
   }
 }

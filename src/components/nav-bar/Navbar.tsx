@@ -73,7 +73,6 @@ const Navbar = observer(() => {
   const { cartStore, profileStore, wishlistStore, categoryStore } = useStores();
   const { isAuthenticated, logout } = useAuth();
 
-
   const profileRef = useRef<HTMLDivElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const navbarRef = useRef<HTMLElement | null>(null);
@@ -122,12 +121,12 @@ const Navbar = observer(() => {
     if (!isAuthenticated) {
       router.push('/login');
     } else {
-      setProfileOpen((p) => !p);
+      setProfileOpen((p: boolean) => !p);
     }
   };
 
-  const toggleMenu = () => setMenuOpen((m) => !m);
-  const toggleDropdown = () => setDropdownOpen((d) => !d);
+  const toggleMenu = () => setMenuOpen((m: boolean) => !m);
+  const toggleDropdown = () => setDropdownOpen((d: boolean) => !d);
 
   if (pathname?.includes('admin')) return null;
 
@@ -155,7 +154,7 @@ const Navbar = observer(() => {
     >
       {/* LEFT AREA */}
       <div className={styles.leftArea}>
-        <div className={styles.hamburger} onClick={toggleMenu} role="button" aria-label={t('toggle_menu') ?? 'Toggle menu'}>
+        <div className={styles.hamburger} onClick={toggleMenu} role="button" aria-label={t('navigation.toggleMenu')}>
           <span />
           <span />
           <span />
@@ -176,7 +175,7 @@ const Navbar = observer(() => {
             </button>
 
             {dropdownOpen && (
-              <div className={styles.dropdownMenu} role="menu" aria-label={t('jewelry_menu') ?? 'Jewelry menu'}>
+              <div className={styles.dropdownMenu} role="menu" aria-label={t('navigation.jewelryMenu')}>
                 {/* Frosted glass background for dropdown */}
                 <div className={styles.frostedGlass}></div>
 
@@ -185,55 +184,45 @@ const Navbar = observer(() => {
                     <div className={styles.columns}>
                       <div className={styles.col}>
                         <h4>{t('women')}</h4>
-                        {
-                          categoryStore?.categories?.map(cat => (
-                            <Link prefetch key={cat.id} href={`/collections?category=${cat.name}&gender=female`} className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{cat.name}</Link>
-                          ))
-                        }
-                        {/* <Link href="/products?category=earrings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('earrings')}</Link>
-                        <Link href="/products?category=rings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('rings')}</Link>
-                        <Link href="/products?category=necklaces" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('necklaces')}</Link>
-                        <Link href="/products?category=pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('pendants')}</Link> */}
+                        <Link prefetch href="/collections?category=rings&gender=female" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>
+                          {t('rings')}
+                        </Link>
+                        <Link prefetch href="/collections?category=earrings&gender=female" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>
+                          {t('earrings')}
+                        </Link>
+                        <Link prefetch href="/collections?category=necklaces&gender=female" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>
+                          {t('necklaces')}
+                        </Link>
                       </div>
 
                       <div className={styles.col}>
                         <h4>{t('men')}</h4>
-                        {
-                          categoryStore?.categories?.map(cat => (
-                            <Link prefetch key={cat.id} href={`/collections?category=${cat.name}&gender=male`} className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{cat.name}</Link>
-                          ))
-                        }
-                        {/* <Link href="/products?category=men-bracelets" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('bracelets')}</Link>
-                        <Link href="/products?category=men-earrings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('earrings')}</Link>
-                        <Link href="/products?category=men-rings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('rings')}</Link>
-                        <Link href="/products?category=men-necklaces" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('necklaces')}</Link>
-                        <Link href="/products?category=men-pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('pendants')}</Link> */}
+                        <Link prefetch href="/collections?category=rings&gender=male" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>
+                          {t('rings')}
+                        </Link>
+                        <Link prefetch href="/collections?category=earrings&gender=male" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>
+                          {t('earrings')}
+                        </Link>
+                        <Link prefetch href="/collections?category=necklaces&gender=male" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>
+                          {t('necklaces')}
+                        </Link>
                       </div>
-
-                      {/* <div className={styles.col}>
-                        <h4>{t('signature')}</h4>
-                        <Link href="/products?category=signature-bracelets" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('bracelets')}</Link>
-                        <Link href="/products?category=signature-earrings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('earrings')}</Link>
-                        <Link href="/products?category=signature-rings" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('rings')}</Link>
-                        <Link href="/products?category=signature-necklaces" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('necklaces')}</Link>
-                        <Link href="/products?category=signature-pendants" className={styles.dropdownLink} onClick={() => setDropdownOpen(false)}>{t('pendants')}</Link>
-                      </div> */}
-                    </div >
+                    </div>
 
                     <div className={styles.dropdownImageWrapper}>
                       <Image
                         src="/image/dropdown.jpg"
-                        alt={t('jewelry_collection')}
+                        alt={t('navigation.jewelryCollection')}
                         width={960}
                         height={320}
                         style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
                       />
                     </div>
-                  </div >
-                </div >
-              </div >
+                  </div>
+                </div>
+              </div>
             )}
-          </div >
+          </div>
 
           <Link prefetch href="/collections" className={styles.navLink}>
             {t('collections')}
@@ -247,10 +236,10 @@ const Navbar = observer(() => {
             {t('aboutUs')}
           </Link>
         </div>
-      </div >
+      </div>
 
       {/* LOGO (centered) */}
-      <div className={styles.navbarLogo} >
+      <div className={styles.navbarLogo}>
         <Link href="/" aria-label={t('home')} className={styles.logoWrapper}>
           <Image
             className={styles.logoMain}
@@ -272,18 +261,18 @@ const Navbar = observer(() => {
       </div>
 
       {/* RIGHT SIDE */}
-      <div className={styles.navbarRight} >
+      <div className={styles.navbarRight}>
         <button
           className={`${styles.langBtn} ${styles.langBtnEnhanced}`}
           onClick={() => toggleLang()}
-          aria-label={t('toggle_language') ?? 'Toggle language'}
+          aria-label={t('navigation.toggleLanguage')}
         >
           <FontAwesomeIcon icon={faGlobe} className={styles.globeIcon} />
           {lang.toUpperCase()}
         </button>
 
         <div className={styles.profileWrap} ref={profileRef}>
-          <button className={`${styles.iconBtn} ${styles.profileIcon}`} aria-label={t('profile')} onClick={handleProfileClick}>
+          <button className={`${styles.iconBtn} ${styles.profileIcon}`} aria-label={t('navigation.profile')} onClick={handleProfileClick}>
             <UserIcon className={styles.iconSvg} />
           </button>
 
@@ -296,79 +285,68 @@ const Navbar = observer(() => {
           />
         </div>
 
-        {
-          isAuthenticated && (
-            <button aria-label={t('wishlist')} className={styles.iconBtn} onClick={() => navigate('/wishlist')}>
-              <Badge count={wishlistStore?.items.length} overflowCount={99}>
-                <HeartIcon className={styles.iconSvg} />
-              </Badge>
-            </button>
-          )
-        }
+        {isAuthenticated && (
+          <button aria-label={t('wishlist.title')} className={styles.iconBtn} onClick={() => navigate('/wishlist')}>
+            <Badge count={wishlistStore?.items.length} overflowCount={99}>
+              <HeartIcon className={styles.iconSvg} />
+            </Badge>
+          </button>
+        )}
 
-        {
-          isAuthenticated && (
-            <button
-              className={styles.iconBtn}
-              aria-label={t('cart')}
-              onClick={handleCartClick}
-              style={{ display: 'inline-flex', alignItems: 'center' }}
-            >
-              <Badge count={cartStore?.numOfCartItems ?? 0} overflowCount={99}>
-                <BagIcon className={styles.iconSvg} />
-              </Badge>
-            </button>
-          )
-        }
-      </ div>
+        {isAuthenticated && (
+          <button
+            className={styles.iconBtn}
+            aria-label={t('navigation.cart')}
+            onClick={handleCartClick}
+            style={{ display: 'inline-flex', alignItems: 'center' }}
+          >
+            <Badge count={cartStore?.numOfCartItems ?? 0} overflowCount={99}>
+              <BagIcon className={styles.iconSvg} />
+            </Badge>
+          </button>
+        )}
+      </div>
 
       {/* MOBILE MENU */}
-      {
-        menuOpen && (
-          <motion.div className={styles.mobileMenu} initial="closed" animate="open" variants={menuVariants}>
-            <div className={styles.mobileInner}>
-              <ul className={styles.mobileList}>
-                <li className={styles.mobileHeader}>{t('home')}</li>
+      {menuOpen && (
+        <motion.div className={styles.mobileMenu} initial="closed" animate="open" variants={menuVariants}>
+          <div className={styles.mobileInner}>
+            <ul className={styles.mobileList}>
+              <li className={styles.mobileHeader}>{t('home')}</li>
 
-                <li className={styles.mobileHeader}>{t('women')}</li>
-                <li><Link href="/products?category=bracelets" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('bracelets')}</Link></li>
-                <li><Link href="/products?category=earrings" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('earrings')}</Link></li>
-                <li><Link href="/products?category=rings" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('rings')}</Link></li>
-                <li><Link href="/products?category=necklaces" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('necklaces')}</Link></li>
+              <li className={styles.mobileHeader}>{t('women')}</li>
+              <li><Link href="/collections?category=rings&gender=female" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('rings')}</Link></li>
+              <li><Link href="/collections?category=earrings&gender=female" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('earrings')}</Link></li>
+              <li><Link href="/collections?category=necklaces&gender=female" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('necklaces')}</Link></li>
 
-                <li className={styles.mobileHeader}>{t('men')}</li>
-                <li><Link href="/products?category=men-bracelets" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('bracelets')}</Link></li>
-                <li><Link href="/products?category=men-earrings" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('earrings')}</Link></li>
-                <li><Link href="/products?category=men-rings" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('rings')}</Link></li>
+              <li className={styles.mobileHeader}>{t('men')}</li>
+              <li><Link href="/collections?category=rings&gender=male" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('rings')}</Link></li>
+              <li><Link href="/collections?category=earrings&gender=male" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('earrings')}</Link></li>
+              <li><Link href="/collections?category=necklaces&gender=male" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('necklaces')}</Link></li>
 
-                <li className={styles.mobileHeader}>{t('signature')}</li>
-                <li><Link href="/products?category=signature-bracelets" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('bracelets')}</Link></li>
-                <li><Link href="/products?category=signature-earrings" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('earrings')}</Link></li>
+              <li className={styles.mobileHeader}>{t('collections')}</li>
+              <li><Link href="/collections" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('collections')}</Link></li>
+              <li><Link href="/customize" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('customize')}</Link></li>
+              <li><Link href="/about-us" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('aboutUs')}</Link></li>
+            </ul>
 
-                <li className={styles.mobileHeader}>{t('collections')}</li>
-                <li><Link href="/collections" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('collections')}</Link></li>
-                <li><Link href="/customize" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('customize')}</Link></li>
-                <li><Link href="/about-us" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>{t('aboutUs')}</Link></li>
-              </ul>
-
-              <div className={styles.mobileIcons}>
-                <Link href="/profile" className={styles.mobileLink}><UserIcon className={styles.iconSvg} /> {t('profile')}</Link>
-                <Link href="/orders" className={styles.mobileLink}><FontAwesomeIcon icon={faCreditCard} className={styles.smallIcon} /> {t('myOrders') ?? 'My Orders'}</Link>
-                <Link href="/history" className={styles.mobileLink}><FontAwesomeIcon icon={faIdCard} className={styles.smallIcon} /> {t('history') ?? 'History'}</Link>
-                <Link href="/wishlist" className={styles.mobileLink}><HeartIcon className={styles.iconSvg} /> {t('wishlist')}</Link>
-                <Link href="/reviews" className={styles.mobileLink}><FontAwesomeIcon icon={faPenToSquare} className={styles.smallIcon} /> {t('to_review') ?? 'To Review'}</Link>
-              </div>
-
-              {isAuthenticated && (
-                <button className={styles.signOutBtn} onClick={handleLogout}>
-                  {isLoading ? <Loader /> : t('signOut')}
-                </button>
-              )}
+            <div className={styles.mobileIcons}>
+              <Link href="/profile" className={styles.mobileLink}><UserIcon className={styles.iconSvg} /> {t('profile')}</Link>
+              <Link href="/orders" className={styles.mobileLink}><FontAwesomeIcon icon={faCreditCard} className={styles.smallIcon} /> {t('myOrders')}</Link>
+              <Link href="/history" className={styles.mobileLink}><FontAwesomeIcon icon={faIdCard} className={styles.smallIcon} /> {t('navigation.history')}</Link>
+              <Link href="/wishlist" className={styles.mobileLink}><HeartIcon className={styles.iconSvg} /> {t('wishlist.title')}</Link>
+              <Link href="/reviews" className={styles.mobileLink}><FontAwesomeIcon icon={faPenToSquare} className={styles.smallIcon} /> {t('navigation.toReview')}</Link>
             </div>
-          </motion.div>
-        )
-      }
-    </nav >
+
+            {isAuthenticated && (
+              <button className={styles.signOutBtn} onClick={handleLogout}>
+                {isLoading ? <Loader /> : t('signOut')}
+              </button>
+            )} 
+          </div>
+        </motion.div>
+      )}
+    </nav>
   );
 });
 
