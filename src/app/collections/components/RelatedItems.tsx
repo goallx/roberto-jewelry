@@ -27,7 +27,7 @@ export default async function RelatedItems({ categoryId }: RelatedItemsProps) {
         )
     }
     return (
-        <div className="flex overflow-x-auto gap-8 px-1 shadow-scroll-indicator">
+        <div className="flex overflow-x-auto gap-1 px-1 shadow-scroll-indicator">
             {
                 products.map((product: IProduct) => (
                     <div key={product.id} className="flex-shrink-0 py-4 px-2 md:py-6 md:w-1/4 flex justify-center">

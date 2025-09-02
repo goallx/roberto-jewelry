@@ -39,7 +39,7 @@ export default async function CollectionsPage({
   } catch (error) {
     console.error("Error fetching products:", error);
   }
-  console.log('@@prodicts', products)
+
   return (
     <div className="bg-[#FAF8F6] min-h-screen">
       <div className="px-4 md:px-10 pt-40 pb-0">

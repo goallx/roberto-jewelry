@@ -25,6 +25,7 @@ export class CategoryStore {
 
   constructor() {
     makeAutoObservable(this);
+    this.fetchCategories();
   }
 
   async updateCategoryNumberOfProducts(categoryName: string, quantity: number) {
