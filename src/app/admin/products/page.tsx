@@ -12,7 +12,6 @@ import UpdateProduct from './UpdateProduct'
 
 import { Loader } from '@/components/loader/Loader'
 
-
 const Products = observer(() => {
 
     const [openAddProduct, setOpenAddProduct] = useState<boolean>(false)
@@ -22,12 +21,9 @@ const Products = observer(() => {
 
     useEffect(() => {
         if (!productStore) productStore = new ProductStore()
-        else
-            productStore.fetchProducts()
-        setLoading(false)
     }, [productStore])
 
-    if (loading || !productStore) return <Loader />
+    if (productStore?.isLoading || !productStore) return <Loader />
 
     const filterProducts = productStore.products?.filter((product: IProduct) => product.name.toLocaleLowerCase().includes(searchQuery)) ?? null
 

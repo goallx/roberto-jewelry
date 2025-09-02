@@ -49,7 +49,7 @@
   "jewelry": "Jewelry",
   "women": "Women",
   "men": "Men",
-  "earrings":"Earrings",
+  "earrings": "Earrings",
   "rings": "Rings",
   "necklaces": "Necklaces",
   "collections": "Collections",
@@ -126,8 +126,16 @@
       "Honored by the International Council of Creative Industries Design: Recognized for redefining sustainable and artistic jewelry, pushing the boundaries of design and creativity."
     ],
     "awards": [
-      { "name": "award1", "alt": "A' Design Award", "src": "https://firebasestorage.googleapis.com/v0/b/general-ebf2c.firebasestorage.app/o/roberto-jewerly%2Fa%20aard.png?alt=media&token=02e1d8e6-a514-4684-83a2-e38dfc8f35ea" },
-      { "name": "award2", "alt": "Best Design Award", "src": "https://firebasestorage.googleapis.com/v0/b/general-ebf2c.firebasestorage.app/o/roberto-jewerly%2Fbest.png?alt=media&token=64d3362d-d7f0-4930-9652-b4bb3f0b9c2c" }
+      {
+        "name": "award1",
+        "alt": "A' Design Award",
+        "src": "https://firebasestorage.googleapis.com/v0/b/general-ebf2c.firebasestorage.app/o/roberto-jewerly%2Fa%20aard.png?alt=media&token=02e1d8e6-a514-4684-83a2-e38dfc8f35ea"
+      },
+      {
+        "name": "award2",
+        "alt": "Best Design Award",
+        "src": "https://firebasestorage.googleapis.com/v0/b/general-ebf2c.firebasestorage.app/o/roberto-jewerly%2Fbest.png?alt=media&token=64d3362d-d7f0-4930-9652-b4bb3f0b9c2c"
+      }
     ]
   },
   "whyChoose": {
@@ -161,9 +169,21 @@
   "reviews": {
     "title": "What Our Clients Say",
     "subtitle": "Hear from those who have experienced the Roberto difference.",
-    "review1": { "text": "The most beautiful engagement ring I've ever seen. The craftsmanship is absolutely extraordinary.", "name": "Sarah Johnson", "location": "Beverly Hills, CA" },
-    "review2": { "text": "Roberto created a custom necklace for my wife's anniversary. The attention to detail was incredible.", "name": "Michael Chen", "location": "Manhattan, NY" },
-    "review3": { "text": "Outstanding service and quality. My custom earrings exceeded all expectations.", "name": "Emily Rodriguez", "location": "Miami, FL" }
+    "review1": {
+      "text": "The most beautiful engagement ring I've ever seen. The craftsmanship is absolutely extraordinary.",
+      "name": "Sarah Johnson",
+      "location": "Beverly Hills, CA"
+    },
+    "review2": {
+      "text": "Roberto created a custom necklace for my wife's anniversary. The attention to detail was incredible.",
+      "name": "Michael Chen",
+      "location": "Manhattan, NY"
+    },
+    "review3": {
+      "text": "Outstanding service and quality. My custom earrings exceeded all expectations.",
+      "name": "Emily Rodriguez",
+      "location": "Miami, FL"
+    }
   },
   "payment": {
     "breadcrumb": "Home / Cart / Payment",
@@ -206,12 +226,26 @@
       "noImage": "No image"
     },
     "products": {
-      "product1": { "name": "Classic Diamond Ring" },
-      "product2": { "name": "Elegant Gold Necklace" },
-      "product3": { "name": "Diamond Drop Earrings" }
+      "product1": {
+        "name": "Classic Diamond Ring"
+      },
+      "product2": {
+        "name": "Elegant Gold Necklace"
+      },
+      "product3": {
+        "name": "Diamond Drop Earrings"
+      }
     },
-    "materials": { "gold": "Gold", "silver": "Silver", "platinum": "Platinum" },
-    "countries": { "usa": "United States", "uk": "United Kingdom", "israel": "Israel" }
+    "materials": {
+      "gold": "Gold",
+      "silver": "Silver",
+      "platinum": "Platinum"
+    },
+    "countries": {
+      "usa": "United States",
+      "uk": "United Kingdom",
+      "israel": "Israel"
+    }
   },
   "customizePage": {
     "pageTitle": "Customize | Roberto Jewelry",
@@ -280,5 +314,31 @@
     "date": "Date",
     "total": "Total",
     "productImage": "Product image"
+  },
+  "Filters": {
+    "title": "Filters",
+    "clearAll": "Clear All",
+    "category": "Category",
+    "allJewelry": "All Jewelry",
+    "priceRange": "Price Range",
+    "allPrices": "All Prices",
+    "gender": "Gender",
+    "material": "Material",
+    "priceRanges": {
+      "0-100": "$0 - $100",
+      "100-500": "$100 - $500",
+      "500+": "$500+"
+    },
+    "genders": {
+      "all": "All",
+      "male": "Male",
+      "female": "Female",
+      "unisex": "Unisex"
+    },
+    "materials": {
+      "Gold": "Gold",
+      "Silver": "Silver",
+      "Platinum": "Platinum"
+    }
   }
 }

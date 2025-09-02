@@ -63,7 +63,6 @@ const CategoryRow: React.FC<{ category: ICategory & { createdAt?: string } }> = 
     const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<string>("")
 
-    let thumbnail = JSON.parse(category.images as any)
 
     const handleDelete: PopconfirmProps['onConfirm'] = async () => {
         setError("")
@@ -90,7 +89,7 @@ const CategoryRow: React.FC<{ category: ICategory & { createdAt?: string } }> = 
             <th scope="row" className="flex items-center justify-start gap-5 px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                 {
                     category.images.length !== 0 &&
-                    <img className="w-10 h-10 rounded-full" src={thumbnail.imgUrl} alt="" />
+                    <img className="w-10 h-10 rounded-full" src={category.images?.[0].imgUrl || ""} alt={category.name} />
                 }
                 {category.name}
             </th>

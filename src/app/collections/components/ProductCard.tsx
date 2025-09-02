@@ -15,7 +15,7 @@ const DEFAULT_IMAGE = "/products/rings/ring1";
 // Skeleton Component
 const ProductCardSkeleton: React.FC = () => {
     return (
-        <div className="h-[330px] flex flex-col cursor-pointer shadow-md relative animate-pulse">
+        <div className="h-[330px] w-[250px] flex flex-col cursor-pointer shadow-md relative animate-pulse">
             {/* Wishlist Skeleton */}
             <div className="absolute top-3 right-3 z-50 w-8 h-8 bg-gray-200 rounded-full"></div>
 
@@ -45,7 +45,6 @@ export const ProductCard: React.FC<ProductCardProps> = observer(({ product }) =>
     const handleWishlistClick = async (e: React.MouseEvent) => {
         e.stopPropagation();
         if (!wishlistStore) return;
-        setLoading(true);
         try {
             if (!isInWishlist)
                 await wishlistStore.addToWishlist(product.id);
@@ -56,15 +55,13 @@ export const ProductCard: React.FC<ProductCardProps> = observer(({ product }) =>
                 router.push('/login')
                 return
             }
-        } finally {
-            setLoading(false);
         }
     };
 
     return (
         <div
             onClick={() => router.push(`/collections/${product.id}`)}
-            className="h-[330px] flex flex-col cursor-pointer shadow-md relative"
+            className="h-[330px] w-[250px] flex flex-col cursor-pointer shadow-md relative"
         >
             <div
                 onClick={handleWishlistClick}

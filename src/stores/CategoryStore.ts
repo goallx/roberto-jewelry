@@ -25,6 +25,7 @@ export class CategoryStore {
 
   constructor() {
     makeAutoObservable(this);
+    this.fetchCategories();
   }
 
   async updateCategoryNumberOfProducts(categoryName: string, quantity: number) {
@@ -115,7 +116,7 @@ export class CategoryStore {
         .single();
 
       if (error) {
-        console.error("Supabase insert error:", error);
+        console.error("@@Supabase insert error:", error);
         onFailure(error.message);
       } else {
         if (!this.categories) this.categories = [];
@@ -173,6 +174,26 @@ export class CategoryStore {
   ): Promise<boolean> {
     this.isLoading = true;
     try {
+      const cartegoryToDelete = this.categories?.filter(
+        (cat) => cat.id === categoryId
+      );
+      const imagesToDelete = cartegoryToDelete?.[0].images;
+      if (imagesToDelete?.length) {
+        const pathsToDelete = imagesToDelete
+          .map((img) => img.fileName)
+          .filter(Boolean);
+        if (pathsToDelete.length > 0) {
+          const { error: storageError } = await supabaseClient.storage
+            .from("assets")
+            .remove(pathsToDelete);
+
+          if (storageError) {
+            console.error("Error deleting images from storage:", storageError);
+            onFailure("Some images could not be deleted.");
+          }
+        }
+      }
+
       const { error } = await supabaseClient
         .from("categories")
         .delete()

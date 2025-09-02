@@ -66,7 +66,7 @@ export class WishlistStore {
     }
   }
 
-  async removeFromWishlist(productId: string) {
+  async removeFromWishlist(itemId: string) {
     try {
       const {
         data: { user },
@@ -77,7 +77,7 @@ export class WishlistStore {
         .from("wishlist_items")
         .delete()
         .eq("user_id", user.id)
-        .eq("product_id", productId);
+        .eq("id", itemId);
 
       if (error) throw error;
 

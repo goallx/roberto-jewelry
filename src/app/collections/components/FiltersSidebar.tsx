@@ -98,7 +98,7 @@ export default function FiltersSidebar() {
                 <div className="mb-4">
                     <label className="block text-sm font-medium">{t('Filters.material')}</label>
                     <div className="flex flex-col gap-1 mt-1 text-sm">
-                        {['Gold', 'Silver', 'Platinum'].map((mat) => (
+                        {['gold', 'silver', 'platinum'].map((mat) => (
                             <label key={mat} className="flex items-center">
                                 <input
                                     type="checkbox"
@@ -120,7 +120,8 @@ export default function FiltersSidebar() {
                                         router.push('?' + params.toString());
                                     }}
                                 />
-                                {t(`Filters.materials.${mat}`)}
+                                {/* {t(`Filters.materials.${mat}`)} */}
+                                {mat}
                             </label>
                         ))}
                     </div>
