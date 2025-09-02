@@ -8,6 +8,7 @@ import { Loader } from '../loader/Loader'
 import { CategoryStore } from '@/stores/CategoryStore'
 import { formatDate } from '@/utils/helpers'
 import { BlurImage } from '../blur-image/BlurImage.component'
+import { toJS } from 'mobx'
 
 interface ProductTableProps {
     products: Array<IProduct> | null
@@ -15,7 +16,8 @@ interface ProductTableProps {
 
 
 export const ProductTable: React.FC<ProductTableProps> = ({ products }) => {
-
+    console.log('@@products in tabel', products)
+    products = toJS(products)
     return (
         <div className="h-auto max-h-[90%] overflow-x-auto shadow-md sm:rounded-lg ">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -73,7 +75,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({ products }) => {
 const ProductRow: React.FC<{ product: IProduct }> = ({ product }) => {
     const [loading, setLoading] = useState<boolean>(false)
     let { productStore, categoryStore } = useStores()
-
+    console.log(product)
     const handleDeleteProduct = async () => {
         if (!productStore) productStore = new ProductStore()
         setLoading(true)
@@ -128,7 +130,7 @@ const ProductRow: React.FC<{ product: IProduct }> = ({ product }) => {
                         :
                         <>
                             <Tooltip title="Edit">
-                                <Button onClick={handleUpdateProduct} shape='circle' style={{ background: 'transparent', border: 'none' }} icon={<EditOutlined />} />
+                                {/* <Button onClick={handleUpdateProduct} shape='circle' style={{ background: 'transparent', border: 'none' }} icon={<EditOutlined />} /> */}
                             </Tooltip>
                             <Tooltip title="Delete">
                                 <Popconfirm
@@ -139,7 +141,7 @@ const ProductRow: React.FC<{ product: IProduct }> = ({ product }) => {
                                     cancelText="No"
                                     placement='topLeft'
                                 >
-                                    <Button shape='circle' style={{ background: 'transparent', border: 'none' }} icon={<DeleteOutlined />} />
+                                    {/* <Button shape='circle' style={{ background: 'transparent', border: 'none' }} icon={<DeleteOutlined />} /> */}
                                 </Popconfirm>
                             </Tooltip>
                         </>

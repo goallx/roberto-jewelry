@@ -8,9 +8,10 @@ import { CategoryStore, ICategory } from "@/stores/CategoryStore";
 import { INewProduct, ProductStore } from "@/stores/ProductStore";
 import { genderOptions, materialOptions } from "@/stores/consts";
 import UploadsManager from "@/utils/UploadsManager";
-import { Select } from "antd";
+import { Button, Select } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { observer } from "mobx-react-lite";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 
@@ -29,11 +30,12 @@ const AddProduct = observer(({ visible, onClose }: { visible: boolean, onClose: 
     const [loading, setLoading] = useState<boolean>(false)
     let { categoryStore, productStore } = useStores()
     const { showAlert } = useAlert()
+    const router = useRouter()
 
     const categoryOptions = categoryStore?.categories?.map((category: ICategory) => (
         {
             label: category.name,
-            value: category.name
+            value: category.id
         }
     ))
 
@@ -132,7 +134,10 @@ const AddProduct = observer(({ visible, onClose }: { visible: boolean, onClose: 
                                 <div className="items-center">
                                     {
                                         categoryStore?.categories?.length === 0 ?
-                                            <p>No categories, add one</p>
+                                            <>
+                                                <p>No categories, add one</p>
+                                                <Button onClick={() => router.push('/admin/categories')}>Add Category</Button>
+                                            </>
                                             :
                                             <>
                                                 <label className="block mb-2 text-sm font-medium text-gray-900">Category</label>

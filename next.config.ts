@@ -3,11 +3,15 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // i18n configuration
   i18n: {
-    locales: ['en', 'he'], // 'en' for English, 'he' for Hebrew
-    defaultLocale: 'en',   // Set the default language
+    locales: ["en", "he"], // 'en' for English, 'he' for Hebrew
+    defaultLocale: "en", // Set the default language
   },
   images: {
-    domains: ["firebasestorage.googleapis.com", "lh3.googleusercontent.com"],
+    domains: [
+      "firebasestorage.googleapis.com",
+      "lh3.googleusercontent.com",
+      "djiruwzwwctgyuutzppj.supabase.co",
+    ],
   },
   experimental: {
     serverActions: {

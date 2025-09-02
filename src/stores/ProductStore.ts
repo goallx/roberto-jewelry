@@ -40,6 +40,7 @@ export class ProductStore {
 
   constructor() {
     makeAutoObservable(this);
+    this.fetchProducts();
   }
 
   async fetchProducts(): Promise<void> {
@@ -48,13 +49,13 @@ export class ProductStore {
       const { data, error } = await supabase
         .from("products")
         .select("*")
-        .order("createdAt", { ascending: false });
-      console.log("@@products", data);
+        .order("created_at", { ascending: false });
+
       if (error) {
         console.error("Error fetching products:", error.message);
         this.products = null;
       } else {
-        this.products = data || [];
+        this.products = data;
       }
     } catch (err) {
       console.error(err);
@@ -123,13 +124,15 @@ export class ProductStore {
   ) {
     this.isLoading = true;
     try {
+      let stock = newProduct.quantity;
+      delete (newProduct as any)["quantity"];
+
       const { data, error } = await supabase
         .from("products")
         .insert([
           {
             ...newProduct,
-            stock: newProduct.quantity,
-            createdAt: new Date().toISOString(),
+            stock,
           },
         ])
         .select()
