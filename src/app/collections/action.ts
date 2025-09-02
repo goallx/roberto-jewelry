@@ -1,3 +1,5 @@
+"use server";
+
 import { createClient } from "@/lib/supabase/supabaseAdmin";
 import { IProduct } from "@/stores/ProductStore";
 

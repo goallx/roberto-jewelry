@@ -31,7 +31,7 @@ const LoginPage = () => {
             setMessage(error.message);
             setShowSuccess(false);
         } else {
-            setMessage(t('signinForm.codeSent', { email }));
+            setMessage(t('signinForm.codeSent'));
             setShowSuccess(true);
         }
 
@@ -41,7 +41,7 @@ const LoginPage = () => {
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#F5F1EC] py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden font-sans">
             <div className={`relative w-full max-w-lg p-12 mx-auto rounded-full backdrop-blur-sm bg-[#F6F2ED] shadow-2xl z-10 transition-opacity duration-1000 ease-in ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
-                
+
                 <div className="text-center mb-8">
                     <h2 className="mt-2 text-5xl font-amandine text-[#333333] tracking-wide drop-shadow-sm">
                         {t('Welcome')}
@@ -97,7 +97,7 @@ const LoginPage = () => {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="block w-full pl-10 pr-3 py-4 bg-transparent placeholder-gray-500/80 text-[#333333] focus:outline-none text-lg rounded-full"
-                                placeholder="email.address@yahoo.com" 
+                                placeholder="email.address@yahoo.com"
                             />
                         </div>
                     </div>
@@ -128,15 +128,15 @@ const LoginPage = () => {
                     <p className="text-xs text-[#777777] font-light drop-shadow-sm">
                         {t('signinForm.magicLinkNotice')}
                     </p>
-                    
-                    <div className="mt-4">
-                        <Link 
-                            href="/signup" 
+
+                    {/* <div className="mt-4">
+                        <Link
+                            href="/signup"
                             className="text-black/70 hover:text-black text-sm font-medium transition-colors duration-200"
                         >
                             {t('signinForm.dontHaveAccount')}
                         </Link>
-                    </div>
+                    </div> */}
                 </div>
             </div>
 

@@ -81,8 +81,6 @@ export default function ProfilePage() {
 
     if (error) {
       alert("Error updating profile: " + error.message);
-    } else {
-      alert("Profile updated successfully!");
     }
     setLoading(false);
   };
@@ -102,12 +100,12 @@ export default function ProfilePage() {
         <div className="flex flex-col gap-2">
           <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
             <UserIcon className="w-4 h-4" />
-            שם מלא
+            Full Name
           </label>
           <input
             type="text"
             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none"
-            placeholder="הכנס שם מלא"
+            placeholder="Enter full name"
             value={profile.full_name}
             onChange={(e) =>
               setProfile({ ...profile, full_name: e.target.value })
@@ -119,12 +117,12 @@ export default function ProfilePage() {
         <div className="flex flex-col gap-2">
           <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
             <PhoneIcon className="w-4 h-4" />
-            מספר טלפון
+            Phone Number
           </label>
           <input
             type="tel"
             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none"
-            placeholder="הכנס מספר טלפון"
+            placeholder="Enter phone number"
             value={profile.phone}
             onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
           />
@@ -134,23 +132,23 @@ export default function ProfilePage() {
         <div className="flex flex-col gap-2">
           <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
             <AtSignIcon className="w-4 h-4" />
-            כתובת אימייל
+            Email Address
           </label>
           <input
             type="email"
             className="w-full p-3 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
-            placeholder="אימייל"
+            placeholder="Email"
             disabled
             value={profile.email}
           />
-          <p className="text-xs text-gray-500">לא ניתן לשנות את כתובת האימייל</p>
+          <p className="text-xs text-gray-500">Email address cannot be changed</p>
         </div>
 
         {/* Birthdate */}
         <div className="flex flex-col gap-2">
           <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
             <CalendarIcon className="w-4 h-4" />
-            תאריך לידה
+            Date of Birth
           </label>
           <input
             type="date"
@@ -166,19 +164,19 @@ export default function ProfilePage() {
         <div className="border-t pt-4 mt-2">
           <h3 className="text-lg font-medium text-gray-800 mb-4 flex items-center gap-2">
             <MapPinIcon className="w-5 h-5" />
-            כתובת
+            Address
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Street */}
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700">
-                רחוב
+                Street
               </label>
               <input
                 type="text"
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none"
-                placeholder="שם הרחוב"
+                placeholder="Street name"
                 value={profile.street}
                 onChange={(e) =>
                   setProfile({ ...profile, street: e.target.value })
@@ -189,12 +187,12 @@ export default function ProfilePage() {
             {/* City */}
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700">
-                עיר
+                City
               </label>
               <input
                 type="text"
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none"
-                placeholder="שם העיר"
+                placeholder="City name"
                 value={profile.city}
                 onChange={(e) =>
                   setProfile({ ...profile, city: e.target.value })
@@ -205,12 +203,12 @@ export default function ProfilePage() {
             {/* Zip Code */}
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700">
-                מיקוד
+                ZIP Code
               </label>
               <input
                 type="text"
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none"
-                placeholder="מיקוד"
+                placeholder="ZIP code"
                 value={profile.zip_code}
                 onChange={(e) =>
                   setProfile({ ...profile, zip_code: e.target.value })
@@ -228,12 +226,12 @@ export default function ProfilePage() {
           {loading ? (
             <>
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-              מתעדכן...
+              Updating...
             </>
           ) : (
             <>
               <SaveIcon className="w-5 h-5" />
-              עדכון פרטים
+              Update Profile
             </>
           )}
         </button>
