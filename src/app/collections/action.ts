@@ -9,7 +9,7 @@ type ProductFilters = {
   minPrice?: number;
   maxPrice?: number;
   search?: string;
-  material?: string;
+  material?: string[];
   gender?: string;
 };
 
@@ -89,8 +89,11 @@ export async function getProducts(
     query = query.eq("categories.name", filters.category_name);
   }
 
-  if (filters?.material) {
-    query = query.eq("material", filters.category_name);
+  // if (filters?.material) {
+  //   query = query.eq("material", filters.material);
+  // }
+  if (filters?.material?.length) {
+    query = query.in("material", filters.material);
   }
 
   if (filters?.gender) {
